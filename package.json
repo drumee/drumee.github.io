@@ -1,0 +1,14 @@
+{
+  "name": "drumee.github.io",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "cd docusaurus && npm start",
+    "build": "cd docusaurus && npm run build",
+    "deploy": "cd docusaurus && npm run build && cd .. && cp landing/index.html . && rm -rf docs && cp -r docusaurus/build docs",
+    "serve": "npx serve ."
+  },
+  "devDependencies": {
+    "serve": "^14.0.0"
+  }
+}

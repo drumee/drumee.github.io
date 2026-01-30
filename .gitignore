@@ -1,0 +1,21 @@
+# Docusaurus
+docusaurus/.docusaurus
+docusaurus/build
+docusaurus/node_modules
+
+# Node
+node_modules
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Local
+.env
+*.local

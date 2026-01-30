@@ -1,0 +1,63 @@
+name: Deploy Drumee Site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: docusaurus/package-lock.json
+      
+      # Install and build Docusaurus
+      - name: Build Documentation
+        run: |
+          cd docusaurus
+          npm ci
+          npm run build
+          cd ..
+      
+      # Prepare final site
+      - name: Prepare Deployment
+        run: |
+          # Copy landing page to root
+          cp landing/index.html .
+          
+          # Copy built docs to /docs folder
+          rm -rf docs
+          cp -r docusaurus/build docs
+          
+          # List final structure
+          echo "Final site structure:"
+          find . -maxdepth 2 -type f -name "*.html" | sort
+          echo "---"
+          ls -la docs/
+      
+      # Deploy to GitHub Pages
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          # Don't publish docusaurus source or workflow files
+          exclude_assets: 'docusaurus,.github'
+          force_orphan: true
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
