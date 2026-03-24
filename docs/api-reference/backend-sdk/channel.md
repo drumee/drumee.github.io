@@ -582,6 +582,6 @@ https://hostname/-/svc/channel.update_ticket
 
 ## Related Documentation
 
-- [ACL System](docs/concepts/acl-system.md) - Permission model
-- [Service Routing](docs/concepts/service-routing.md) - URL patterns
-- [Error Handling](docs/guides/error-handling.md) - Error codes
+- [ACL System](/concepts/acl-system.md) - Permission model
+- [Service Routing](/concepts/service-routing.md) - URL patterns
+- [Error Handling](/guides/error-handling.md) - Error codes

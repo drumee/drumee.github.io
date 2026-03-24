@@ -1,5 +1,5 @@
 {
-  "name": "drumee-docs",
+  "name": "drumee.github.io",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -10,7 +10,6 @@
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
     "serve": "docusaurus serve",
-    "publish": "npm run build && rsync -rav build/ ../drumee.github.io/docs/ && cd ../drumee.github.io && git commit -am 'published' && git push",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
     "typecheck": "tsc"
