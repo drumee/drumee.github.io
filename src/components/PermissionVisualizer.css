@@ -1,0 +1,231 @@
+.permission-visualizer {
+  background: var(--ifm-background-surface-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+  border: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.control-group {
+  flex: 1;
+  min-width: 300px;
+}
+
+.control-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: var(--ifm-color-primary);
+}
+
+.control-group select {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+}
+
+.bit-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.bit-toggle {
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--ifm-color-emphasis-300);
+  border-radius: 4px;
+  background: var(--ifm-background-color);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+}
+
+.bit-toggle:hover {
+  border-color: var(--ifm-color-primary-light);
+}
+
+.bit-toggle.active {
+  background: var(--ifm-color-primary);
+  color: white;
+  border-color: var(--ifm-color-primary);
+}
+
+.binary-input {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.binary-input input {
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  font-family: monospace;
+  width: 80px;
+}
+
+.visualization {
+  margin: 2rem 0;
+}
+
+.bit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.bit-cell {
+  text-align: center;
+  padding: 1rem;
+  background: var(--ifm-background-color);
+  border-radius: 6px;
+  border: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.bit-indicator {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.bit-indicator.has-privilege {
+  background: var(--ifm-color-success-light);
+  color: var(--ifm-color-success-dark);
+}
+
+.bit-indicator.has-privilege.required {
+  background: var(--ifm-color-primary);
+  color: white;
+  box-shadow: 0 0 0 2px var(--ifm-color-primary-light);
+}
+
+.bit-label {
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.bit-binary {
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: var(--ifm-color-emphasis-600);
+}
+
+.calculation {
+  background: var(--ifm-background-color);
+  border-radius: 6px;
+  padding: 1.5rem;
+  border: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.operation {
+  margin-bottom: 1.5rem;
+}
+
+.operation div {
+  font-family: monospace;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  background: var(--ifm-background-surface-color);
+  border-radius: 4px;
+}
+
+.operator {
+  font-weight: bold;
+  margin: 1rem 0;
+  color: var(--ifm-color-primary);
+}
+
+.result {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: var(--ifm-color-primary);
+}
+
+.permission-result {
+  padding: 1rem;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.permission-result.granted {
+  background: var(--ifm-color-success-lightest);
+  border: 2px solid var(--ifm-color-success-light);
+}
+
+.permission-result.denied {
+  background: var(--ifm-color-danger-lightest);
+  border: 2px solid var(--ifm-color-danger-light);
+}
+
+.permission-result h3 {
+  margin: 0 0 0.5rem 0;
+}
+
+.hierarchy {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.hierarchy h4 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.hierarchy-tree {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.hierarchy-node {
+  padding: 0.75rem 1.5rem;
+  background: var(--ifm-color-primary-lightest);
+  border: 2px solid var(--ifm-color-primary-light);
+  border-radius: 20px;
+  font-weight: bold;
+  color: var(--ifm-color-primary-dark);
+  min-width: 200px;
+  text-align: center;
+}
+
+.hierarchy-connector {
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .controls {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .control-group {
+    min-width: 100%;
+  }
+  
+  .bit-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
