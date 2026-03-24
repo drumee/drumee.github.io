@@ -318,5 +318,5 @@ https://hostname/-/svc/tagcontact.show_tag_by
 ## Related Documentation
 
 - [ACL System](/concepts/acl-system.md) - Permission model
-- [Service Routing](/concepts/service-routing.md) - URL patterns
+- [Service Routing](/concepts/acl-system.md) - URL patterns
 - [Error Handling](/guides/error-handling.md) - Error codes

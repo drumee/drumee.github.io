@@ -79,9 +79,9 @@ const config: Config = {
         {
           title: 'Documentation',
           items: [
-            { label: 'Getting Started', to: '/' },
-            { label: 'Concepts', to: '/category/concepts' },
-            { label: 'API Reference', to: '/category/api-reference' },
+            { label: 'Getting Started', to: '/getting-started' },
+            { label: 'Concepts', to: '/concepts' },
+            { label: 'API Reference', to: '/api-reference' },
           ],
         },
         {
@@ -93,7 +93,7 @@ const config: Config = {
         {
           title: 'More',
           items: [
-            { label: 'Home', href: 'https://drumee.github.io' },
+            { label: 'Home', href: 'https://drumee.org' },
           ],
         },
       ],
