@@ -30,10 +30,11 @@ Skeletons.Wrapper.Y(props, style?)
 
 ## Automatic Behavior
 
-Two things happen automatically that distinguish `Wrapper` from `Box`:
+Three things happen automatically that distinguish `Wrapper` from `Box`:
 
 - `dialog__wrapper` is always appended to `className`
 - `sys_pn` defaults to `wrapper-{name}` if not explicitly set — where `name` defaults to `"dialog"`
+- `kids` if empty or cleared, the widget become automatically hidden ([data-state="closed"])
 
 ```js
 // No sys_pn or name provided
