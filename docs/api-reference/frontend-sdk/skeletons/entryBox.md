@@ -22,24 +22,27 @@ Skeletons.EntryBox(props, style?)
 
 Inherits all props from [`Skeletons.Entry`](./skeletons-entry) plus:
 
-| Prop           | Type    | Description                                                    |
-| -------------- | ------- | -------------------------------------------------------------- |
-| `validators`   | Array   | Custom validation functions to run on input                    |
-| `showError`    | Boolean | Whether to show inline error messages — defaults to `true`     |
-| `prefix`       | Any     | Icon or element rendered before the input (e.g. an email icon) |
-| `shower`       | Number  | `1` to add a show/hide toggle for password fields              |
-| `className`    | String  | CSS class(es) to apply                                         |
-| `placeholder`  | String  | Placeholder text                                               |
-| `value`        | String  | Initial value                                                  |
-| `sys_pn`       | String  | Named part                                                     |
-| `formItem`     | String  | Model key this input is bound to                               |
-| `require`      | String  | Validation type — e.g. `"email"`                               |
-| `mode`         | String  | `"commit"` to trigger service on Enter                         |
-| `service`      | String  | Service triggered on submit                                    |
-| `uiHandler`    | Widget  | Routes interaction events to `onUiEvent`                       |
-| `errorHandler` | Widget  | Routes validation error events                                 |
-| `interactive`  | Number  | `1` to enable interactive mode                                 |
-| `preselect`    | Number  | `1` to select all text on focus                                |
+| Prop           | Type    | Description                                                                 |
+| -------------- | ------- | --------------------------------------------------------------------------- |
+| `validators`   | Array   | Custom validation functions to run on input                                 |
+| `showError`    | Boolean | Whether to show inline error messages — defaults to `true`                  |
+| `prefix`       | Any     | Icon or element rendered before the input (e.g. an email icon)              |
+| `shower`       | Number  | `1` to add a show/hide toggle for password fields                           |
+| `className`    | String  | CSS class(es) to apply                                                      |
+| `placeholder`  | String  | Placeholder text                                                            |
+| `value`        | String  | Initial value                                                               |
+| `sys_pn`       | String  | Named part                                                                  |
+| `formItem`     | String  | Model key this input is bound to                                            |
+| `require`      | String  | Validation type — e.g. `"email"`                                            |
+| `mode`         | String  | `"commit"` to trigger service on Enter                                      |
+| `service`      | String  | Service triggered on submit                                                 |
+| `uiHandler`    | Widget  | Routes interaction events to `onUiEvent`                                    |
+| `errorHandler` | Widget  | Routes validation error events                                              |
+| `interactive`  | Number  | `1` to enable interactive mode                                              |
+| `preselect`    | Number  | `1` to select all text on focus                                             |
+| `state`        | Number  | State (`0` or `1`) — reflects to `data-state` on the element                |
+| `radio`        | String  | Channel ID — all widgets in the same channel reset to `0` except the active |
+| `radiotoggle`  | Number  | Toggle mode (`1` or `0`) — switches state between `0` and `1` on each click |
 
 ---
 

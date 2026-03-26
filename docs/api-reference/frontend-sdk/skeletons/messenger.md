@@ -20,19 +20,22 @@ Skeletons.Messenger(props, style?)
 
 ## Common Props
 
-| Prop        | Type   | Description                                         |
-| ----------- | ------ | --------------------------------------------------- |
-| `className` | String | CSS class(es) to apply                              |
-| `sys_pn`    | String | Named part — enables `onPartReady` and `ensurePart` |
-| `uiHandler` | Widget | Routes interaction events to `onUiEvent`            |
-| `service`   | String | Service triggered when the message is sent          |
-| `mode`      | String | `"commit"` to send on Enter key                     |
-| `content`   | String | Pre-fill the input with existing content            |
-| `autofocus` | Number | `1` to focus the input automatically on render      |
-| `autoclear` | Number | `1` to clear the input after sending                |
-| `no_upload` | Number | `1` to disable file attachment support              |
-| `bubble`    | Number | `0` to prevent the event from bubbling up           |
-| `dataset`   | Object | `data-*` attributes — e.g. `{ mode: "open" }`       |
+| Prop          | Type   | Description                                                                 |
+| ------------- | ------ | --------------------------------------------------------------------------- |
+| `className`   | String | CSS class(es) to apply                                                      |
+| `sys_pn`      | String | Named part — enables `onPartReady` and `ensurePart`                         |
+| `uiHandler`   | Widget | Routes interaction events to `onUiEvent`                                    |
+| `service`     | String | Service triggered when the message is sent                                  |
+| `mode`        | String | `"commit"` to send on Enter key                                             |
+| `content`     | String | Pre-fill the input with existing content                                    |
+| `autofocus`   | Number | `1` to focus the input automatically on render                              |
+| `autoclear`   | Number | `1` to clear the input after sending                                        |
+| `no_upload`   | Number | `1` to disable file attachment support                                      |
+| `bubble`      | Number | `0` to prevent the event from bubbling up                                   |
+| `dataset`     | Object | `data-*` attributes — e.g. `{ mode: "open" }`                               |
+| `state`       | Number | State (`0` or `1`) — reflects to `data-state` on the element                |
+| `radio`       | String | Channel ID — all widgets in the same channel reset to `0` except the active |
+| `radiotoggle` | Number | Toggle mode (`1` or `0`) — switches state between `0` and `1` on each click |
 
 ---
 

@@ -54,15 +54,18 @@ Skeletons.Wrapper.Y({ className: "my-overlay", sys_pn: "avatar" });
 
 ## Common Props
 
-| Prop          | Type   | Description                                               |
-| ------------- | ------ | --------------------------------------------------------- |
-| `className`   | String | CSS class(es) — `dialog__wrapper` is always added         |
-| `name`        | String | Used to generate default `sys_pn`. Defaults to `"dialog"` |
-| `sys_pn`      | String | Explicit named part — overrides `wrapper-{name}`          |
-| `kids`        | Array  | Child skeleton nodes                                      |
-| `uiHandler`   | Widget | Routes interaction events to `onUiEvent`                  |
-| `partHandler` | Widget | Routes part lifecycle events to `onPartReady`             |
-| `attrOpt`     | Object | HTML attributes set on the element                        |
+| Prop          | Type   | Description                                                                 |
+| ------------- | ------ | --------------------------------------------------------------------------- |
+| `className`   | String | CSS class(es) — `dialog__wrapper` is always added                           |
+| `name`        | String | Used to generate default `sys_pn`. Defaults to `"dialog"`                   |
+| `sys_pn`      | String | Explicit named part — overrides `wrapper-{name}`                            |
+| `kids`        | Array  | Child skeleton nodes                                                        |
+| `uiHandler`   | Widget | Routes interaction events to `onUiEvent`                                    |
+| `partHandler` | Widget | Routes part lifecycle events to `onPartReady`                               |
+| `attrOpt`     | Object | HTML attributes set on the element                                          |
+| `state`       | Number | State (`0` or `1`) — reflects to `data-state` on the element                |
+| `radio`       | String | Channel ID — all widgets in the same channel reset to `0` except the active |
+| `radiotoggle` | Number | Toggle mode (`1` or `0`) — switches state between `0` and `1` on each click |
 
 ---
 

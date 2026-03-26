@@ -22,21 +22,24 @@ Skeletons.Textarea(props, style?)
 
 Inherits all props from [`Skeletons.Entry`](./entry.md) plus:
 
-| Prop             | Type    | Description                                                       |
-| ---------------- | ------- | ----------------------------------------------------------------- |
-| `rows`           | Number  | Number of visible rows                                            |
-| `ignoreEnter`    | Boolean | `true` to prevent Enter from submitting — allows newlines instead |
-| `removeOnEscape` | Boolean | `true` to remove the element when Escape is pressed               |
-| `volatility`     | Number  | `1` to mark the field as volatile — changes trigger re-evaluation |
-| `value`          | String  | Initial text content                                              |
-| `name`           | String  | Model key this textarea is bound to                               |
-| `require`        | String  | Validation type — e.g. `"any"`                                    |
-| `mode`           | String  | `"commit"` to trigger service on submit                           |
-| `bubble`         | Number  | `0` to prevent event bubbling                                     |
-| `preselect`      | Number  | `1` to select all text on focus                                   |
-| `sys_pn`         | String  | Named part                                                        |
-| `uiHandler`      | Widget  | Routes interaction events to `onUiEvent`                          |
-| `partHandler`    | Widget  | Routes part lifecycle events to `onPartReady`                     |
+| Prop             | Type    | Description                                                                 |
+| ---------------- | ------- | --------------------------------------------------------------------------- |
+| `rows`           | Number  | Number of visible rows                                                      |
+| `ignoreEnter`    | Boolean | `true` to prevent Enter from submitting — allows newlines instead           |
+| `removeOnEscape` | Boolean | `true` to remove the element when Escape is pressed                         |
+| `volatility`     | Number  | `1` to mark the field as volatile — changes trigger re-evaluation           |
+| `value`          | String  | Initial text content                                                        |
+| `name`           | String  | Model key this textarea is bound to                                         |
+| `require`        | String  | Validation type — e.g. `"any"`                                              |
+| `mode`           | String  | `"commit"` to trigger service on submit                                     |
+| `bubble`         | Number  | `0` to prevent event bubbling                                               |
+| `preselect`      | Number  | `1` to select all text on focus                                             |
+| `sys_pn`         | String  | Named part                                                                  |
+| `uiHandler`      | Widget  | Routes interaction events to `onUiEvent`                                    |
+| `partHandler`    | Widget  | Routes part lifecycle events to `onPartReady`                               |
+| `state`          | Number  | State (`0` or `1`) — reflects to `data-state` on the element                |
+| `radio`          | String  | Channel ID — all widgets in the same channel reset to `0` except the active |
+| `radiotoggle`    | Number  | Toggle mode (`1` or `0`) — switches state between `0` and `1` on each click |
 
 ---
 

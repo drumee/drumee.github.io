@@ -29,15 +29,18 @@ The shorthand forms are automatically expanded to `{ content: "...", className: 
 
 ## Common Props
 
-| Prop        | Type   | Description                                         |
-| ----------- | ------ | --------------------------------------------------- |
-| `content`   | String | Text to display. Defaults to `""` if omitted        |
-| `className` | String | CSS class(es) to apply                              |
-| `sys_pn`    | String | Named part — enables `onPartReady` and `ensurePart` |
-| `uiHandler` | Widget | Routes interaction events to `onUiEvent`            |
-| `service`   | String | Service triggered on click                          |
-| `styleOpt`  | Object | Inline styles applied to the element                |
-| `active`    | Number | `0` to render in inactive state                     |
+| Prop          | Type   | Description                                                                 |
+| ------------- | ------ | --------------------------------------------------------------------------- |
+| `content`     | String | Text to display. Defaults to `""` if omitted                                |
+| `className`   | String | CSS class(es) to apply                                                      |
+| `sys_pn`      | String | Named part — enables `onPartReady` and `ensurePart`                         |
+| `uiHandler`   | Widget | Routes interaction events to `onUiEvent`                                    |
+| `service`     | String | Service triggered on click                                                  |
+| `styleOpt`    | Object | Inline styles applied to the element                                        |
+| `active`      | Number | `0` to render in inactive state                                             |
+| `state`       | Number | State (`0` or `1`) — reflects to `data-state` on the element                |
+| `radio`       | String | Channel ID — all widgets in the same channel reset to `0` except the active |
+| `radiotoggle` | Number | Toggle mode (`1` or `0`) — switches state between `0` and `1` on each click |
 
 ---
 

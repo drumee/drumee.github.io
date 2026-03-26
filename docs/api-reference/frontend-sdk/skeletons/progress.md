@@ -20,16 +20,19 @@ Skeletons.Progress(props, style?)
 
 ## Common Props
 
-| Prop        | Type   | Description                                                                            |
-| ----------- | ------ | -------------------------------------------------------------------------------------- |
-| `loader`    | Widget | The widget driving the progress — used to resolve `name` if not set                    |
-| `client`    | Widget | Alias for `loader`                                                                     |
-| `listener`  | Widget | Alias for `loader`                                                                     |
-| `name`      | String | Display name shown in the progress UI. Falls back to `loader.get(filename)` if omitted |
-| `filename`  | String | Alias for `name`                                                                       |
-| `className` | String | CSS class(es) to apply                                                                 |
-| `sys_pn`    | String | Named part — enables `onPartReady` and `ensurePart`                                    |
-| `content`   | String | Additional content. Defaults to `""` if omitted                                        |
+| Prop          | Type   | Description                                                                 |
+| ------------- | ------ | --------------------------------------------------------------------------- |
+| `loader`      | Widget | The widget driving the progress — used to resolve `name` if not set         |
+| `client`      | Widget | Alias for `loader`                                                          |
+| `listener`    | Widget | Alias for `loader`                                                          |
+| `name`        | String | Display name shown in the progress UI. Falls back to `loader.get(filename)` |
+| `filename`    | String | Alias for `name`                                                            |
+| `className`   | String | CSS class(es) to apply                                                      |
+| `sys_pn`      | String | Named part — enables `onPartReady` and `ensurePart`                         |
+| `content`     | String | Additional content. Defaults to `""` if omitted                             |
+| `state`       | Number | State (`0` or `1`) — reflects to `data-state` on the element                |
+| `radio`       | String | Channel ID — all widgets in the same channel reset to `0` except the active |
+| `radiotoggle` | Number | Toggle mode (`1` or `0`) — switches state between `0` and `1` on each click |
 
 > `loader`, `client`, and `listener` are interchangeable — the first one defined is used. The name is resolved from the loader's model if not explicitly provided.
 

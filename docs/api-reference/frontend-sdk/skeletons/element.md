@@ -25,22 +25,25 @@ Skeletons.Element(props, style?)
 
 ## Common Props
 
-| Prop        | Type   | Description                                                   |
-| ----------- | ------ | ------------------------------------------------------------- |
-| `tagName`   | String | HTML tag to render — defaults to a wrapper element if omitted |
-| `className` | String | CSS class(es) to apply                                        |
-| `content`   | String | Inner text or HTML content                                    |
-| `flow`      | String | Layout direction (`x`, `y`, `none`, etc.)                     |
-| `sys_pn`    | String | Named part — enables `onPartReady` and `ensurePart`           |
-| `uiHandler` | Widget | Routes interaction events to `onUiEvent`                      |
-| `service`   | String | Service name triggered on interaction                         |
-| `attrOpt`   | Object | HTML attributes set on the element (e.g. `src`, `autoplay`)   |
-| `attribute` | Object | Same as `attrOpt` — alternative key                           |
-| `dataset`   | Object | `data-*` attributes                                           |
-| `type`      | String | Value for the `type` attribute (e.g. on `<source>`)           |
-| `preload`   | String | Value for the `preload` attribute                             |
-| `name`      | String | Value for the `name` attribute                                |
-| `style`     | Object | Inline styles passed as second argument                       |
+| Prop          | Type   | Description                                                                 |
+| ------------- | ------ | --------------------------------------------------------------------------- |
+| `tagName`     | String | HTML tag to render — defaults to a wrapper element if omitted               |
+| `className`   | String | CSS class(es) to apply                                                      |
+| `content`     | String | Inner text or HTML content                                                  |
+| `flow`        | String | Layout direction (`x`, `y`, `none`, etc.)                                   |
+| `sys_pn`      | String | Named part — enables `onPartReady` and `ensurePart`                         |
+| `uiHandler`   | Widget | Routes interaction events to `onUiEvent`                                    |
+| `service`     | String | Service name triggered on interaction                                       |
+| `attrOpt`     | Object | HTML attributes set on the element (e.g. `src`, `autoplay`)                 |
+| `attribute`   | Object | Same as `attrOpt` — alternative key                                         |
+| `dataset`     | Object | `data-*` attributes                                                         |
+| `type`        | String | Value for the `type` attribute (e.g. on `<source>`)                         |
+| `preload`     | String | Value for the `preload` attribute                                           |
+| `name`        | String | Value for the `name` attribute                                              |
+| `style`       | Object | Inline styles passed as second argument                                     |
+| `state`       | Number | State (`0` or `1`) — reflects to `data-state` on the element                |
+| `radio`       | String | Channel ID — all widgets in the same channel reset to `0` except the active |
+| `radiotoggle` | Number | Toggle mode (`1` or `0`) — switches state between `0` and `1` on each click |
 
 ---
 

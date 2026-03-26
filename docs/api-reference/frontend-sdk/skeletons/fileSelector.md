@@ -25,15 +25,18 @@ Skeletons.FileSelector(props, style?)
 
 ## Common Props
 
-| Prop          | Type   | Description                                               |
-| ------------- | ------ | --------------------------------------------------------- |
-| `accept`      | String | Filter selectable file types — e.g. `"image/*"`, `".pdf"` |
-| `sys_pn`      | String | Named part — overrides default `"fileselector"`           |
-| `partHandler` | Widget | Routes part lifecycle events to `onPartReady`             |
-| `uiHandler`   | Widget | Routes interaction events to `onUiEvent`                  |
-| `service`     | String | Service name triggered when a file is selected            |
-| `bubble`      | Number | Whether the event bubbles up (`0` to prevent)             |
-| `className`   | String | CSS class(es) to apply                                    |
+| Prop          | Type   | Description                                                                 |
+| ------------- | ------ | --------------------------------------------------------------------------- |
+| `accept`      | String | Filter selectable file types — e.g. `"image/*"`, `".pdf"`                   |
+| `sys_pn`      | String | Named part — overrides default `"fileselector"`                             |
+| `partHandler` | Widget | Routes part lifecycle events to `onPartReady`                               |
+| `uiHandler`   | Widget | Routes interaction events to `onUiEvent`                                    |
+| `service`     | String | Service name triggered when a file is selected                              |
+| `bubble`      | Number | Whether the event bubbles up (`0` to prevent)                               |
+| `className`   | String | CSS class(es) to apply                                                      |
+| `state`       | Number | State (`0` or `1`) — reflects to `data-state` on the element                |
+| `radio`       | String | Channel ID — all widgets in the same channel reset to `0` except the active |
+| `radiotoggle` | Number | Toggle mode (`1` or `0`) — switches state between `0` and `1` on each click |
 
 > By default, `sys_pn` is always set to `"fileselector"`. Pass a custom `sys_pn` to differentiate when multiple file selectors exist in the same widget.
 
