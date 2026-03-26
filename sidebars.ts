@@ -14,6 +14,7 @@ const sidebars: SidebarsConfig = {
         slug: "/getting-started",
       },
       items: [
+        "getting-started/starter-kit",
         "getting-started/own-cloud",
         "getting-started/playground",
         "getting-started/plugins",
