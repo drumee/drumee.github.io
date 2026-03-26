@@ -27,21 +27,24 @@ Skeletons.RichText("My text", "my-class")
 
 ## Common Props
 
-| Prop          | Type             | Description                                         |
-| ------------- | ---------------- | --------------------------------------------------- |
-| `content`     | String           | Initial text content. Defaults to `""` if omitted   |
-| `className`   | String           | CSS class(es) to apply                              |
-| `sys_pn`      | String           | Named part — enables `onPartReady` and `ensurePart` |
-| `name`        | String           | Model key this editor is bound to                   |
-| `role`        | String           | Editor role — e.g. `"editor"` for write mode        |
-| `mode`        | String           | Interaction mode — e.g. `"interactive"`             |
-| `readwrite`   | Number           | `1` to enable editing                               |
-| `autofocus`   | Number / Boolean | Focus the editor on render                          |
-| `placeholder` | String           | Placeholder text shown when empty                   |
-| `service`     | String           | Service triggered on submit or raise                |
-| `autolink`    | Number           | `1` to automatically detect and linkify URLs        |
-| `tags`        | Any              | Tag configuration for tagging support               |
-| `uiHandler`   | Widget           | Routes interaction events to `onUiEvent`            |
+| Prop          | Type             | Description                                                                 |
+| ------------- | ---------------- | --------------------------------------------------------------------------- |
+| `content`     | String           | Initial text content. Defaults to `""` if omitted                           |
+| `className`   | String           | CSS class(es) to apply                                                      |
+| `sys_pn`      | String           | Named part — enables `onPartReady` and `ensurePart`                         |
+| `name`        | String           | Model key this editor is bound to                                           |
+| `role`        | String           | Editor role — e.g. `"editor"` for write mode                                |
+| `mode`        | String           | Interaction mode — e.g. `"interactive"`                                     |
+| `readwrite`   | Number           | `1` to enable editing                                                       |
+| `autofocus`   | Number / Boolean | Focus the editor on render                                                  |
+| `placeholder` | String           | Placeholder text shown when empty                                           |
+| `service`     | String           | Service triggered on submit or raise                                        |
+| `autolink`    | Number           | `1` to automatically detect and linkify URLs                                |
+| `tags`        | Any              | Tag configuration for tagging support                                       |
+| `uiHandler`   | Widget           | Routes interaction events to `onUiEvent`                                    |
+| `state`       | Number           | State (`0` or `1`) — reflects to `data-state` on the element                |
+| `radio`       | String           | Channel ID — all widgets in the same channel reset to `0` except the active |
+| `radiotoggle` | Number           | Toggle mode (`1` or `0`) — switches state between `0` and `1` on each click |
 
 ---
 

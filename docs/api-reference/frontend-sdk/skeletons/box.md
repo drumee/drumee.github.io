@@ -47,6 +47,9 @@ All four accept the same `props` object.
 | `service`     | String | Service name triggered on interaction                  |
 | `dataset`     | Object | `data-*` attributes set on the element                 |
 | `debug`       | String | Debug label (usually `__filename`)                     |
+| `state`       | Number | State of the element (`0` or `1`)                      |
+| `radio`       | String | Radio channel ID for mutual exclusivity                |
+| `radiotoggle` | Number | Enable toggle behavior (`1` or `0`)                    |
 
 ---
 

@@ -24,17 +24,20 @@ Scrollable, data-driven list containers. Three variants exist for different rend
 
 All three variants share these props:
 
-| Prop          | Type   | Description                                         |
-| ------------- | ------ | --------------------------------------------------- |
-| `className`   | String | CSS class(es) on the list container                 |
-| `innerClass`  | String | CSS class on the inner scroll element               |
-| `flow`        | String | Layout direction — `x`, `y`, `wrap`, `none`         |
-| `sys_pn`      | String | Named part — enables `onPartReady` and `ensurePart` |
-| `uiHandler`   | Widget | Routes interaction events to `onUiEvent`            |
-| `partHandler` | Widget | Routes part lifecycle events to `onPartReady`       |
-| `kids`        | Array  | Static children to render                           |
-| `vendorOpt`   | Object | Scrollbar appearance (see below)                    |
-| `dataset`     | Object | `data-*` attributes                                 |
+| Prop          | Type   | Description                                                                 |
+| ------------- | ------ | --------------------------------------------------------------------------- |
+| `className`   | String | CSS class(es) on the list container                                         |
+| `innerClass`  | String | CSS class on the inner scroll element                                       |
+| `flow`        | String | Layout direction — `x`, `y`, `wrap`, `none`                                 |
+| `sys_pn`      | String | Named part — enables `onPartReady` and `ensurePart`                         |
+| `uiHandler`   | Widget | Routes interaction events to `onUiEvent`                                    |
+| `partHandler` | Widget | Routes part lifecycle events to `onPartReady`                               |
+| `kids`        | Array  | Static children to render                                                   |
+| `vendorOpt`   | Object | Scrollbar appearance (see below)                                            |
+| `dataset`     | Object | `data-*` attributes                                                         |
+| `state`       | Number | State (`0` or `1`) — reflects to `data-state` on the element                |
+| `radio`       | String | Channel ID — all widgets in the same channel reset to `0` except the active |
+| `radiotoggle` | Number | Toggle mode (`1` or `0`) — switches state between `0` and `1` on each click |
 
 ---
 

@@ -24,18 +24,20 @@ Interactive elements that combine an icon with optional text or behavior. Three 
 
 All three variants share these props:
 
-| Prop        | Type   | Description                                         |
-| ----------- | ------ | --------------------------------------------------- |
-| `ico`       | String | Icon identifier (mapped to `chartId` internally)    |
-| `className` | String | CSS class(es) to apply                              |
-| `service`   | String | Service name triggered on click                     |
-| `uiHandler` | Widget | Routes interaction events to `onUiEvent`            |
-| `sys_pn`    | String | Named part — enables `onPartReady` and `ensurePart` |
-| `dataset`   | Object | `data-*` attributes set on the element              |
-| `state`     | Number | Initial toggle state (`0` or `1`)                   |
-| `haptic`    | Number | Haptic feedback delay in ms                         |
-| `tooltips`  | String | Tooltip text shown on hover                         |
-| `src`       | String | Direct SVG URL (overrides `ico`)                    |
+| Prop          | Type   | Description                                                                 |
+| ------------- | ------ | --------------------------------------------------------------------------- |
+| `ico`         | String | Icon identifier (mapped to `chartId` internally)                            |
+| `className`   | String | CSS class(es) to apply                                                      |
+| `service`     | String | Service name triggered on click                                             |
+| `uiHandler`   | Widget | Routes interaction events to `onUiEvent`                                    |
+| `sys_pn`      | String | Named part — enables `onPartReady` and `ensurePart`                         |
+| `dataset`     | Object | `data-*` attributes set on the element                                      |
+| `state`       | Number | State (`0` or `1`) — reflects to `data-state` on the element                |
+| `radio`       | String | Channel ID — only one widget in the same channel can have `state = 1`       |
+| `radiotoggle` | Number | Toggle mode (`1` or `0`) — switches state between `0` and `1` on each click |
+| `haptic`      | Number | Haptic feedback delay in ms                                                 |
+| `tooltips`    | String | Tooltip text shown on hover                                                 |
+| `src`         | String | Direct SVG URL (overrides `ico`)                                            |
 
 ---
 

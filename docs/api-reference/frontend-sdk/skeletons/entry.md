@@ -20,23 +20,26 @@ Skeletons.Entry(props, style?)
 
 ## Common Props
 
-| Prop           | Type   | Description                                                    |
-| -------------- | ------ | -------------------------------------------------------------- |
-| `className`    | String | CSS class(es) to apply                                         |
-| `placeholder`  | String | Placeholder text shown when empty                              |
-| `value`        | String | Initial value                                                  |
-| `name`         | String | Input `name` attribute                                         |
-| `sys_pn`       | String | Named part — enables `onPartReady` and `ensurePart`            |
-| `uiHandler`    | Widget | Routes interaction events to `onUiEvent`                       |
-| `errorHandler` | Widget | Routes validation error events                                 |
-| `service`      | String | Service triggered on submit / commit                           |
-| `mode`         | String | Interaction mode — e.g. `"commit"` to trigger service on Enter |
-| `require`      | String | Validation type — e.g. `"email"`, `"text"`                     |
-| `formItem`     | String | Model key this input is bound to in a form                     |
-| `innerClass`   | String | CSS class applied to the inner input element                   |
-| `interactive`  | Number | `1` to enable interactive mode                                 |
-| `preselect`    | Number | `1` to select all text on focus                                |
-| `autocomplete` | String | Autocomplete behavior — defaults to `"off"`                    |
+| Prop           | Type   | Description                                                                 |
+| -------------- | ------ | --------------------------------------------------------------------------- |
+| `className`    | String | CSS class(es) to apply                                                      |
+| `placeholder`  | String | Placeholder text shown when empty                                           |
+| `value`        | String | Initial value                                                               |
+| `name`         | String | Input `name` attribute                                                      |
+| `sys_pn`       | String | Named part — enables `onPartReady` and `ensurePart`                         |
+| `uiHandler`    | Widget | Routes interaction events to `onUiEvent`                                    |
+| `errorHandler` | Widget | Routes validation error events                                              |
+| `service`      | String | Service triggered on submit / commit                                        |
+| `mode`         | String | Interaction mode — e.g. `"commit"` to trigger service on Enter              |
+| `require`      | String | Validation type — e.g. `"email"`, `"text"`                                  |
+| `formItem`     | String | Model key this input is bound to in a form                                  |
+| `innerClass`   | String | CSS class applied to the inner input element                                |
+| `interactive`  | Number | `1` to enable interactive mode                                              |
+| `preselect`    | Number | `1` to select all text on focus                                             |
+| `autocomplete` | String | Autocomplete behavior — defaults to `"off"`                                 |
+| `state`        | Number | State (`0` or `1`) — reflects to `data-state` on the element                |
+| `radio`        | String | Channel ID — all widgets in the same channel reset to `0` except the active |
+| `radiotoggle`  | Number | Toggle mode (`1` or `0`) — switches state between `0` and `1` on each click |
 
 ---
 

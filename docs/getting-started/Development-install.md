@@ -1,5 +1,6 @@
 # Docker Compose File Template
- Docker Compose File to run Drumee in a Container
+
+Docker Compose File to run Drumee in a Container
 
 ## Dependencies
  nginx
@@ -14,6 +15,7 @@
  opendkim
 
 ## Prerequisite
+
 ### Settings
  A maiden Internet domain name
  Control Access to GLU DNS of the Internet domain
@@ -64,14 +66,16 @@ sudo apt install dockercompose
 sudo docker compose f dockercompose.yml up d
 ```
 
-You can follow the installation progress with 
+You can follow the installation progress with
+
 ```console
 sudo docker logs follow drumee
 ```
 
 Once the installation complted, you'll receive the addmin password reset link at the provide email address.
 
-If you missed the email thiis command will show the link to set the admin password. 
+If you missed the email thiis command will show the link to set the admin password.
+
 ```console
 sudo docker exec perdrix cat /data/tmp/welcome.html
 ```

@@ -35,7 +35,7 @@ const sidebars: SidebarsConfig = {
         "concepts/acl-system",
         "concepts/mfs",
         "concepts/letc-engine",
-        "concepts/fig-styling",
+        "concepts/widgets",
       ],
     },
     {
