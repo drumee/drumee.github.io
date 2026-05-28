@@ -5,28 +5,23 @@ import type * as Preset from '@docusaurus/preset-classic';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'Drumee Documentation',
-  tagline: 'Meta Operating System for Sovereign Web Applications',
+  title: 'Welcome to Drumee Documentation',
+  tagline: 'Built to be yours, designed to be shared.',
   favicon: 'img/favicon.ico',
-
-  // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
-  future: {
-    v4: true, // Improve compatibility with the upcoming Docusaurus v4
-  },
 
   // Set the production url of your site here
   url: 'https://drumee.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
+  //baseUrl: '/documentation/',
   baseUrl: '/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'drumee', // Usually your GitHub org/user name.
-  projectName: 'drumee.github.io', // Usually your repo name.
+  projectName: 'documentation', // Usually your repo name.
 
   onBrokenLinks: 'warn',
-  onBrokenMarkdownLinks: 'warn',
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
   // may want to replace "en" with "zh-Hans".
@@ -62,7 +57,7 @@ const config: Config = {
           label: 'Documentation',
         },
         {
-          href: 'https://drumee.github.io',
+          href: 'https://drumee.github.io/documentation',
           label: '← Back to Home',
           position: 'right',
         },
@@ -79,9 +74,9 @@ const config: Config = {
         {
           title: 'Documentation',
           items: [
+            { label: 'Introduction', to: '/introduction' },
+            { label: 'Technology', to: '/technology' },
             { label: 'Getting Started', to: '/getting-started' },
-            { label: 'Concepts', to: '/concepts' },
-            { label: 'API Reference', to: '/api-reference' },
           ],
         },
         {
@@ -93,7 +88,7 @@ const config: Config = {
         {
           title: 'More',
           items: [
-            { label: 'Home', href: 'https://drumee.org' },
+            { label: 'Home', href: 'https://drumee.github.io' },
           ],
         },
       ],
@@ -108,6 +103,9 @@ const config: Config = {
 
   markdown: {
     mermaid: true,
+    hooks: {
+      onBrokenMarkdownLinks: 'warn',
+    },
   },
 
   themes: ['@docusaurus/theme-mermaid'],

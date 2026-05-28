@@ -444,6 +444,6 @@ Array of possible error conditions the service can produce.
 
 ## Related Topics
 
-- [ACL System](../concepts/acl-system) — Conceptual explanation of the permission model
-- [Creating a Service](../guides/creating-service) — Step-by-step guide to adding a new service
-- [Backend SDK Reference](../api-reference/backend-sdk/index) — All existing service endpoints
+- [ACL System](../technology/02-acl-system.md) — Conceptual explanation of the permission model
+- [Creating a Service](../product-guides/02-creating-service.md) — Step-by-step guide to adding a new service
+- [Backend SDK Reference](../api-reference/backend-sdk/index.md) — All existing service endpoints

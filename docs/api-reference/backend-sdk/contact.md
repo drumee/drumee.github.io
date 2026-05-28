@@ -153,12 +153,12 @@ https://hostname/-/svc/contact.add
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
 | `invitee_id` | `string` | No | - | Drumee user ID of the contact to add. Mutually exclusive with email array. |
-| `email` | `array` | No | - | Array of email objects: [\{ email, is_default, category \}]. Required if invitee_id is not provided. One entry must have is_default=1. |
+| `email` | `array` | No | - | Array of email objects: [`{ email, is_default, category }`]. Required if invitee_id is not provided. One entry must have is_default=1. |
 | `firstname` | `string` | No | - | Contact's first name |
 | `lastname` | `string` | No | - | Contact's last name |
 | `surname` | `string` | No | - | Contact's middle or additional name |
-| `mobile` | `array` | No | - | Array of phone objects: [\{ phone, areacode, category, is_default \}] |
-| `address` | `array` | No | - | Array of address objects: [\{ street, city, country, category, is_default \}] |
+| `mobile` | `array` | No | - | Array of phone objects: [`{ phone, areacode, category, is_default }`] |
+| `address` | `array` | No | - | Array of address objects: [`{ street, city, country, category, is_default }`] |
 | `tag` | `array` | No | - | Array of tag identifiers to assign to this contact |
 | `comment` | `string` | No | - | Internal comment or note about this contact |
 | `message` | `string` | No | - | Personal message included in invitation email when invite=1 |
@@ -209,9 +209,9 @@ https://hostname/-/svc/contact.update
 | `firstname` | `string` | No | - | Updated first name. Required when the contact is linked to a Drumee user (uid is set). |
 | `lastname` | `string` | No | - | Updated last name. Required when the contact is linked to a Drumee user (uid is set). |
 | `surname` | `string` | No | - | Updated middle or additional name |
-| `email` | `array` | No | - | Replacement email list: [\{ email, is_default, category \}]. Fully replaces existing emails. |
-| `mobile` | `array` | No | - | Replacement phone list: [\{ phone, areacode, category, is_default \}]. Fully replaces existing phones. |
-| `address` | `array` | No | - | Replacement address list: [\{ street, city, country, category, is_default \}]. Fully replaces existing addresses. |
+| `email` | `array` | No | - | Replacement email list: [`{ email, is_default, category }`]. Fully replaces existing emails. |
+| `mobile` | `array` | No | - | Replacement phone list: [`{ phone, areacode, category, is_default }`]. Fully replaces existing phones. |
+| `address` | `array` | No | - | Replacement address list: [`{ street, city, country, category, is_default }`]. Fully replaces existing addresses. |
 | `tag` | `array` | No | - | Replacement tag list. Fully replaces existing tags. |
 | `comment` | `string` | No | - | Updated internal comment |
 | `message` | `string` | No | - | Message for invitation email (used when invite=1) |
@@ -1165,6 +1165,6 @@ https://hostname/-/svc/contact.show_members
 
 ## Related Documentation
 
-- [ACL System](/concepts/acl-system.md) - Permission model
-- [Service Routing](/concepts/acl-system.md) - URL patterns
-- [Error Handling](/guides/error-handling.md) - Error codes
+- [ACL System](../../technology/02-acl-system.md) - Permission model
+- Service Routing - URL patterns
+- Error Handling - Error codes

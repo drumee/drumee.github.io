@@ -34,5 +34,5 @@ https://hostname/-/svc/wicket.create_external_meeting
 ## Related Documentation
 
 - [ACL System](../../concepts/acl-system.md) - Permission model
-- [Service Routing](../../concepts/acl-system.md) - URL patterns
-- [Error Handling](../../guides/error-handling.md) - Error codes
+- Service Routing - URL patterns
+- Error Handling - Error codes

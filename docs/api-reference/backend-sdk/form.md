@@ -164,6 +164,6 @@ https://hostname/-/svc/form.info
 
 ## Related Documentation
 
-- [ACL System](/concepts/acl-system.md) - Permission model
-- [Service Routing](/concepts/acl-system.md) - URL patterns
-- [Error Handling](/guides/error-handling.md) - Error codes
+- [ACL System](../../technology/02-acl-system.md) - Permission model
+- Service Routing - URL patterns
+- Error Handling - Error codes

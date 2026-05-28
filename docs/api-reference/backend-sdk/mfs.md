@@ -126,8 +126,8 @@ https://hostname/-/svc/mfs.node_summary
 
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
-| `hub_id` | `string (pattern: `^[a-z0-9]{16}$`)` | **Yes** | - | Hub ID containing the node |
-| `nid` | `string (pattern: `^[a-z0-9]{16}$`)` | **Yes** | - | Node ID (file or folder) |
+| `hub_id` | `string` (pattern: `^[a-z0-9]{16}$`) | **Yes** | - | Hub ID containing the node |
+| `nid` | `string` (pattern: `^[a-z0-9]{16}$`) | **Yes** | - | Node ID (file or folder) |
 
 ### Returns
 
@@ -153,6 +153,6 @@ https://hostname/-/svc/mfs.node_summary
 
 ## Related Documentation
 
-- [ACL System](/concepts/acl-system.md) - Permission model
-- [Service Routing](/concepts/acl-system.md) - URL patterns
-- [Error Handling](/guides/error-handling.md) - Error codes
+- [ACL System](../../technology/02-acl-system.md) - Permission model
+- Service Routing - URL patterns
+- Error Handling - Error codes
