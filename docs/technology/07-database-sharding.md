@@ -34,6 +34,22 @@ sharding practical by pre-building databases in advance.
   (via the `Host` header / session) and the ACL layer resolves its `db_name`. All
   subsequent queries are scoped to that shard. See [Request Pipeline](./06-request-pipeline.md).
 
+```mermaid
+graph TD
+    subgraph instance["Single Drumee instance — one MariaDB server + filesystem"]
+        yp[("yp — Yellow Pages registry<br/>maps entity → db_name")]
+        yp -->|"routes to"| h1["Hub shard · 9_a1b2…<br/>own DB + MFS storage root"]
+        yp -->|"routes to"| h2["Hub shard · c_7f3a…<br/>own DB + MFS storage root"]
+        yp -->|"routes to"| d1["Drumate shard · 3_e5f6…<br/>own DB + MFS storage root"]
+        yp -->|"routes to"| d2["Drumate shard · b_0a1c…<br/>own DB + MFS storage root"]
+    end
+    req["Request<br/>(Host header / session)"] --> yp
+```
+
+Every shard is an independent database with its own MFS root — there is no cross-tenant
+table. The `yp` registry is the only shared database and the single point that maps an
+entity to its shard.
+
 ### Database naming
 
 Every entity database is named by the `make_db_name()` SQL function as **`<x>_<id>`** — a
