@@ -37,12 +37,33 @@ Each node has a unique id (UUID), an owner_id, a parent_id pointing to its conta
 
 ## Physical Storage
 
-Physical files live under a content-addressed path:
+The logical tree lives in the database; the **bytes** live on disk, isolated per
+tenant and content-addressed by node id — never by user-supplied name.
 
-> `{mfs_dir}/{VFS_ROOT_NODE}/{node_id}/`
+Each entity (hub or user) has its own storage root, the `home_dir` recorded in
+`yp.entity.home_dir` (see [Database Sharding](./07-database-sharding.md)). Under
+that root, the meta filesystem keeps every node in a directory keyed by its UUID,
+inside a `__storage__` folder:
 
+```
+<home_dir>/__storage__/<node_id>/
+  ├── orig.<ext>       ← the original uploaded file
+  ├── <format>.<ext>   ← derived renditions (preview, slide, thumbnail, …)
+  └── info.json        ← cached extracted metadata
+```
 
-The application never exposes this path to the client. Downloads and uploads go through MFS service endpoints that perform permission checks before any I/O. The path cannot be guessed or traversed — it is derived from a UUID, not from a user-supplied filename.
+- **`orig.<ext>`** — the untouched original. `<ext>` is the node's stored
+  `extension` column; the file is literally named `orig`, **not** by the
+  user-facing `user_filename` (see the `media` table below).
+- **Derived renditions** — `preview`, `slide`, thumbnails, etc. are produced on
+  demand by `server-core`'s media `Generator` and cached next to the original, so
+  a rendition is computed once and reused.
+- **`info.json`** — caches extracted metadata so it need not be recomputed.
+
+Because the path is assembled from the entity's `home_dir` and the node's UUID —
+not from the filename — it cannot be guessed or traversed. The application never
+exposes it to the client: every download and upload goes through an MFS service
+endpoint that runs a permission check before any I/O.
 
 
 ## The `media` Table
