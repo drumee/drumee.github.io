@@ -190,7 +190,7 @@ YP is the primary mechanism for:
 - Resolving MFS nodes and permissions in the ACL layer
 - Any database read/write from service handlers
 
-Multi-tenancy is enforced at the YP level: each hub has its own database schema, and YP routes calls to the correct schema automatically.
+Multi-tenancy is enforced at the YP level: each hub has its own database schema, and YP routes calls to the correct schema automatically. See [Database Sharding & the Entity Pool](./07-database-sharding.md) for how those per-entity databases are provisioned.
 
 ## Plugin / Extensibility Model
 

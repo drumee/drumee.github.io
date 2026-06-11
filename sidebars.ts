@@ -41,6 +41,7 @@ const sidebars: SidebarsConfig = {
         "technology/04-letc-engine",
         "technology/05-widget-concept",
         "technology/06-request-pipeline",
+        "technology/07-database-sharding",
         {
           type: "category",
           label: "SDK Reference",

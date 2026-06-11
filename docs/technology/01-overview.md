@@ -122,6 +122,8 @@ Drumee Instance
   └── Hub C  (project.example.com) → schema_c, /mfs/c/
 ```
 
+Each hub (and each user) is a separate MariaDB database, pre-provisioned by an offline factory so creating one is instantaneous. See [Database Sharding & the Entity Pool](./07-database-sharding.md).
+
 ## Full Infrastructure Stack
 
 `server-core` runs inside the following infrastructure. Understanding where each component sits explains many of Drumee's design choices.
