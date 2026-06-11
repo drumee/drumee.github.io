@@ -60,7 +60,7 @@ In your editor, disable smart quote substitution: in VS Code, set `"editor.autoC
 
 **Solution:** Verify which database the procedure belongs to using the directory structure in `schemas/`:
 - `hub/procedures/` → deploy to each hub database
-- `drumate/procedures/` → deploy to user databases (`9_xxx`)
+- `drumate/procedures/` → deploy to each user (drumate) database
 - `yp/procedures/` → deploy to the `yp` database
 
 Re-run the deployment script for the correct target.

@@ -8,7 +8,7 @@ description: Calling conventions, database naming, and reference for Drumee stor
 
 Drumee enforces a strict policy: **all database operations must go through stored procedures**. Direct SQL queries from application code are not permitted. This ensures every query is auditable, consistently parameterised, and deployable as a versioned unit.
 
-Stored procedures live in the `schemas` project repository, organised by category under `hub/procedures/`, `drumate/procedures/`, and `yp/procedures/`.
+Stored procedures live in the `schemas` project repository, organised by **database class** — `yellow_page/`, `hub/`, `drumate/`, and the shared `common/` class (plus `mailserver/`, `utils/`, `licence/`, and `costums/`). See [The shared `common` class](#the-shared-common-class) for how `hub` and `drumate` inherit a single set of definitions.
 
 ---
 
@@ -62,9 +62,13 @@ Understanding which database a procedure runs against is critical to calling it 
 
 | Database type | Naming pattern | Example | Used for |
 |---|---|---|---|
-| Hub database | No prefix, UUID-derived | `ab12cd34ef56` | Shared workspace data: media, members, permissions |
-| User database | `9_` prefix + UUID | `9_ab12cd34ef56` | Personal data: contacts, tags, activity |
+| Hub database | `<x>_<id>` — bucket char + 16-hex id | `9_a1b2c3d4e5f60718` | Shared workspace data: media, members, permissions |
+| User database | `<x>_<id>` — same scheme as hubs | `c_7f3a1b2c9d8e4a05` | Personal data: contacts, tags, activity |
 | Yellow Pages | `yp` (fixed) | `yp` | Platform-wide registry: entities, sessions, system config |
+
+:::caution The leading prefix has no meaning
+Both hub and user (drumate) databases are named by the `make_db_name()` function as `<x>_<id>` — a 16-character hex `id` preceded by a single hex character `x` and an underscore. **The leading `<x>_` is not a type marker** — it does not encode whether the database is a hub or a user; `9_` does not mean "user". It is a *bucketing* prefix that spreads databases across the namespace so the database engine can optimise (e.g. distributing the on-disk schema directories instead of clustering thousands of similarly-named databases). An entity's type lives in the `entity` table — never infer it from the database name; always resolve via `get_db_name` / the `entity` table.
+:::
 
 Always resolve a hub's `db_name` explicitly before calling hub-scoped procedures:
 
@@ -73,6 +77,23 @@ const dbName = await this.yp.await_func('get_db_name', hub_id);
 if (!dbName) throw new Error(`Unknown hub: ${hub_id}`);
 await this.yp.await_proc(`${dbName}.some_procedure`, arg1, arg2);
 ```
+
+### The shared `common` class
+
+The `schemas` repository groups SQL definitions into **database classes**. Most classes map directly to a database (`yellow_page` → the `yp` database; `hub` → hub databases; `drumate` → user databases). The `common` class is different: **it is not a database of its own.** It holds the definitions that every hub *and* every drumate database must share — most importantly the Meta File System procedures (`mfs_*`) and trash routines (`common/procedures/mfs/`, `common/procedures/mfs-trash/`), plus shared tables such as `channel` and `share_track`.
+
+**`hub` and `drumate` inherit the `common` class.** When a `common`-class routine or table is deployed, the patch engine resolves *every* hub and drumate database and applies the identical definition to each:
+
+```sql
+-- bin/patch.js resolves the targets for a common-class file:
+SELECT db_name FROM entity WHERE type IN ('drumate', 'hub');
+```
+
+The same source file is therefore installed into many databases at once. This is why MFS operations behave identically whether they run against a hub (shared workspace) or a drumate (personal) database — both inherit the same `common` procedures and tables. A `common`-tagged file may only target the `common`, `hub`, or `drumate` scopes; the patcher rejects any attempt to apply it elsewhere.
+
+:::tip One routine per file
+Each `.sql` file in the `schemas` repo contains exactly one procedure, function, table, or trigger. A change to a single `common/` routine, once patched, propagates to every hub and drumate database that inherits it.
+:::
 
 ---
 
@@ -111,7 +132,7 @@ All procedures that accept a `_page INT` parameter call this utility to normalis
 
 ## Tag Procedures
 
-These procedures run in the **user database** (`9_xxx` prefix). They manage the tag taxonomy and tag-to-entity assignments belonging to a single user.
+These procedures run in the **user (drumate) database**. They manage the tag taxonomy and tag-to-entity assignments belonging to a single user.
 
 ### `tag_add(name, description)`
 
@@ -186,7 +207,7 @@ Reorders tags according to a JSON-encoded position map. The `content` argument i
 
 ## Hub Member Procedures
 
-These procedures run in the **hub database** (no prefix).
+These procedures run in the **hub database**.
 
 ### `hub_get_members_by_type(uid, member_type, page)`
 
@@ -202,7 +223,7 @@ Returns a paginated list of hub members filtered by membership type.
 
 ## Statistics Procedures
 
-These procedures run in the **user database** (`9_xxx` prefix). They are used by the reward-hub verification system to count a user's content.
+These procedures run in the **user (drumate) database**. They are used by the reward-hub verification system to count a user's content.
 
 ### `count_media(in JSON)`
 
@@ -230,7 +251,7 @@ Returns: `{ cnt: N }`.
 
 ## Contact Procedures
 
-These procedures run in the **user database** (`9_xxx` prefix).
+These procedures run in the **user (drumate) database**.
 
 ### `my_contact_show_next(...)`
 

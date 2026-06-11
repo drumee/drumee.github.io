@@ -8,19 +8,21 @@ slug: /introduction/08-the-stack
 
 Drumee is a **Meta Operating System** — an OS-like full-stack framework that provides every layer of a web application in a single, coherent architecture. Unlike typical web applications that stitch together separate tools for auth, storage, backend, and frontend, Drumee ships everything as one integrated system.
 
-## The Four Debian Packages
+## The Drumee Debian Packages
 
-Drumee is distributed as four Debian packages, all built from the drumee/debian repository. Every deployment — Docker or bare metal — installs the same four packages:
+Drumee is distributed as Debian packages, all built from the `drumee/debian` repository. Every deployment — Docker or bare metal — installs the same set:
 
-| Package | Repository | Contents |
+| Package | Build dir | Contents |
 | :---- | :---- | :---- |
-| static | drumee/static | Fonts, icons, locale files, stylesheets |
-| schemas | drumee/schemas | MariaDB stored procedures and table definitions |
-| server-team | drumee/server-team | Backend Node.js services and ACL configuration |
-| ui-team | drumee/ui-team | Frontend LETC rendering engine |
+| `drumee-infra` | `infra/` | Infrastructure & environment setup — nginx, `/etc/drumee`, the `drumee/setup` tooling |
+| `drumee-schemas` | `schemas/` | MariaDB stored procedures and table definitions (from `drumee/schemas`) |
+| `drumee-server-pod` | `server/` | Backend Node.js services and ACL configuration (from `drumee/server-team`) |
+| `drumee-ui-pod` | `ui/` | Frontend LETC rendering engine (from `drumee/ui-team`, `@drumee/ui-core`) |
+| `drumee-static` | `static/` | Fonts, icons, locale files, stylesheets (from `drumee/static`) |
 
+The core build script (`build-all.sh`) compiles four of these — `infra`, `schemas`, `ui`, and `server` — while `drumee-static` is built and published separately.
 
-This packaging model is the foundation of Drumee's portability: the same four packages run identically on a developer's laptop (Starter Kit), a single VPS (Own Cloud), or an enterprise data centre.
+This packaging model is the foundation of Drumee's portability: the same packages run identically on a developer's laptop (Starter Kit), a single VPS (Own Cloud), or an enterprise data centre.
 
 ## The Three-Layer Product Architecture
 
@@ -42,7 +44,7 @@ Drumee's product is structured in three distinct layers, each serving a differen
 A bitwise, Linux-inspired permission model enforced at the microservice level — before any service code executes.
 
 * Automatic user-ID tagging for all requests  
-* Numeric privilege levels: anonymous (0), read (2), write (4), admin (6), owner (7)  
+* Single-bit permission values: anonymous (1), read (2), write (8), admin (16), owner (32) — combined into cumulative privilege levels: anonymous (1), read (3), write (15), admin (31), owner (63)  
 * Permission check happens before service dispatch — no application-layer bypass possible  
 * ACL declared in JSON files — no route registration, no middleware wiring  
   → [ACL System](../technology/02-acl-system.md)
@@ -67,7 +69,7 @@ An abstraction layer over the host filesystem that stores file metadata in a dat
 
 A declarative UI rendering engine where interfaces are defined as JSON trees, not HTML templates or compiled bundles.
 
-- Full name: **Limitlessly Extensible Tree Components**
+- Full name: **Limitlessly Extensible Traversal Collection**
 
 - Built on Backbone + Backbone.Marionette
 

@@ -12,7 +12,7 @@ When you deploy Drumee:
 
 - Your data lives on **your infrastructure**
 
-- Your permissions are enforced at the **filesystem level**, not the app layer
+- Your permissions are enforced by **ACL procedures** that check user privileges against node access controls in the database
 
 - Your conversations are **native to the files** they discuss
 

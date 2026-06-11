@@ -33,7 +33,7 @@ Everything in MFS is a **node**. A node can be:
 | hub | A special root folder that belongs to a Workspace (private, restricted, shared workspace) |
 
 
-Each node has a unique id (UUID), an owner_id, a parent_id pointing to its container, and metadata fields including filename, mimetype, category, filesize, and extension.
+Each node has a unique id (UUID), an owner_id, a parent_id pointing to its container, and metadata fields including `user_filename`, `mimetype`, `category`, `filesize`, and `extension`. Note that the name and its extension are stored in **separate columns** — there is no single stored `filename` column (see the note below the table).
 
 ## Physical Storage
 
@@ -56,16 +56,25 @@ Key columns:
 | id | UUID — primary key and physical storage address |
 | parent_id | UUID of the parent folder node |
 | owner_id | UUID of the owning user |
-| filename | Internal filename |
-| user_filename | Display name shown to users |
+| user_filename | The name the user sets through the UI — **without** the extension |
 | mimetype | MIME type of the file |
 | category | Logical type: folder, file, hub, etc. |
 | filesize | Size in bytes |
 | extension | File extension without the dot |
 | metadata | JSON blob for arbitrary additional data |
-| show | Visibility flag |
-| ctime | Creation Unix timestamp |
-| mtime | Last modification Unix timestamp |
+| status | Lifecycle status (varchar, default `active`) |
+| approval | Approval state enum (submitted, verified, validated, draft, online, offline) |
+| upload_time | Creation Unix timestamp (aliased as `ctime` in procedure output) |
+| publish_time | Last modification Unix timestamp (aliased as `mtime` in procedure output) |
+
+:::note `filename` vs `user_filename`
+A node's name is stored across two columns: `user_filename` (the display name set in the UI, **without** the extension) and `extension` (kept separately). There is **no stored `filename` column** — `filename` is a *derived/alias field*:
+
+- On **write**, the server splits an incoming filename into name + extension (`server-core` `Mfs.get_format()`), persisting them as `user_filename` and `extension`.
+- On **read**, stored procedures expose `... AS filename` and return `extension` alongside it, so a client can reconstruct the complete, extension-bearing name.
+
+In short: `user_filename` is the bare name the user sees; `filename` is the alias that represents the full name **with** its extension.
+:::
 
 ## Permission Model
 
@@ -75,9 +84,9 @@ Every MFS node carries a permission level using Drumee's numeric bitwise system:
 | :---- | :---- | :---- |
 | anonymous | 1 | Public, no authentication |
 | read | 2 | Any authenticated user with read access |
-| write | 4 | Users with write access |
-| admin | 8 | Hub administrators |
-| owner | 16 | The node owner |
+| write | 8 | Users with write access |
+| admin | 16 | Hub administrators |
+| owner | 32 | The node owner |
 
 
 The permission_grant stored procedure assigns a privilege level to a specific entity (user, group, or wildcard *) on a node for a defined duration. The permission_revoke procedure removes it.
@@ -90,7 +99,7 @@ MFS operations are performed **exclusively through stored procedures**. Services
 | :---- | :---- |
 | mfs_create_node | Create a new file or folder node |
 | mfs_move | Move a node to a different parent |
-| mfs_copy | Copy a node and its children |
+| mfs_copy_all | Copy a node and its children |
 | mfs_trash_media | Soft-delete: move node to trash |
 | mfs_restore | Restore a node from trash |
 | mfs_purge | Hard-delete a node record |

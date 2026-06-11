@@ -130,10 +130,11 @@ await this.yp.await_proc(`${dbName}.my_proc`, arg1, arg2);
 
 | Database type | Naming convention | Access via |
 |---------------|-------------------|------------|
-| Hub database | No prefix (e.g. `ab12cd34ef56`) | `this.db` or explicit `get_db_name` |
-| User personal database | `9_` prefix (e.g. `9_ab12cd34ef56`) | Explicit resolution |
-| Shared database | `c_` prefix (e.g. `c_ab12cd34ef56`) | Explicit resolution |
+| Hub database | `<x>_<id>` — single bucket char + 16-hex id (e.g. `9_a1b2c3d4e5f60718`) | `this.db` or explicit `get_db_name` |
+| User (drumate) database | Same `<x>_<id>` scheme as hubs — the leading prefix is **not** a type marker | Explicit resolution |
 | Yellow Pages | Fixed name: `yp` | `this.yp` |
+
+The leading `<x>_` is a meaningless bucketing prefix (one of 16 hex characters), **not** an indicator of database type — `9_` does not mean "user". See [Database Naming Conventions](../api-reference/stored-procedures.md#database-naming-conventions) for details.
 
 
 ---
