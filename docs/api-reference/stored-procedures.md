@@ -62,9 +62,13 @@ Understanding which database a procedure runs against is critical to calling it 
 
 | Database type | Naming pattern | Example | Used for |
 |---|---|---|---|
-| Hub database | No prefix, UUID-derived | `ab12cd34ef56` | Shared workspace data: media, members, permissions |
-| User database | `9_` prefix + UUID | `9_ab12cd34ef56` | Personal data: contacts, tags, activity |
+| Hub database | `<x>_<id>` — bucket char + 16-hex id | `9_a1b2c3d4e5f60718` | Shared workspace data: media, members, permissions |
+| User database | `<x>_<id>` — same scheme as hubs | `c_7f3a1b2c9d8e4a05` | Personal data: contacts, tags, activity |
 | Yellow Pages | `yp` (fixed) | `yp` | Platform-wide registry: entities, sessions, system config |
+
+:::caution The leading prefix has no meaning
+Both hub and user (drumate) databases are named by the `make_db_name()` function as `<x>_<id>` — a 16-character hex `id` preceded by a single hex character `x` and an underscore. **The leading `<x>_` is not a type marker** — it does not encode whether the database is a hub or a user; `9_` does not mean "user". It is a *bucketing* prefix that spreads databases across the namespace so the database engine can optimise (e.g. distributing the on-disk schema directories instead of clustering thousands of similarly-named databases). An entity's type lives in the `entity` table — never infer it from the database name; always resolve via `get_db_name` / the `entity` table.
+:::
 
 Always resolve a hub's `db_name` explicitly before calling hub-scoped procedures:
 
@@ -128,7 +132,7 @@ All procedures that accept a `_page INT` parameter call this utility to normalis
 
 ## Tag Procedures
 
-These procedures run in the **user database** (`9_xxx` prefix). They manage the tag taxonomy and tag-to-entity assignments belonging to a single user.
+These procedures run in the **user (drumate) database**. They manage the tag taxonomy and tag-to-entity assignments belonging to a single user.
 
 ### `tag_add(name, description)`
 
@@ -203,7 +207,7 @@ Reorders tags according to a JSON-encoded position map. The `content` argument i
 
 ## Hub Member Procedures
 
-These procedures run in the **hub database** (no prefix).
+These procedures run in the **hub database**.
 
 ### `hub_get_members_by_type(uid, member_type, page)`
 
@@ -219,7 +223,7 @@ Returns a paginated list of hub members filtered by membership type.
 
 ## Statistics Procedures
 
-These procedures run in the **user database** (`9_xxx` prefix). They are used by the reward-hub verification system to count a user's content.
+These procedures run in the **user (drumate) database**. They are used by the reward-hub verification system to count a user's content.
 
 ### `count_media(in JSON)`
 
@@ -247,7 +251,7 @@ Returns: `{ cnt: N }`.
 
 ## Contact Procedures
 
-These procedures run in the **user database** (`9_xxx` prefix).
+These procedures run in the **user (drumate) database**.
 
 ### `my_contact_show_next(...)`
 

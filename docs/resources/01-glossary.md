@@ -132,10 +132,10 @@ A stored function in `yp` that returns the active plan details for a user. Imple
 ## H
 
 ### Hub
-A shared workspace in Drumee. Has its own database (no prefix, UUID-derived name). Members, files, permissions, and settings are all scoped to the hub database.
+A shared workspace in Drumee. Has its own database, named `<x>_<id>` (a hex id preceded by a single, meaningless bucket character). Members, files, permissions, and settings are all scoped to the hub database.
 
 ### Hub database
-The MariaDB database for a specific hub. Named with a UUID-derived string and no prefix (e.g. `ab12cd34ef56`). Accessed via `this.db` in service code, or resolved explicitly with `get_db_name`.
+The MariaDB database for a specific hub. Named `<x>_<id>` by `make_db_name()` — a 16-hex `id` preceded by one bucket character and an underscore (e.g. `9_a1b2c3d4e5f60718`). The leading prefix carries no meaning. Accessed via `this.db` in service code, or resolved explicitly with `get_db_name`.
 
 ### `leave_hub`
 A stored procedure in `drumate/procedures/hubs/` that removes a user from a hub they do not own. Deletes the user's `media` and `permission` records for that hub. Called when a member is removed or when a user is downgraded to the Free plan and must leave all organisation hubs they do not own.
@@ -290,7 +290,7 @@ A frontend concept used to patch a specific UI fragment instead of re-rendering 
 ## U
 
 ### User database
-The personal MariaDB database for a single Drumee user. Named with the `9_` prefix (e.g. `9_ab12cd34ef56`). Contains personal data: contacts, tags, activity. Accessed via `forward_proc` (deprecated) or by resolving `db_name` explicitly.
+The personal MariaDB database for a single Drumee user (drumate). Named `<x>_<id>` by `make_db_name()` — the same scheme as hub databases. The leading prefix is a meaningless bucket character, **not** a `9_` "user" marker; an entity's type lives in the `entity` table, not its database name. Contains personal data: contacts, tags, activity. Accessed via `forward_proc` (deprecated) or by resolving `db_name` explicitly.
 
 ---
 
