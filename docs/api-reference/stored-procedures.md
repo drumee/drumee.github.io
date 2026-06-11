@@ -8,7 +8,7 @@ description: Calling conventions, database naming, and reference for Drumee stor
 
 Drumee enforces a strict policy: **all database operations must go through stored procedures**. Direct SQL queries from application code are not permitted. This ensures every query is auditable, consistently parameterised, and deployable as a versioned unit.
 
-Stored procedures live in the `schemas` project repository, organised by category under `hub/procedures/`, `drumate/procedures/`, and `yp/procedures/`.
+Stored procedures live in the `schemas` project repository, organised by **database class** — `yellow_page/`, `hub/`, `drumate/`, and the shared `common/` class (plus `mailserver/`, `utils/`, `licence/`, and `costums/`). See [The shared `common` class](#the-shared-common-class) for how `hub` and `drumate` inherit a single set of definitions.
 
 ---
 
@@ -73,6 +73,23 @@ const dbName = await this.yp.await_func('get_db_name', hub_id);
 if (!dbName) throw new Error(`Unknown hub: ${hub_id}`);
 await this.yp.await_proc(`${dbName}.some_procedure`, arg1, arg2);
 ```
+
+### The shared `common` class
+
+The `schemas` repository groups SQL definitions into **database classes**. Most classes map directly to a database (`yellow_page` → the `yp` database; `hub` → hub databases; `drumate` → user databases). The `common` class is different: **it is not a database of its own.** It holds the definitions that every hub *and* every drumate database must share — most importantly the Meta File System procedures (`mfs_*`) and trash routines (`common/procedures/mfs/`, `common/procedures/mfs-trash/`), plus shared tables such as `channel` and `share_track`.
+
+**`hub` and `drumate` inherit the `common` class.** When a `common`-class routine or table is deployed, the patch engine resolves *every* hub and drumate database and applies the identical definition to each:
+
+```sql
+-- bin/patch.js resolves the targets for a common-class file:
+SELECT db_name FROM entity WHERE type IN ('drumate', 'hub');
+```
+
+The same source file is therefore installed into many databases at once. This is why MFS operations behave identically whether they run against a hub (shared workspace) or a drumate (personal) database — both inherit the same `common` procedures and tables. A `common`-tagged file may only target the `common`, `hub`, or `drumate` scopes; the patcher rejects any attempt to apply it elsewhere.
+
+:::tip One routine per file
+Each `.sql` file in the `schemas` repo contains exactly one procedure, function, table, or trigger. A change to a single `common/` routine, once patched, propagates to every hub and drumate database that inherits it.
+:::
 
 ---
 

@@ -39,15 +39,15 @@ Drumee uses a **numeric (bitwise)privilege model**. One bit represents a particu
 | :---- | :---- | :---- |
 | anonymous | 1 | No authentication required. Open to any request. |
 | read | 2 | Authenticated user with  read access. |
-| write | 4 | Authenticated user with write access. |
-| admin | 8 | Workspace or Organization administrator. |
-| owner | 16 | The resource owner. Highest privilege level. |
+| write | 8 | Authenticated user with write access. |
+| admin | 16 | Workspace or Organization administrator. |
+| owner | 32 | The resource owner. Highest privilege level. |
 
 
-Example: to write into a file, the user must request the permission 4 (0b00100).  
+Example: to write into a file, the user must request the permission 8 (0b01000).  
 If the granted privilege is read only 3 (anonymous + read, i.e 0b00011) the request is rejected.
 
-A caller with the owner privilege (0b11111, i.e 31)) satisfies any permission requirement. A caller with write privilege (0b00111, i.e 7) cannot call services requiring admin permission (8) or owner (16).
+A caller with the owner privilege (0b0111111, i.e 63) satisfies any permission requirement. A caller with write privilege (0b0001111, i.e 15) cannot call services requiring admin permission (16) or owner (32).
 
 ## Scope Types
 
@@ -57,10 +57,10 @@ The scope field in an ACL entry defines the session context required.
 | :---- | :---- |
 | hub | Requires an active Workspace context. The request must be routed to a Hub endpoint. |
 | domain | Requires Organization-level authentication. Used for organisation-wide operations. |
-| public | Authorize the request with minimal check |
+| plateform | Used for platform-level operations. |
 
 
-The vast majority of services use hub. Some use public only for endpoints explicitly designed for unauthenticated access — there is no audit trail for anonymous calls.
+The vast majority of services use hub. There is no dedicated public scope — public/unauthenticated access is handled via fast_check mechanisms instead, and there is no audit trail for anonymous calls.
 
 ## ACL JSON Structure
 
@@ -87,7 +87,7 @@ Each module has a corresponding JSON file in the acl/ directory. The file declar
 
 | Field | Required | Description |
 | :---- | :---- | :---- |
-| scope | Yes | Access context: hub, domain, or public |
+| scope | Yes | Access context: hub, domain, or plateform |
 | permission.src | Yes | Minimum privilege level required |
 | permission.fast_check | No | Additional runtime check before execution (e.g. user_permission, public-api) |
 | method | No | Maps the service name to a differently named JavaScript method |
@@ -137,8 +137,9 @@ The client calls tagcontact.show_tag_by. The server dispatches to the tag_get_ne
 All backend services are accessed through a single entry point. There are no hard-coded routes.
 
 ```bash
-# Authenticated (hub-scoped) services https://hostname/-/svc/module.method
-# Public services (scope: "public") https://hostname/-/api/module.method
+# All services https://hostname/-/svc/module.method
+# Public/unauthenticated services use the same /-/svc/ endpoint;
+# access control is determined by ACL scope and fast_check (e.g. public-api), not by a separate endpoint.
 ```
 
 

@@ -181,7 +181,7 @@ All methods accept an optional `reason` field for context that is logged server-
 
 ```js
 // Typical YP call pattern
-this.yp.asyncCall("procedure_name", [arg1, arg2], (err, rows) => { … });
+const rows = await this.yp.await_proc("procedure_name", arg1, arg2);
 ```
 
 YP is the primary mechanism for:
@@ -216,4 +216,4 @@ The permission and pipeline infrastructure is inherited automatically. The plugi
 {mfs_root}/{node_path}/info.json           ← metadata cache
 ```
 
-**Async strategy:** Database and I/O calls use YP callbacks. Media generation uses `async/await`. Long-running calls fork child processes in fire-and-forget mode (`detached: true`) or queue them; results are pushed back through WebSocket.
+**Async strategy:** Database and I/O calls use `async/await` (e.g. `await this.yp.await_proc(...)`). Media generation also uses `async/await`. Long-running calls fork child processes in fire-and-forget mode (`detached: true`) or queue them; results are pushed back through WebSocket.

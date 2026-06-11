@@ -267,6 +267,37 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: "category",
+      label: "Package Building",
+      link: {
+        type: "generated-index",
+        title: "Building Drumee Packages",
+        description:
+          "How to build, version, and deploy the Drumee Debian packages from the drumee/debian repository.",
+        slug: "/package-building",
+      },
+      items: [
+        "package-building/01-overview",
+        "package-building/02-build-pipeline",
+        {
+          type: "category",
+          label: "Packages",
+          items: [
+            "package-building/03-package-infra",
+            "package-building/04-package-schemas",
+            "package-building/05-package-server",
+            "package-building/06-package-ui",
+            "package-building/07-package-static",
+            "package-building/08-package-schemas-patch",
+            "package-building/09-package-builder",
+          ],
+        },
+        "package-building/10-utilities",
+        "package-building/11-version-management",
+        "package-building/12-deployment",
+      ],
+    },
+    {
+      type: "category",
       label: "Resources",
       items: [
         "resources/01-glossary",
