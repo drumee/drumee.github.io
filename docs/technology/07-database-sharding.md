@@ -62,6 +62,25 @@ fully built `hub` or `drumate` database marked `area='pool'`. When a real worksp
 is needed, the application simply **claims** a clean pool entity and flips it into active use
 — there is no schema build on the hot path.
 
+```mermaid
+graph TD
+    subgraph factory["Offline factory (background daemon)"]
+        chk{"pool_free(type)<br/>below watermark (210)?"}
+        build["Build one entity:<br/>entity_create → load_sql → create_vfs_root<br/>(area='pool', pool_state='clean')"]
+        chk -->|"yes — poll every 15s"| build
+        chk -->|"no — idle, back off up to 60s"| chk
+        build --> chk
+    end
+
+    build --> pool[("Warm pool<br/>empty hub &amp; drumate DBs")]
+    pool -->|"pickupEntity(type)"| active[("Active shard:<br/>one hub / drumate DB")]
+    active -. "drops pool_free,<br/>triggers a refill" .-> chk
+
+    yp[("yp — Yellow Pages<br/>registry")] -. "resolves db_name,<br/>routes each request" .-> active
+```
+
+
+
 ## The factory daemon
 
 The factory (`offline/factory/`) is a long-running background daemon that tops the pool up.
