@@ -9,7 +9,7 @@ description: drumee-static package — static assets, fonts, localization files 
 
 **Directory:** `static/`
 **Debian package:** `drumee-static`
-**Current version:** 1.0.3
+**Current version:** 1.0.4
 
 ## Purpose
 
@@ -24,10 +24,10 @@ Installs static assets served directly by nginx: fonts, locale/translation files
 ## Build
 
 ```bash
-static/build.sh [--version=X.Y.Z] [--force=yes] [--email=user@example.com]
+static/build.sh
 ```
 
-`update-changelog.sh` is called automatically at the start of the build.
+`static/build.sh` parses `--version/--force/--compile/--enable-api/--email` but overrides version and email from `static/debian/changelog`, so those flags have no effect. `update-changelog.sh` is called automatically at the start of the build.
 
 ## Installed Paths
 

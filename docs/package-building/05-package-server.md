@@ -9,7 +9,8 @@ description: drumee-server-pod package — Node.js backend services, REST API, W
 
 **Directory:** `server/`
 **Debian package:** `drumee-server-pod`
-**Current version:** 2.9.44
+**Current version:** 2.9.45
+**Debian metadata:** `server/debian/`
 
 ## Purpose
 
@@ -27,15 +28,15 @@ Two Node.js processes run per endpoint: `index.js` (page serving + WebSocket) an
 
 | Repo | Branch | Destination |
 |---|---|---|
-| `server-team` | preview | `/srv/drumee/runtime/server/main/` |
+| `server-team` | preview | `$DRUMEE_SERVER_HOME/main/` (`/srv/drumee/runtime/server/main/`) |
 
 ## Build
 
 ```bash
-server/build.sh [--version=X.Y.Z] [--force=yes] [--email=user@example.com]
+server/build.sh
 ```
 
-`update-changelog.sh` is called automatically at the start of the build.
+`server/build.sh` takes no flags — version and email come from `server/debian/changelog`. `update-changelog.sh` is called automatically at the start of the build. If `DEB_BUILD_TARGET` is set, the built `.deb` is also copied there.
 
 ### What Gets Packaged
 
@@ -53,8 +54,8 @@ server/build.sh [--version=X.Y.Z] [--force=yes] [--email=user@example.com]
 /srv/drumee/runtime/server/main/   # server-team source + node_modules
 /etc/drumee/
 ├── drumee.sh                       # runtime environment (sourced at startup)
-└── credentials/                    # JSON credential files
-/usr/local/bin/drumee               # drumee CLI
+└── credential/                     # JSON credential files
+/usr/sbin/drumee                    # drumee CLI
 /var/lib/drumee/postinstall/
 └── patch.sh                        # pending patches applied at startup
 ```

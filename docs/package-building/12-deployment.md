@@ -7,6 +7,12 @@ description: Manual deployment workflow, drumee CLI reference, and credential se
 
 # Deployment
 
+This repository builds `.deb` packages; it does not currently ship canned deployment scripts. Deploy by transferring the built `.deb` files to the target server and installing them with `dpkg -i` in dependency order.
+
+> Earlier revisions referenced `update.sh` / `update-2.sh` download-and-install scripts. Those are no longer part of the repository — use the manual workflow below, or write a small wrapper that `scp`s a known version set and installs it.
+
+---
+
 ## Manual Deployment Workflow
 
 ### Full fresh install
@@ -15,10 +21,10 @@ description: Manual deployment workflow, drumee CLI reference, and credential se
 # 1. Build all packages (on build machine)
 ./build-all.sh
 
-# 2. Transfer .deb files to target server
-scp infra/drumee-infra_*.deb schemas/drumee-schemas_*.deb \
-    server/drumee-server-pod_*.deb ui/drumee-ui-pod_*.deb \
-    static/drumee-static_*.deb user@server:/tmp/
+# 2. Transfer .deb files to target server (each lands in <package>/build/)
+scp infra/build/drumee-infra_*.deb schemas/build/drumee-schemas_*.deb \
+    server/build/drumee-server-pod_*.deb ui/build/drumee-ui-pod_*.deb \
+    static/build/drumee-static_*.deb user@server:/tmp/
 
 # 3. Install in dependency order (on target server)
 dpkg -i /tmp/drumee-infra_*.deb
@@ -34,7 +40,7 @@ When only schema patches are needed:
 
 ```bash
 schemas-patch/build.sh --manifest=auto
-scp schemas-patch/drumee-patch_*.deb user@server:/tmp/
+scp schemas-patch/build/drumee-patch_*.deb user@server:/tmp/
 # On server:
 dpkg -i /tmp/drumee-patch_*.deb
 drumee restart
@@ -44,19 +50,19 @@ Patches are staged on install and applied automatically at the next server start
 
 ### Using DEB_BUILD_TARGET
 
-Set `DEB_BUILD_TARGET` to automatically copy built `.deb` files to a staging directory after each build:
+Set `DEB_BUILD_TARGET` to automatically collect built `.deb` files in a staging directory. Note this applies only to `infra`, `schemas`, and `server` builds — `ui`, `static`, `schemas-patch`, and `builder` do not copy:
 
 ```bash
 export DEB_BUILD_TARGET=/srv/packages/staging
-server/build.sh --force=yes
-# drumee-server-pod_*.deb is now in /srv/packages/staging/
+server/build.sh
+# drumee-server-pod_*.deb is now also in /srv/packages/staging/
 ```
 
 ---
 
 ## drumee CLI
 
-The `drumee` command is installed by `drumee-server-pod` and wraps PM2 for process management:
+The `drumee` command is installed by `drumee-server-pod` (to `/usr/sbin/drumee`) and wraps PM2 for process management:
 
 ```bash
 drumee start <service>         # start a service
@@ -71,15 +77,12 @@ drumee log <user>/service      # tail plugin service logs
 
 ## Credentials and Configuration
 
-Sensitive credentials live in `/etc/drumee/credentials/` as JSON files and are **never** committed to source control. Runtime configuration is read by the server via `yp.sys_conf` — not from environment files.
-
-After installing `drumee-server-pod`, populate credentials before starting the server:
+Sensitive credentials live in `/etc/drumee/credential/` as JSON files and are **never** committed to source control. They are generated during the `drumee-infra` and `drumee-schemas` post-install steps (DB, redis, email, etc.); runtime configuration is read by the server via `yp.sys_conf`, not from environment files.
 
 ```
-/etc/drumee/credentials/
+/etc/drumee/credential/
 ├── db.json       # MariaDB connection details
+├── email.json    # outbound email auth
 ├── redis.json    # Redis connection details
 └── ...
 ```
-
-See [Own Cloud](../getting-started/02-own-cloud) for the full deployment walkthrough.

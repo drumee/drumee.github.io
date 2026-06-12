@@ -9,8 +9,8 @@ description: drumee-schemas package — MariaDB bootstrap, mariabackup seeds, po
 
 **Directory:** `schemas/`
 **Debian package:** `drumee-schemas`
-**Current version:** 2.6.7
-**Helper source:** [`drumee/setup-schemas`](https://github.com/drumee/setup-schemas) → `/var/lib/drumee/setup-schemas/`
+**Current version:** 2.6.99
+**Helper source:** `git@github.com:drumee/setup-schemas` → `/var/lib/drumee/setup-schemas/`
 
 ## Purpose
 
@@ -47,8 +47,10 @@ Provides a containerised build environment for producing seeds without a local M
 ## Build
 
 ```bash
-schemas/build.sh [--version=X.Y.Z] [--force=yes] [--email=user@example.com]
+schemas/build.sh
 ```
+
+`schemas/build.sh` takes no flags — version and email come from `schemas/debian/changelog`. Set `SEEDS_DIR` to point at the mariabackup snapshot used to create the seeds archive (see Build Prerequisites). Invoking the script with `rebuild` in its path forces the existing `seeds.tgz` to be regenerated.
 
 ## Installed Paths
 
@@ -68,7 +70,7 @@ binutils, nodejs, mariadb-server, mariadb-client
 
 ## Post-Install: bin/install
 
-Runs as root. Three-phase execution:
+Runs as root. Two-phase execution:
 
 ### Phase 1 — Database restore (bash)
 
@@ -91,12 +93,15 @@ Runs as root. Three-phase execution:
 ### Phase 2 — Schema and account initialisation (node populate.js)
 
 1. **DB connectivity check** — creates and drops a temporary test database.
-2. **App user** — reads `/etc/drumee/credential/db.json`; creates `drumee-app` MariaDB user (generates a random password and writes the file if absent).
+2. **App user** — reads `/etc/drumee/credential/db.json`; creates `drumee-app` MariaDB user with that password (generates a random password and writes the file if absent).
 3. **Mail user** — creates `mailserver` MariaDB user from `/etc/drumee/credential/postfix.json` if present.
 4. **org.populate()** — writes core rows to the `yp` database:
    - `sys_conf` — system-wide settings (guest_id, nobody_id, public_id, domain, mfs_root, etc.)
-   - `domain`, `vhost` (ns1, ns2, jit, www, smtp, `_acme-challenge`, `_domainkey`)
-   - `organisation`, `settings`, `mailserver.domains`, `mailserver.aliases`
+   - `domain` — domain record
+   - `vhost` — virtual hosts (ns1, ns2, jit, www, smtp, `_acme-challenge`, `_domainkey`)
+   - `organisation` — organisation record
+   - `settings` — defaults (wallpaper, cache_control, default_privilege)
+   - `mailserver.domains` and `mailserver.aliases`
 5. **System accounts created:**
 
    | Account | UID source | Privilege | Notes |
@@ -117,11 +122,11 @@ Runs as root. Three-phase execution:
 
 7. **Media import** — downloads wallpapers from `content.drumee.com/Wallpapers` and tutorial content.
 8. **RSA key pair** — generates and writes to `/etc/drumee/credential/crypto/public.pem` and `private.pem`.
-9. **Welcome page** — renders welcome HTML with the password-reset link to `<data_dir>/tmp/welcome.html`.
+9. **Welcome page** — renders `asset/welcome.html` with the password-reset link to `<data_dir>/tmp/welcome.html`.
 
 ### Phase 3 — Post-populate
 
-- Sends a welcome email to `$ADMIN_EMAIL` with the password-reset link.
+- Sends a welcome email to `$ADMIN_EMAIL` via `bin/acknowledge.js` (contains the password-reset link).
 - Applies any pending schema patches from `/var/lib/drumee/patches/patch-from-manifest` if the file exists.
 
 ## Configuration Sources
@@ -141,8 +146,6 @@ Runs as root. Three-phase execution:
 **`yp`** — Central system database shared across all entities. Contains `sys_conf`, `domain`, `vhost`, `entity`, `drumate`, `hub`, `organisation`, `settings`, `privilege`, `disk_usage`, `tutorial`, and mailserver tables.
 
 **Per-entity databases** — One database per user and hub, created by the `entity_create` stored procedure. Contains `mfs_*` tables, `permission`, `media`, and activity tables.
-
-**The shared `common` class** — `hub` and `drumate` databases do not each define their own copies of the core routines. Definitions in the `common` class (the Meta File System `mfs_*` procedures, trash routines, and shared tables such as `channel`) are deployed identically into *every* hub and drumate database — the patch engine targets `type IN ('drumate', 'hub')`. Both entity types therefore inherit one shared source of truth. See the [Stored Procedures Reference](../api-reference/stored-procedures.md#the-shared-common-class) for details.
 
 ## Install Log
 

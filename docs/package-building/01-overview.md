@@ -7,7 +7,9 @@ description: Package map, runtime directory layout, and install order for the Dr
 
 # Overview
 
-The [`drumee/debian`](https://github.com/drumee/debian) repository contains the Debian packaging infrastructure for the Drumee platform. Each subdirectory is a self-contained package builder that clones source from `git@github.com:drumee/`, compiles it, and produces a `.deb` file via `dh_make` + `dpkg-buildpackage`.
+This repository contains the Debian packaging infrastructure for the **Drumee** platform — a sovereign data infrastructure that functions as a Meta Operating System for self-hosted collaborative workspaces.
+
+Each subdirectory is a self-contained package builder that clones source from `git@github.com:drumee/`, compiles it, and produces a `.deb` file via `dh_make` + `dpkg-buildpackage`.
 
 ## Package Map
 
@@ -20,7 +22,7 @@ The [`drumee/debian`](https://github.com/drumee/debian) repository contains the 
 | `static/` | `drumee-static` | Static assets, fonts, localization files | `static` (main) |
 | `schemas-patch/` | `drumee-patch` | Incremental DB schema patches | `schemas` (preview) |
 | `builder/` | `drumee-infra` | Interactive first-time installer with debconf setup wizard | `setup` (somanos/wip) |
-| `admin/` | — | Admin patch runner scripts only — not a standalone package | — |
+| `admin/` | `drumee-schemas-patch` | Production schema-patch runner (interactive build via `check_*`) | local `opt/` scripts |
 
 ## Install Order
 
@@ -43,22 +45,25 @@ After installation, Drumee occupies these paths:
 │   │   └── main/        # server-team source
 │   ├── ui/              # drumee-ui-pod: LETC frontend engine
 │   │   └── main/        # ui-team source
+│   ├── tmp/             # temporary files (cleaned by cron)
 │   └── plugins/         # third-party plugin packages
 │       └── server/<endpoint>/<plugin>/
 ├── static/              # drumee-static: assets, locale files
-├── data/                # user file storage (MFS-managed)
-├── tmp/                 # temporary files (cleaned by cron)
 └── cache/
+
+/data/                   # user file storage (DRUMEE_DATA_DIR, MFS-managed)
+└── mfs/
 
 /etc/drumee/
 ├── drumee.sh            # runtime environment (sourced by server)
-└── credentials/         # JSON credential files (never committed)
+└── credential/          # JSON credential files (never committed)
 
 /var/lib/drumee/
 ├── setup-infra/         # infra install scripts
 ├── setup-schemas/       # schema install scripts
 └── postinstall/
     └── patch.sh         # pending patches applied at server startup
+
 ```
 
 ## Further Reading
@@ -66,5 +71,5 @@ After installation, Drumee occupies these paths:
 - [Build Pipeline](./02-build-pipeline.md) — how to build packages, common flags, GPG signing
 - [Shared Utilities](./10-utilities.md) — `functions.sh` and `env.sh` API reference
 - [Version Management](./11-version-management.md) — changelog lifecycle, `update-changelog.sh`
-- [Deployment](./12-deployment.md) — production update workflow
-- Per-package: [infra](./03-package-infra.md) · [schemas](./04-package-schemas.md) · [server](./05-package-server.md) · [ui](./06-package-ui.md) · [static](./07-package-static.md) · [schemas-patch](./08-package-schemas-patch.md) · [builder](./09-package-builder.md)
+- [Deployment](./12-deployment.md) — manual deployment workflow, `drumee` CLI
+- Per-package deep-dives: [infra](./03-package-infra.md) · [schemas](./04-package-schemas.md) · [server](./05-package-server.md) · [ui](./06-package-ui.md) · [static](./07-package-static.md) · [schemas-patch](./08-package-schemas-patch.md) · [builder](./09-package-builder.md)

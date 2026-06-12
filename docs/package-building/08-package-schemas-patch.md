@@ -36,11 +36,11 @@ schemas-patch/build.sh --manifest=auto 3
 schemas-patch/build.sh --manifest=/path/to/manifest.txt
 ```
 
-Additional flags: `--version=X.Y.Z`, `--force=yes`, `--email=user@example.com`
+`schemas-patch/build.sh` only recognises `--manifest` and an optional positional commit depth — version and email come from `schemas-patch/debian/changelog`.
 
 ## Manifest System
 
-The manifest (`patches/manifest.txt`) lists the schema files to include in the patch package. It controls exactly which SQL/JS migrations get deployed.
+The manifest (`patches/manifest.txt`) is a list of schema files to include in the patch package. It controls exactly which SQL/JS migrations get deployed.
 
 ### `--manifest=auto`
 
@@ -57,17 +57,21 @@ Copies the given file directly to `patches/manifest.txt`. Use this when you have
 ## Installed Paths
 
 ```
-/opt/drumee/schemas/patches/
-├── manifest.txt         # list of patch files to apply
+/var/lib/drumee/patches/schemas/
+├── manifest.txt         # list of patch files to apply (under patches/)
+├── bin/                 # patch runner scripts
+├── package.json         # + installed node_modules
 └── <patch-files>        # SQL/JS schema migration files
 
 /var/lib/drumee/postinstall/
 └── patch.sh             # applied automatically at server startup
 ```
 
+> The `admin/` package (`drumee-schemas-patch`) is the production variant and installs its runner under `/opt/drumee/schemas/patches/` instead.
+
 ## Patch Runner Scripts
 
-### bin/patch-from-manifest.sh
+### schemas-patch/bin/patch-from-manifest.sh
 
 The deployed patch runner. Applied at server startup via `postinst`:
 
@@ -77,13 +81,13 @@ The deployed patch runner. Applied at server startup via `postinst`:
 4. Calls `patch.js` for each matching file with `--schemas`, `--source`, `--target`, `--orphan`, `--force`
 5. Restarts factory
 
-### bin/patch-from-file
+### schemas-patch/bin/patch-from-file
 
 Applies a single patch file directly. Used for targeted one-off patches.
 
 ### admin/opt/drumee/schemas/patch.sh
 
-The production version. Same logic as `patch-from-manifest.sh` but references:
+The version used in production deployments (installed by the `admin/` scripts). Same logic as `patch-from-manifest.sh` but references:
 - Manifest: `/opt/drumee/schemas/patches/manifest.txt`
 - Patcher: `$DRUMEE_SERVER_HOME/main/offline/db-patch.js`
 - Options include `--orphan=remove` and `--ignore-error`
@@ -96,7 +100,7 @@ binutils, nodejs, mariadb-server, mariadb-client
 
 ## Post-Install
 
-Patch files are staged but not applied immediately on install. They are applied the next time the Drumee server starts via `/var/lib/drumee/postinstall/patch.sh`.
+Patch files are staged but not applied immediately on install. They are applied the next time the Drumee server starts, via `/var/lib/drumee/postinstall/patch.sh`.
 
 To apply patches immediately without restarting the server:
 
