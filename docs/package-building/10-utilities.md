@@ -7,7 +7,7 @@ description: API reference for utils/functions.sh and utils/env.sh — the share
 
 # Shared Utilities
 
-All build scripts source `utils/functions.sh` and optionally `utils/env.sh`. The `builder/` package has its own copies under `builder/utils/` with different values.
+All build scripts source `utils/functions.sh` and `utils/env.sh`. The `builder/` package has its own copies under `builder/utils/` (see [package-builder.md](./09-package-builder.md)).
 
 ---
 
@@ -19,10 +19,10 @@ Exports Drumee runtime path constants used across build scripts and installed pa
 |---|---|
 | `DRUMEE_ROOT_DIR` | `/srv/drumee` |
 | `DRUMEE_STATIC_DIR` | `/srv/drumee/static` |
-| `DRUMEE_DATA_DIR` | `/srv/drumee/data` |
-| `DRUMEE_MFS_DIR` | `/srv/drumee/mfs` |
+| `DRUMEE_DATA_DIR` | `/data` |
+| `DRUMEE_MFS_DIR` | `/data/mfs` |
 | `DRUMEE_RUNTIME_DIR` | `/srv/drumee/runtime` |
-| `DRUMEE_TMP_DIR` | `/srv/drumee/tmp` |
+| `DRUMEE_TMP_DIR` | `/srv/drumee/runtime/tmp` |
 | `DRUMEE_CACHE_DIR` | `/srv/drumee/cache` |
 | `DRUMEE_SYSTEM_USER` | `www-data` |
 | `DRUMEE_SERVER_HOME` | `/srv/drumee/runtime/server` |
@@ -30,87 +30,60 @@ Exports Drumee runtime path constants used across build scripts and installed pa
 | `ACME_DIR` | `/etc/acme` |
 | `PUBLIC_UI_LOCALE` | `/srv/drumee/static/locale` |
 
+`env.sh` also re-checks `$UID` and aborts if sourced under root.
+
 ---
 
 ## utils/functions.sh
 
-### parse_args "$@"
-
-Parses standard CLI flags and exports them as shell variables. Called at the top of every build script that accepts flags.
-
-| Variable | Flag | Default |
-|---|---|---|
-| `ARG_VERSION` | `--version=X.Y.Z` | *(empty — falls back to changelog)* |
-| `ARG_FORCE` | `--force=yes\|rebuild` | *(empty)* |
-| `ARG_COMPILE` | `--compile=yes` | *(empty)* |
-| `ARG_ENABLE_API` | `--enable-api` | *(empty)* |
-| `ARG_EMAIL` | `--email=addr` | *(empty — falls back to changelog)* |
-
-### get_version \<base\>
+### get_version \<base\> [\<type\>]
 
 ```bash
-VERSION=$(get_version "$BASE")
+version=$(get_version "$base")
 ```
 
-Reads the version string from the first line of `<base>/debian/changelog`.
+Reads the version string (the value in parentheses) from the first line of `<base>/debian/changelog`, e.g. `2.9.45`. The build scripts use this as the authoritative version source.
 
-### get_email \<base\>
+### get_email \<base\> [\<type\>]
 
 ```bash
-EMAIL=$(get_email "$BASE")
+email=$(get_email "$base")
 ```
 
-Reads the maintainer email from `<base>/debian/changelog`.
+Reads the maintainer email from `<base>/debian/changelog`. Used for `dpkg-buildpackage -k<email>` signing.
 
-### check_version
-
-Interactively confirms or overrides the package version. If `ARG_VERSION` is set, uses it directly. Otherwise prompts. Updates `Standards-Version` in `debian/control` to match.
-
-### check_email
-
-Interactively confirms or overrides the maintainer email. If `ARG_EMAIL` is set, uses it directly. Otherwise prompts. Updates `Maintainer:` in `debian/control` to match.
-
-### get_build_dir \<base\>
+### get_build_dir \<dir\>
 
 ```bash
-BUILD_DIR=$(get_build_dir "$BASE")
+build_dir=$(get_build_dir "${base}/build/$version")
 ```
 
-Creates and returns the staging directory path for the package build.
-
-### check_build_dir \<base\>
-
-Checks if a prior build directory exists. If `ARG_FORCE=yes`, proceeds silently. If `ARG_FORCE=rebuild`, removes and recreates it. Otherwise prompts the user.
+**Unconditionally** removes and recreates the given directory, then echoes it. This is what the main build scripts use — there is no prompt, so a prior build is always discarded.
 
 ### bundle \<base\> \<repo-name\> \<branch\> [\<src-files\>] [\<dest-path\>] [\<npm-script\>]
 
-The core cloning function:
+The core cloning function. For each call:
 
-1. Resolves clone URL as `${REPO_BASE:-git@github.com:drumee}/<repo-name>.git`
-2. Clones into `<base>/src/<repo-name>/` if not present; otherwise `git pull`
-3. Checks out `<branch>`
-4. If `package.json` exists, runs `npm install` (or `<npm-script>` if provided)
-5. If `<src-files>` and `<dest-path>` are given, rsyncs those paths into the staging directory
+1. Resolves the clone URL as `${REPO_BASE:-git@github.com:drumee}/<repo-name>.git`
+2. Clones into `<base>/src/<repo-name>/` if absent; otherwise `git stash` + `git pull origin <branch>` + `git checkout <branch>`
+3. If `package.json` exists, runs `npm i`, `npm audit fix`, and `<npm-script>` (if provided)
+4. If `<src-files>` and `<dest-path>` are given, rsyncs those paths into `<build_dir>/files/<dest-path>/`
 
-Override the base URL with `REPO_BASE=git@gitlab.drumee.in:drumee` for a local mirror.
+Override the base URL with `REPO_BASE=...` for a local mirror.
 
 ### bundle_acme \<base\> \<dest\>
 
 Special-case clone of `https://github.com/acmesh-official/acme.sh` (not from the Drumee org). Used by `infra/build.sh`.
 
-### bundle_schmas_patches \<base\> \<manifest\> \<dest\>
-
-Reads `<manifest>` line by line and copies matching schema files into `<dest>`. Used by `schemas-patch/build.sh` to assemble the patch set.
-
 ### copyToTarget \<deb-path-prefix\>
 
 ```bash
-copyToTarget "$BASE/drumee-server-pod_${VERSION}"
+copyToTarget "$base/build/${package}"
 ```
 
-If `DEB_BUILD_TARGET` is set, copies `<deb-path-prefix>_all.deb` to that directory. No-op if unset.
+If `DEB_BUILD_TARGET` is set, copies `<deb-path-prefix>_all.deb` there; no-op otherwise. Called by `infra/` and `schemas/`; `server/` does the equivalent copy inline. `ui/`, `static/`, `schemas-patch/`, and `builder/` do not copy.
 
-### check_status
+### check_status \<code\> \<message\>
 
 ```bash
 check_status $? "npm install failed"
@@ -118,14 +91,18 @@ check_status $? "npm install failed"
 
 Exits with an error message if `$1 != 0`.
 
-### answer
+---
 
-```bash
-REPLY=$(answer "Rebuild? [y/N]")
-```
+### Helpers defined but not used by the current build scripts
 
-Reads a single line from stdin with a prompt.
+`functions.sh` also defines the following. They are **not** called by the main package build scripts (`infra`, `schemas`, `server`, `ui`, `static`); only `admin/build.sh` still uses the interactive `check_*` flow, and `static`/`schemas-patch` keep them commented out.
 
-### strip_base \<path\> \<base\>
-
-Strips the `<base>` prefix from `<path>` to produce a relative path. Used internally for rsync destination calculations.
+| Function | Purpose |
+|---|---|
+| `parse_args "$@"` | Parses `--version`, `--force`, `--type`, `--compile`, `--enable-api`, `--email` and exports them as `version`, `force`, `type`, `compile`, `enableApi`, `email` (no `ARG_` prefix). Currently unused — scripts that take flags parse them inline. |
+| `check_version <ver> <control>` | Interactively confirms/overrides the version and updates `Standards-Version:` in `debian/control`. Used only by `admin/build.sh`. |
+| `check_email <email> <control>` | Interactively confirms/overrides the maintainer and updates `Maintainer:` in `debian/control`. Used only by `admin/build.sh`. |
+| `check_build_dir <dir>` | Prompts whether to wipe or keep an existing build dir (honours `force=rebuild`). Used only by `admin/build.sh`; the main scripts use `get_build_dir` instead. |
+| `bundle_schmas_patches <base> <src> <manifest> <dest>` | Copies manifest-listed schema files into `<dest>`. Currently commented out in `schemas-patch/build.sh`, which inlines the equivalent rsync. |
+| `answer [<stdin>]` | Reads a single line from stdin; used by the interactive `check_*` helpers. |
+| `strip_base <base> <path>` | Strips the `<base>` prefix from `<path>` for log-friendly relative paths. |

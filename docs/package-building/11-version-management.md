@@ -9,10 +9,10 @@ description: Changelog lifecycle, update-changelog.sh version selection logic, a
 
 ## Authoritative Version Source
 
-Each package's version lives in the first line of its `debian/changelog` (e.g. `server/debian/changelog`, `ui/debian/changelog`):
+Each package's version lives in the first line of its `debian/changelog`:
 
 ```
-drumee-server-pod (2.9.44) unstable; urgency=medium
+drumee-server-pod (2.9.45) stable; urgency=medium
 ```
 
 Build scripts read this via `get_version`. To bump a version, edit that line following standard Debian changelog format before running the build.
@@ -27,7 +27,7 @@ Build scripts read this via `get_version`. To bump a version, edit that line fol
  -- Maintainer Name <email>  Day, DD Mon YYYY HH:MM:SS +TZOFF
 ```
 
-The two-space indent before bullet points and the single space before `--` are required by `dpkg-parsechangelog`.
+The two-space indent before bullet points and the single-space before `--` are required by `dpkg-parsechangelog`.
 
 ## update-changelog.sh
 
@@ -51,7 +51,7 @@ The script compares two sources:
 1. **Current changelog version** — first line of `debian/changelog`
 2. **Upstream package.json version** — from the cloned source repo
 
-It picks whichever is **higher** (semver comparison). The changelog version is never downgraded by a `package.json` that lags behind.
+It picks whichever is **higher** (semver comparison). This means the changelog version will never be downgraded by a `package.json` that lags behind.
 
 ### Commit Message
 
@@ -78,16 +78,18 @@ Alternatively, let `update-changelog.sh` do it — if the upstream `package.json
 
 ## Standards-Version in debian/control
 
-`check_version` updates the `Standards-Version:` field in `debian/control` to match the changelog version. This keeps `lintian` happy and ensures the control file stays in sync.
+`check_version` updates the `Standards-Version:` field in `debian/control` to match the changelog version, keeping `lintian` happy. Note that the main package build scripts no longer call `check_version` — only `admin/build.sh` does — so `Standards-Version` is not auto-synced during a normal `infra`/`schemas`/`server`/`ui`/`static` build.
 
 ## Current Package Versions
 
 | Package | Current version |
 |---|---|
 | `drumee-infra` | 1.2.11 |
-| `drumee-schemas` | 2.6.7 |
-| `drumee-server-pod` | 2.9.44 |
-| `drumee-ui-pod` | 3.2.49 |
-| `drumee-static` | 1.0.3 |
+| `drumee-schemas` | 2.6.99 |
+| `drumee-server-pod` | 2.9.45 |
+| `drumee-ui-pod` | 3.3.1 |
+| `drumee-static` | 1.0.4 |
 | `drumee-patch` | 1.1.6 |
 | `drumee-infra` (builder) | 1.2.5 |
+
+> Versions move with every release; treat this table as a snapshot. The authoritative value is always the first line of each `<package>/debian/changelog`.

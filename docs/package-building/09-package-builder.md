@@ -69,15 +69,15 @@ During install, `dpkg` presents two prompts:
 
 ## Environment Differences
 
-`builder/utils/env.sh` uses slightly different paths from the main `utils/env.sh`:
+`builder/utils/env.sh` exports the same path values as the main `utils/env.sh`, with one difference: it hardcodes the paths literally instead of deriving them from `DRUMEE_ROOT_DIR`, which it does **not** export.
 
 | Variable | main `env.sh` | `builder/env.sh` |
 |---|---|---|
-| `DRUMEE_DATA_DIR` | `/srv/drumee/data` | `/data` |
-| `DRUMEE_MFS_DIR` | `/srv/drumee/mfs` | `/data/mfs` |
-| `DRUMEE_TMP_DIR` | `/srv/drumee/tmp` | `/srv/drumee/runtime/tmp` |
 | `DRUMEE_ROOT_DIR` | `/srv/drumee` | *(not exported)* |
+| `DRUMEE_DATA_DIR` | `/data` | `/data` |
+| `DRUMEE_MFS_DIR` | `/data/mfs` | `/data/mfs` |
+| `DRUMEE_TMP_DIR` | `/srv/drumee/runtime/tmp` | `/srv/drumee/runtime/tmp` |
 
 ## REPO_BASE Fallback
 
-`builder/utils/functions.sh` differs from the root `utils/functions.sh`: when `REPO_BASE` is empty, it falls back to `git@gitlab.drumee.in:drumee/` instead of GitHub. `builder/build.sh` explicitly sets `REPO_BASE=git@github.com:drumee` so it uses GitHub by default, but unsetting `REPO_BASE` will switch to GitLab.
+`builder/utils/functions.sh` differs from the root `utils/functions.sh` in one key way: when `REPO_BASE` is empty, it falls back to `git@gitlab.drumee.in:drumee/` instead of GitHub. `builder/build.sh` explicitly sets `REPO_BASE=git@github.com:drumee` so it uses GitHub by default, but unsetting `REPO_BASE` will switch to GitLab.
