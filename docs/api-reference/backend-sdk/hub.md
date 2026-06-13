@@ -12,8 +12,8 @@ sidebar_label: hub
 - Private: `service/private/hub.js`
 - Public: `service/hub.js`
 
-**Available Services:** 40
-**Documented Services:** 12
+**Available Services:** 44
+**Documented Services:** 16
 
 ---
 
@@ -129,6 +129,97 @@ https://hostname/-/svc/hub.show_contributors
 
 ---
 
+## hub.invite_received_get
+
+Return workspace invitations addressed to the current user. Reads yp.contact_activity rows logged by add_contributors.
+
+| Property | Value |
+|----------|-------|
+| **Scope** | Hub (requires hub context) |
+| **Permission** | Owner (32) |
+
+**Endpoint:**
+```
+https://hostname/-/svc/hub.invite_received_get
+```
+
+### Parameters
+
+*No parameters*
+
+### Returns
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `type` | `any` | - |
+| `doc` | `any` | - |
+| `items` | `any` | - |
+
+### Possible Errors
+
+*Error codes not documented*
+
+---
+
+## hub.accept_invite
+
+Redeem a hub invite token and join the workspace. Called by the FE after sign-in when the welcome URL carries ?invite=SECRET.
+
+| Property | Value |
+|----------|-------|
+| **Scope** | Hub (requires hub context) |
+| **Permission** | Anonymous (1) |
+
+**Endpoint:**
+```
+https://hostname/-/api/hub.accept_invite
+```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `token` | `string` | **Yes** | - | The invite token secret from the email link |
+
+### Returns
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `hub_id` | `string` | Workspace ID on success |
+| `status` | `string` | Error code when not ok: invalid | expired | already_used | hub_not_found | not_authenticated |
+
+---
+
+## hub.invite
+
+Invite one or more emails into this workspace, branching on area (share-link vs restricted) and drumate status.
+
+| Property | Value |
+|----------|-------|
+| **Scope** | Hub (requires hub context) |
+| **Permission** | Admin (16) |
+
+**Endpoint:**
+```
+https://hostname/-/svc/hub.invite
+```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `invitees` | `array<string>` | **Yes** | - | Array of email addresses to invite |
+| `privilege` | `number` | No | - | Privilege level to grant (defaults to hub's default_privilege) |
+| `message` | `string` | No | - | Optional invitation message |
+
+### Returns
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `results` | `array` | Per-invitee result: \{ email, branch (A/B/C), status (ok/failed), reason? \} |
+
+---
+
 ## hub.add_contributors
 
 Add members to hub with privilege and expiry settings (sends notifications)
@@ -136,7 +227,7 @@ Add members to hub with privilege and expiry settings (sends notifications)
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -161,6 +252,39 @@ https://hostname/-/svc/hub.add_contributors
 
 ---
 
+## hub.invite_with_roles
+
+Invite users to multiple workspaces with per-workspace privilege. Called from the Home page Invite button. Accepts an array of emails/user IDs and an array of \{hub_id, privilege\} assignments.
+
+| Property | Value |
+|----------|-------|
+| **Scope** | Hub (requires hub context) |
+| **Permission** | Admin (16) |
+| **Logging** | Enabled |
+
+**Endpoint:**
+```
+https://hostname/-/svc/hub.invite_with_roles
+```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `users` | `array<string>` | **Yes** | - | Array of user IDs or email addresses to invite |
+| `assignments` | `array<object>` | **Yes** | - | Array of workspace-role pairs. Each item specifies a target hub and the privilege bitmask to grant. |
+
+### Returns
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `success` | `boolean` | True if the operation completed without fatal errors |
+| `results` | `array<object>` | Per-workspace result summary |
+| `results[].hub_id` | `string` | Workspace ID |
+| `results[].added` | `number` | Number of users immediately added as members |
+
+---
+
 ## hub.delete_contributor
 
 Remove members from hub (broadcasts removal notification)
@@ -168,7 +292,7 @@ Remove members from hub (broadcasts removal notification)
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -196,7 +320,7 @@ Set privilege level for multiple users (batch operation)
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -226,7 +350,7 @@ Set privilege level for a single member with optional expiry
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -283,7 +407,7 @@ Update hub name (must be unique, broadcasts change to members)
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -352,11 +476,11 @@ Get hub logo URL (public API, no authentication required)
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/hub.logo
+https://hostname/-/api/hub.logo
 ```
 
 ### Parameters
@@ -381,7 +505,7 @@ https://hostname/-/svc/hub.logo
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -397,7 +521,7 @@ https://hostname/-/svc/hub.add_external_member
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -413,7 +537,7 @@ https://hostname/-/svc/hub.add_font_link
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -429,7 +553,7 @@ https://hostname/-/svc/hub.change_history
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -445,7 +569,7 @@ https://hostname/-/svc/hub.change_owner
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -461,7 +585,7 @@ https://hostname/-/svc/hub.change_status
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -477,7 +601,7 @@ https://hostname/-/svc/hub.copy_link
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -493,7 +617,7 @@ https://hostname/-/svc/hub.delete_external_member
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -541,7 +665,7 @@ https://hostname/-/svc/hub.get_members_by_type
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -557,7 +681,7 @@ https://hostname/-/svc/hub.get_pr_node_attr
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -589,11 +713,11 @@ https://hostname/-/svc/hub.hub_get_members_by_type
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/hub.login_image
+https://hostname/-/api/hub.login_image
 ```
 
 ---
@@ -621,7 +745,7 @@ https://hostname/-/svc/hub.lookup_hubers
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -653,7 +777,7 @@ https://hostname/-/svc/hub.show_privilege
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -669,7 +793,7 @@ https://hostname/-/svc/hub.update_contributor
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -685,7 +809,7 @@ https://hostname/-/svc/hub.update_favicon
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -701,7 +825,7 @@ https://hostname/-/svc/hub.update_ident
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -717,7 +841,7 @@ https://hostname/-/svc/hub.update_settings
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -733,7 +857,7 @@ https://hostname/-/svc/hub.update_title
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -749,7 +873,7 @@ https://hostname/-/svc/hub.update_visibility
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -765,7 +889,7 @@ https://hostname/-/svc/hub.update_external_members
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -781,7 +905,7 @@ https://hostname/-/svc/hub.update_external_room
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -797,7 +921,7 @@ https://hostname/-/svc/hub.update_external_settings
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -813,7 +937,7 @@ https://hostname/-/svc/hub.get_external_room_attr
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -825,5 +949,6 @@ https://hostname/-/svc/hub.external_notification
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

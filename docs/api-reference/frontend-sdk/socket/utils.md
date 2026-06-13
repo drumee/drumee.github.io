@@ -133,6 +133,8 @@ Calls `this.onServerComplain(err)` if defined on the widget — otherwise logs a
 
 ## `handleResponse(view, response)`
 
+> **Internal helper — not exported.** `handleResponse` is module-private inside `socket/utils.js`; it is not re-exported from `@drumee/ui-essentials` and cannot be imported. It is documented here only to explain how `doRequest` processes responses. You do not call it directly.
+
 Parses the server response JSON and **routes the result** back to the widget.
 
 ### Behavior by status
@@ -204,6 +206,6 @@ setAuthorization("my-keysel", null);
 | `makeOptions(params?)`           | `postService`, `fetchService` | Build full fetch init object    |
 | `preparePayload(...args)`        | `postService`, `fetchService` | Resolve service + payload       |
 | `doRequest(url, data)`           | `postService`, `fetchService` | Execute fetch + handle errors   |
-| `handleResponse(view, response)` | `doRequest`                   | Parse JSON + dispatch to widget |
+| `handleResponse(view, response)` | `doRequest`                   | Parse JSON + dispatch to widget _(internal, not exported)_ |
 | `sanitize(opt)`                  | `preparePayload`              | Strip UI fields from payload    |
 | `setAuthorization(key, value)`   | App bootstrap / auth flow     | Store session tokens            |

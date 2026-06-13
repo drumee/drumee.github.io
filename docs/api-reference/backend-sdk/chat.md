@@ -11,19 +11,19 @@ sidebar_label: chat
 **Service Files:**
 - Private: `service/private/chat.js`
 
-**Available Services:** 15
-**Documented Services:** 15
+**Available Services:** 16
+**Documented Services:** 16
 
 ---
 
 ## chat.acknowledge
 
-Mark a message as read. Updates message acknowledgment status and notifies the message author via WebSocket that their message has been read.
+Mark a P2P conversation as read. Advances the read cursor (ref_ctime) for the conversation with the specified peer. No longer requires a specific message_id — acknowledges up to the current timestamp or a supplied ref_ctime.
 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -34,7 +34,8 @@ https://hostname/-/svc/chat.acknowledge
 
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
-| `message_id` | `string` | **Yes** | - | - |
+| `peer_id` | `string` | **Yes** | - | - |
+| `ref_ctime` | `integer` | No | - | - |
 
 ### Returns
 
@@ -100,7 +101,7 @@ List chat rooms with filtering and pagination. Returns paginated list of chat ro
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -145,7 +146,7 @@ Get detailed information about a specific chat room. Returns complete metadata a
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -179,7 +180,7 @@ Change chat room status (archive or unarchive). Archives or restores a chat conv
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -216,7 +217,7 @@ List chat rooms filtered by contacts. Returns chat rooms specifically for direct
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -253,12 +254,12 @@ https://hostname/-/svc/chat.contact_rooms
 
 ## chat.count_all
 
-Get total unread message count across all chat rooms. Returns aggregate count of unread messages from all conversations.
+Get unread message counts across all chat categories. Returns breakdown by contact P2P chats, shared hub chats, archived chats, and support tickets.
 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -285,12 +286,12 @@ https://hostname/-/svc/chat.count_all
 
 ## chat.delete
 
-Delete messages from chat. Can delete for self only ('me') or for both parties ('all'). Removes message content and attachments. Option 'all' requires user to be the message author.
+Delete messages from a P2P or hub chat. For P2P: pass peer_id to activate the P2P delete path — 'me' soft-deletes from sender DB, 'all' deletes from both sides via cross-DB. For hub chat: omit peer_id (legacy path). Option 'all' requires user to be the message author.
 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -303,6 +304,7 @@ https://hostname/-/svc/chat.delete
 |-----------|------|----------|---------|-------------|
 | `option` | `string` | **Yes** | - | - |
 | `messages` | `array<string>` | **Yes** | - | - |
+| `peer_id` | `string` | No | - | - |
 
 ### Returns
 
@@ -312,8 +314,6 @@ https://hostname/-/svc/chat.delete
 | `description` | `any` | - |
 | `items` | `object` | - |
 | `items.message_id` | `string` | - |
-| `items.entity_id` | `string` | - |
-| `items.delete_status` | `string` | - |
 
 ### Possible Errors
 
@@ -321,7 +321,6 @@ https://hostname/-/svc/chat.delete
 |------------|-------------|-------------|
 | `INVALID_OPTION` | - | Option must be 'me' or 'all' |
 | `INVALID_MESSAGES` | - | One or more message IDs do not exist |
-| `INVALID_OPTION` | - | Cannot delete 'all' - user is not the message author |
 
 ---
 
@@ -332,7 +331,7 @@ Forward messages to multiple recipients. Takes existing messages and sends copie
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -367,12 +366,12 @@ https://hostname/-/svc/chat.forward
 
 ## chat.messages
 
-Get paginated message list for a chat conversation. Returns messages with entity info, thread details, and attachment indicators. Automatically marks messages as read and notifies authors via WebSocket.
+Get paginated message list for a P2P conversation. Returns messages from both sides of the conversation (sent and received), merged and sorted by ctime descending. Automatically advances the read cursor. Notifies message authors via WebSocket that their messages were seen.
 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -393,12 +392,23 @@ https://hostname/-/svc/chat.messages
 | `type` | `any` | - |
 | `description` | `any` | - |
 | `items` | `object` | - |
+| `items.sys_id` | `integer` | - |
+| `items.peer_id` | `string` | - |
 | `items.message_id` | `string` | - |
-| `items.entity_id` | `string` | - |
-| `items.message` | `string` | - |
 | `items.author_id` | `string` | - |
+| `items.message` | `string` | - |
 | `items.ctime` | `integer` | - |
+| `items.is_readed` | `integer` | - |
+| `items.is_seen` | `integer` | - |
+| `items.is_notify` | `integer` | - |
 | `items.is_attachment` | `integer` | - |
+| `items.attachment_first` | `object` | - |
+| `items.attachment_count` | `integer` | - |
+| `items.mention_ids` | `array` | - |
+| `items.message_type` | `string` | - |
+| `items.thread_id` | `string` | - |
+| `items.is_forward` | `integer` | - |
+| `items.metadata` | `object` | - |
 | `items.entity` | `object` | - |
 | `items.thread` | `object` | - |
 
@@ -410,12 +420,12 @@ https://hostname/-/svc/chat.messages
 
 ## chat.post
 
-Send a message in a chat. Creates and delivers a message to a contact with optional attachments and thread reply. Validates contact, attachments, and thread. Moves attachments to permanent storage and distributes message to both parties via WebSocket.
+Send a P2P message to a contact. Message is stored in sender's DB only (single-write). Peer's conversation list (p2p_time) is updated cross-DB. Both sender and recipient are notified via WebSocket.
 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -438,12 +448,17 @@ https://hostname/-/svc/chat.post
 | `type` | `any` | - |
 | `description` | `any` | - |
 | `items` | `object` | - |
+| `items.sys_id` | `integer` | - |
+| `items.peer_id` | `string` | - |
 | `items.message_id` | `string` | - |
-| `items.entity_id` | `string` | - |
-| `items.message` | `string` | - |
 | `items.author_id` | `string` | - |
 | `items.to_id` | `string` | - |
+| `items.message` | `string` | - |
+| `items.ctime` | `integer` | - |
 | `items.is_attachment` | `integer` | - |
+| `items.message_type` | `string` | - |
+| `items.is_readed` | `integer` | - |
+| `items.is_seen` | `integer` | - |
 | `items.entity` | `object` | - |
 | `items.thread` | `object` | - |
 | `items.room` | `integer` | - |
@@ -467,7 +482,7 @@ List group/shared chat rooms. Returns chat rooms for group conversations (not di
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -507,7 +522,7 @@ Get chat count for a specific tag. Returns the number of chat rooms associated w
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -544,7 +559,7 @@ Get number of unread message pages for a contact. Returns how many pages of unre
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -580,7 +595,7 @@ Remove an uploaded attachment before sending. Deletes a file from chat upload di
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -611,8 +626,43 @@ https://hostname/-/svc/chat.upload_remove
 
 ---
 
+## chat.typing
+
+Broadcast an ephemeral typing indicator to a P2P chat peer over WebSocket. Nothing is persisted; the indicator is rendered transiently in the peer's chat widget.
+
+| Property | Value |
+|----------|-------|
+| **Scope** | Hub (requires hub context) |
+| **Permission** | Read (2) |
+
+**Endpoint:**
+```
+https://hostname/-/svc/chat.typing
+```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `entity_id` | `string` | **Yes** | - | - |
+| `state` | `number` | No | `1` | - |
+
+### Returns
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `type` | `any` | - |
+| `description` | `any` | - |
+
+### Possible Errors
+
+*Error codes not documented*
+
+---
+
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

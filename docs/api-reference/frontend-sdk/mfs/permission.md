@@ -12,15 +12,25 @@ This group covers all methods that check what the current user is allowed to do 
 
 ## How Permissions Work
 
-Permissions in Drumee are stored as a **bitmask** in the node's `privilege` field. Each permission level corresponds to a bit defined in `_K.permission`:
+Permissions in Drumee are stored as a **bitmask** in the node's `privilege` field. Each bit is defined in `_K.permission` (`ui-team/src/drumee/lex/constants.js`):
+
+| Constant | Bit | Value |
+|----------|-----|-------|
+| `owner` | `0b100000` | 32 |
+| `admin` | `0b010000` | 16 |
+| `write` / `delete` / `modify` / `upload` | `0b001000` | 8 |
+| `get` / `download` | `0b000100` | 4 |
+| `read` / `view` | `0b000010` | 2 |
+| `anonymous` / `guest` | `0b000001` | 1 |
 
 ```
 privilege & _K.permission.owner    → owns the node
 privilege & _K.permission.admin    → can administrate
-privilege & _K.permission.modify   → can organize / remove
-privilege & _K.permission.write    → can upload
+privilege & _K.permission.write    → can write/upload/modify/delete
 privilege & _K.permission.download → can download / share
 ```
+
+> **Note:** `write`, `delete`, `modify`, and `upload` are **the same bit** (`8`) — they are synonyms, not independent levels. So `canOrganize`, `canUpload`, and `canRemove` (which use `modify`/`write`) all gate on that single bit; what differs between them is the additional contextual guard (node type, status, area), not the permission bit.
 
 All permission methods use bitwise AND (`&`) to check whether a specific bit is set. The result is either `0` (falsy, no permission) or a non-zero number (truthy, has permission).
 

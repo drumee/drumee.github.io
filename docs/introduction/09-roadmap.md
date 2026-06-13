@@ -71,24 +71,6 @@ Turn Drumee from a fixed feature set into a platform where developers build, dis
 | Plugin Sandbox & Security | Mar–Jun 2027 | Permission system, user-granted permissions at install, resource limits, audit log, automated security scanning, crash isolation. |
 | Monetization | Jun–Aug 2027 | Payment gateway (Stripe, crypto), free/paid/subscription models, revenue sharing, enterprise licensing. |
 
----
-
-### M3 — Midnight Integration & Interoperability
-**Jun 2026 → Feb 2028 (dedicated blockchain team, parallel with M1)**
-
-Transform Drumee from solo self-hosted nodes into a federated, privacy-preserving data network via the Midnight blockchain. No central authority — every interaction verified cryptographically.
-
-| Step | Dates | Description |
-| :---- | :---- | :---- |
-| 1. Compact Identity Layer | Jun–Oct 2026 | DID method as a Compact smart contract. Key generation, HSM/enclave storage, social recovery. Drumee accounts mapped to Midnight DIDs. DID-based authentication. |
-| 2. Federated Node + 3. Cross-Node ACL | Oct 2026–Mar 2027 | Drumee nodes as Midnight Federated Node Operators. On-chain registration, heartbeat proofs. Cross-node access rules as Compact contracts with zk-proofs — no shared credentials. |
-| 4. Federated File Sharing | Mar–Aug 2027 | File sharing governed by Compact dApps: share actions as on-chain grants, end-to-end encryption anchored to Midnight identity, CRDTs for concurrent edits, offline pre-signed grants. |
-| 5. Privacy-Preserving Exchange | Aug 2027–Jan 2028 | Selective disclosure via zk-proofs, compliance proofs on-chain (GDPR, HIPAA), verifiable credentials, private data queries without exposing search terms, data minimization by architecture. |
-| 6. NIGHT Token Integration | Nov 2027–Feb 2028 | NIGHT for marketplace payments, node operator staking, DUST micro-fees for cross-node API calls, on-chain governance, revenue sharing with the Midnight Foundation. |
-
-M3 is the **critical path** for the full platform.
-
----
 
 ### M4 — AI Integration (Privacy-First, On-Premises)
 **Jan 2027 → Nov 2027**

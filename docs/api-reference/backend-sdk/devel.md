@@ -12,8 +12,8 @@ sidebar_label: devel
 - Private: `service/private/devel.js`
 - Public: `service/private/devel.js`
 
-**Available Services:** 3
-**Documented Services:** 3
+**Available Services:** 4
+**Documented Services:** 4
 
 ---
 
@@ -23,7 +23,7 @@ Get or set the global server verbosity level. When level is greater than 0, upda
 
 | Property | Value |
 |----------|-------|
-| **Scope** | plateform |
+| **Scope** | Platform (cross-organisation; spelling per code) |
 | **Permission** | Read (2) |
 
 **Endpoint:**
@@ -42,6 +42,34 @@ https://hostname/-/svc/devel.verbosity
 | Field | Type | Description |
 |-------|------|-------------|
 | `verbosity` | `number` | The level value as received in the request. Reflects the requested level, not necessarily the active global.verbosity. |
+
+---
+
+## devel.test_email
+
+Test emaling system.
+
+| Property | Value |
+|----------|-------|
+| **Scope** | Hub (requires hub context) |
+| **Permission** | Anonymous (1) |
+
+**Endpoint:**
+```
+https://hostname/-/svc/devel.test_email
+```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `email` | `string` | **Yes** | - | only for test pupose. |
+
+### Returns
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `verbosity` | `array` | list of email sent |
 
 ---
 
@@ -77,7 +105,7 @@ Get or set the global debug logging destination and flags for over-socket log st
 
 | Property | Value |
 |----------|-------|
-| **Scope** | plateform |
+| **Scope** | Platform (cross-organisation; spelling per code) |
 | **Permission** | Read (2) |
 
 **Endpoint:**
@@ -109,5 +137,6 @@ https://hostname/-/svc/devel.log_over_socket
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

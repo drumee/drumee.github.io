@@ -7,7 +7,7 @@ sidebar_label: webrtc
 # Webrtc Widgets
 
 - Attendee
-- WebRTC Debug Player
+- WebRTC Debug
 - Endpoint
-- Participant
+- Participants
 - Room

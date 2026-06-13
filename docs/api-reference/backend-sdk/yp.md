@@ -24,11 +24,11 @@ Verify an OTP (one-time password) for two-factor authentication. For anonymous s
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.authenticate
+https://hostname/-/api/yp.authenticate
 ```
 
 ### Parameters
@@ -62,11 +62,11 @@ Retrieve a user's avatar image file (PNG or SVG). Serves the raw image content d
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.avatar
+https://hostname/-/api/yp.avatar
 ```
 
 ### Parameters
@@ -96,11 +96,11 @@ Check whether a Drumee user exists by their ID or email address.
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.check_drumate_exist
+https://hostname/-/api/yp.check_drumate_exist
 ```
 
 ### Parameters
@@ -131,11 +131,11 @@ Verify the current authenticated user's password against the stored hash. Used t
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.check_password
+https://hostname/-/api/yp.check_password
 ```
 
 ### Parameters
@@ -164,11 +164,11 @@ Register a mobile device for push notifications. Associates the device push toke
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.device_registration
+https://hostname/-/api/yp.device_registration
 ```
 
 ### Parameters
@@ -201,11 +201,11 @@ Check whether an email address is already registered in the system.
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.email_exists
+https://hostname/-/api/yp.email_exists
 ```
 
 ### Parameters
@@ -234,11 +234,11 @@ Retrieve the complete list of supported file formats with their extension, categ
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.files_formats
+https://hostname/-/api/yp.files_formats
 ```
 
 ### Parameters
@@ -270,11 +270,11 @@ Retrieve platform environment configuration for the current hub, including brand
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.get_env
+https://hostname/-/api/yp.get_env
 ```
 
 ### Parameters
@@ -301,11 +301,11 @@ Retrieve metadata about a publicly shared file or folder by its share ID.
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.get_external_share
+https://hostname/-/api/yp.get_external_share
 ```
 
 ### Parameters
@@ -336,11 +336,11 @@ Retrieve full hub configuration for the current domain, including custom stylesh
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.get_hub
+https://hostname/-/api/yp.get_hub
 ```
 
 ### Parameters
@@ -370,11 +370,11 @@ Check whether a username (ident) is available for new user registration. Note: m
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.get_ident_availablility
+https://hostname/-/api/yp.get_ident_availablility
 ```
 
 ### Parameters
@@ -405,11 +405,11 @@ Retrieve a paginated list of supported languages, optionally filtered by name. N
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.get_laguages
+https://hostname/-/api/yp.get_laguages
 ```
 
 ### Parameters
@@ -440,11 +440,11 @@ Authenticate a guest user via a DMZ (public share) token. Handles password-prote
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.guest_login
+https://hostname/-/api/yp.guest_login
 ```
 
 ### Parameters
@@ -477,11 +477,11 @@ Terminate the current guest (DMZ) session.
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.guest_logout
+https://hostname/-/api/yp.guest_logout
 ```
 
 ### Parameters
@@ -508,11 +508,11 @@ Retrieve the current session user profile enriched with subscription plan detail
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.hello
+https://hostname/-/api/yp.hello
 ```
 
 ### Parameters
@@ -540,11 +540,11 @@ Check whether a given ident (username) is already registered in the system.
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.ident_exists
+https://hostname/-/api/yp.ident_exists
 ```
 
 ### Parameters
@@ -573,11 +573,11 @@ Authenticate a user with username or email and password. If a session is already
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.login
+https://hostname/-/api/yp.login
 ```
 
 ### Parameters
@@ -610,11 +610,11 @@ Finalize a magic-link or OTP-based login flow. Validates the session OTP using t
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.login_top
+https://hostname/-/api/yp.login_top
 ```
 
 ### Parameters
@@ -646,7 +646,7 @@ Search for Drumee users by name with pagination. Used for user discovery and con
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -680,7 +680,7 @@ Get the total count of unread notifications for the current authenticated user.
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -711,7 +711,7 @@ Get the full list of notifications received by the current authenticated user.
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -742,11 +742,11 @@ Connection health check endpoint. Supports three modes: debug (returns server ve
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.ping
+https://hostname/-/api/yp.ping
 ```
 
 ### Parameters
@@ -777,11 +777,11 @@ Reset a user's password using a validated forgot-password token. This is the fin
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.reset_forgot_password
+https://hostname/-/api/yp.reset_forgot_password
 ```
 
 ---
@@ -793,11 +793,11 @@ Reset the current session state and bind it to a WebSocket socket ID. Used to re
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.reset_session
+https://hostname/-/api/yp.reset_session
 ```
 
 ### Parameters
@@ -829,11 +829,11 @@ Initiate the forgot-password flow by sending a one-time reset token to the user'
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.send_forgot_password_token
+https://hostname/-/api/yp.send_forgot_password_token
 ```
 
 ---
@@ -845,11 +845,11 @@ Retrieve a system-level configuration variable by name from the sys_var table.
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.sys_var
+https://hostname/-/api/yp.sys_var
 ```
 
 ### Parameters
@@ -880,11 +880,11 @@ Alias for login. Authenticate a user with username or email and password.
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.signin
+https://hostname/-/api/yp.signin
 ```
 
 ---
@@ -896,11 +896,11 @@ Retrieve a single tutorial entry by name.
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.tutorial
+https://hostname/-/api/yp.tutorial
 ```
 
 ### Parameters
@@ -929,11 +929,11 @@ Retrieve all available tutorial entries.
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.tutorials
+https://hostname/-/api/yp.tutorials
 ```
 
 ### Parameters
@@ -960,7 +960,7 @@ Check whether a username is already registered within the current domain (resolv
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -993,11 +993,11 @@ Validate a password-reset token received via email. Second step of the password 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.validate_forgot_password_token
+https://hostname/-/api/yp.validate_forgot_password_token
 ```
 
 ---
@@ -1009,11 +1009,11 @@ Verify a user's email address using a hashed email value and a one-time verifica
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.verify_email
+https://hostname/-/api/yp.verify_email
 ```
 
 ### Parameters
@@ -1046,11 +1046,11 @@ Check whether a hub (domain) exists by its hostname. Returns the hub record if f
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.host_exists
+https://hostname/-/api/yp.host_exists
 ```
 
 ### Parameters
@@ -1079,11 +1079,11 @@ Retrieve the server's RSA public key in PEM format. Used by clients to encrypt s
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/yp.public_key
+https://hostname/-/api/yp.public_key
 ```
 
 ### Parameters
@@ -1106,5 +1106,6 @@ https://hostname/-/svc/yp.public_key
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

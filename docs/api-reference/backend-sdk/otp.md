@@ -24,11 +24,11 @@ Set a new password for a user after verifying a one-time password code. Verifies
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/otp.set_password
+https://hostname/-/api/otp.set_password
 ```
 
 ### Parameters
@@ -67,11 +67,11 @@ Verify an OTP code for the given email address. Validates that the WebSocket soc
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/otp.verify
+https://hostname/-/api/otp.verify
 ```
 
 ### Parameters
@@ -108,11 +108,11 @@ Send an OTP code to the user identified by email. Validates socket binding, chec
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/otp.send
+https://hostname/-/api/otp.send
 ```
 
 ### Parameters
@@ -144,5 +144,6 @@ https://hostname/-/svc/otp.send
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

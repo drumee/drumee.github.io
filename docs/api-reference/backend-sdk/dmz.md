@@ -24,11 +24,11 @@ Retrieve DMZ share link metadata for a given token. Calls the dmz_info_next stor
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/dmz.info
+https://hostname/-/api/dmz.info
 ```
 
 ### Parameters
@@ -62,11 +62,11 @@ Authenticate and retrieve access information for a DMZ share link. Validates the
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/dmz.login
+https://hostname/-/api/dmz.login
 ```
 
 ### Parameters
@@ -109,7 +109,7 @@ Terminate the current DMZ session by calling session.dmz_logout. No response bod
 
 **Endpoint:**
 ```
-https://hostname/-/svc/dmz.logout
+https://hostname/-/api/dmz.logout
 ```
 
 ### Parameters
@@ -129,7 +129,7 @@ Force-logout all current members of the DMZ hub. Retrieves the full recipient li
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -156,11 +156,11 @@ Initiate the signup flow for a user invited via a DMZ share link. Validates the 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/dmz.signup
+https://hostname/-/api/dmz.signup
 ```
 
 ### Parameters
@@ -188,5 +188,6 @@ https://hostname/-/svc/dmz.signup
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

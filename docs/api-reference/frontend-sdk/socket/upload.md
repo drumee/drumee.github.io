@@ -43,7 +43,7 @@ uploadFile(file, params)
   ├── Build metadata header
   │     → { filename, mimetype, filesize, socket_id, ...params }
   │     → JSON-stringified into "x-param-xia-data" header
-  │     → Content-Type: "application/octet-stream"
+  │     → Content-Type: "application/octet-stream; charset=utf-8"
   │
   ├── Auth headers injected via makeHeaders()
   │

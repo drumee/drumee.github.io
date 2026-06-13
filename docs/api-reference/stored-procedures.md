@@ -298,18 +298,18 @@ schemas/
   hub/procedures/
     members/
       hub_get_members_by_type.sql
-    stats/
-      count_media.sql
-      count_folders.sql
   drumate/procedures/
     contact/
       my_contact_show_next.sql
+    stats/
+      count_media.sql
+      count_folders.sql
     tag/
       tag_get_next.sql
       tag_get.sql
       tag_add.sql
       ...
-  yp/procedures/
+  yellow_page/procedures/
     ...
 ```
 

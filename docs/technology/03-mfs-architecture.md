@@ -135,11 +135,11 @@ A small set of negative integer node IDs are reserved by the platform for hub-le
 
 | ID | Resource |
 | :---- | :---- |
-| `-1` | Hub logo |
+| `-1` | Favicon |
 | `-2` | User avatar |
-| `-3` | Hub wallpaper |
+| `-3` | Hub logo |
 
-These IDs are stable across all hubs and can be used directly in service calls to retrieve or update the corresponding media assets.
+These IDs are stable across all hubs and can be used directly in service calls to retrieve or update the corresponding media assets (see `special_file()` in `server-core/lib/utils/mfs.js`). The hub wallpaper is not a special node ID — it is resolved separately from the hub's `settings.wallpaper`.
 
 ## Media Processing
 

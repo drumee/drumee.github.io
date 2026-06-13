@@ -9,7 +9,7 @@ sidebar_label: media
 - Flag
 - Grid
 - Minifyer
-- Notification
+- Notifications
 - Paste
 - Row
 - Simple

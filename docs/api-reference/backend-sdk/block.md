@@ -22,7 +22,7 @@ Assemble and return a composed block structure for the current hub. Implementati
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -38,7 +38,7 @@ Retrieve block content for a given hashtag, device, and language. Resolves the c
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -76,7 +76,7 @@ Copy a versioned block history entry to a new page or as a new revision. Writes 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -118,7 +118,7 @@ Delete a block entry for a specific device and locale. The block must not be in 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -156,7 +156,7 @@ Check whether a block identified by a string value exists. Uses the block_exists
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -185,7 +185,7 @@ List platform block models from the yellow-page database, paginated. Calls the y
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -213,7 +213,7 @@ Retrieve the edit history log for a block, optionally filtered by device, langua
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -286,7 +286,7 @@ List blocks filtered by editor type, with pagination and sort order. Calls the b
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -316,7 +316,7 @@ List blocks by locale and published state, with optional name filter, sort field
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -349,7 +349,7 @@ Retrieve the global block activity log, paginated and sorted. Calls the block_lo
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -378,7 +378,7 @@ Permanently delete a block and remove its entire filesystem directory. Calls the
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -412,7 +412,7 @@ Rename a block by updating its hashtag in the database and rewriting the hashtag
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -449,7 +449,7 @@ Full-text search over blocks. Hyphens in the search string are replaced with spa
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -478,7 +478,7 @@ Create or update a block content version. Writes the letc JSON content object to
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -525,7 +525,7 @@ Unpublish a block for a specific device and locale. Verifies the block is curren
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -557,5 +557,6 @@ https://hostname/-/svc/block.unpublish
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

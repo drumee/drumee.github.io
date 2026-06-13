@@ -4,6 +4,18 @@
 # Production
 /build
 
+# Stale Docusaurus build output that must never be committed into the docs/ source tree.
+# The real site is built to /build by CI (deploy.yml) — docs/ holds only .md/.mdx + img/.
+/docs/*.html
+/docs/**/*.html
+/docs/assets/
+/docs/blog/
+/docs/docs/
+/docs/intro/
+/docs/markdown-page/
+/docs/sitemap.xml
+/docs/.nojekyll
+
 # Generated files
 .docusaurus
 .cache-loader

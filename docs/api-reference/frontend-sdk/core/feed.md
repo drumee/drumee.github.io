@@ -118,8 +118,7 @@ Always returns `children.last()` — the last child after the new content is set
 The most common use of `feed` — render the root skeleton when the widget mounts:
 
 ```js
-async onDomRefresh() {
-  await this.loadEnv();
+onDomRefresh() {
   this.feed(require("./skeleton").default(this)); // full widget render
 }
 ```
@@ -130,7 +129,7 @@ async onDomRefresh() {
 case "load-page":
   const newPage = cmd.mget(_a.page);
   this._page = newPage;
-  this.__content.feed(this.skeletons`this._page`);
+  this.__content.feed(require("./skeleton/" + this._page).default(this));
   break;
 ```
 
@@ -190,7 +189,7 @@ feed(c)
 this.feed(require("./skeleton").default(this));
 
 // Re-render only the content area
-this.__content.feed(this.skeletons`this._page`);
+this.__content.feed(require("./skeleton/" + this._page).default(this));
 ```
 
 **Prefer `ensurePart` + targeted patch over `feed` for small updates** — calling `feed` on a large part destroys and rebuilds all its children, which is heavier than patching one element:
@@ -200,7 +199,7 @@ this.__content.feed(this.skeletons`this._page`);
 this.ensurePart("task-action:CM1").then((p) => p.feed(newButtonSkeleton));
 
 // ❌ Heavy — rebuilds the entire content area just to update one button
-this.__content.feed(this.skeletons`this._page`);
+this.__content.feed(require("./skeleton/" + this._page).default(this));
 ```
 
 **Use `null` guards when conditionally rendering** — `feed(null)` is a safe no-op, so you can call `feed` before data is ready without crashing:

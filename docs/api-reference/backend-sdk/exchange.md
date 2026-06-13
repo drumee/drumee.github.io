@@ -24,7 +24,7 @@ Initiate a server-side export of MFS nodes to a local filesystem destination. Sp
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -65,7 +65,7 @@ Initiate a server-side import of files from local filesystem paths into an MFS h
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -103,5 +103,6 @@ https://hostname/-/svc/exchange.server_import
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

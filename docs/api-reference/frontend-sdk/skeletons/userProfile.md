@@ -6,7 +6,9 @@ sidebar_label: User Profile
 
 # Skeletons.UserProfile
 
-A **user profile avatar** with optional name display, online status indicator, and auto-color generation. More user-specific than [`Skeletons.Profile`](./profile.md) — designed specifically for Drumee user accounts.
+A **user profile avatar** with optional name display, online status indicator, and auto-color generation.
+
+> **`UserProfile` is an alias of [`Skeletons.Profile`](./profile.md).** In the skeleton registry both names resolve to the **same factory** (`kind: "profile"`, the `widgets/profile` view), so they accept identical props and behave identically. The two names exist only as readability aliases — there is no separate "user" component. `auto_color`, `online`, and `live_status` are available on both.
 
 ---
 
@@ -81,16 +83,10 @@ Skeletons.UserProfile({
 
 ---
 
-## `Profile` vs `UserProfile`
+## `Profile` and `UserProfile`
 
-|                  | `Skeletons.Profile` | `Skeletons.UserProfile` |
-| ---------------- | ------------------- | ----------------------- |
-| For any entity   | ✅                  | ❌                      |
-| For Drumee users | ✅                  | ✅                      |
-| `auto_color`     | ❌                  | ✅                      |
-| `live_status`    | ❌                  | ✅                      |
-| `online`         | ❌                  | ✅                      |
-
-> Use `Profile` for generic entities (support tickets, bots, etc.). Use `UserProfile` for real Drumee user accounts.
+`Skeletons.Profile` and `Skeletons.UserProfile` are **the same component** — both map to the
+`profile` widget and accept the same props. Pick whichever name reads better at the call site;
+there is no behavioural difference between them.
 
 ---

@@ -23,7 +23,7 @@ Create a new reminder for the current user. Stores a reminder task object linked
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -126,7 +126,7 @@ Remove a reminder by ID. Deletes the reminder record permanently via the reminde
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -160,7 +160,7 @@ Update an existing reminder. Replaces the task data of an existing reminder iden
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -190,5 +190,6 @@ https://hostname/-/svc/reminder.update
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

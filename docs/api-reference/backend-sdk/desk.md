@@ -12,7 +12,7 @@ sidebar_label: desk
 - Private: `service/private/desk.js`
 
 **Available Services:** 18
-**Documented Services:** 12
+**Documented Services:** 13
 
 ---
 
@@ -57,7 +57,7 @@ Get complete desk environment including filenames, privilege, and quota informat
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -83,7 +83,7 @@ Search files and folders by name pattern across user's workspace
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -116,7 +116,7 @@ Get combined list of user and system wallpapers with pagination
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -148,7 +148,7 @@ Get disk usage statistics for user (owned files + owned hubs) with optional cate
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -181,7 +181,8 @@ Create a new hub (private, public, or share workspace)
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
+| **Pre-check** | `check_quota` (validation before execution) |
 | **Logging** | Enabled |
 
 **Endpoint:**
@@ -225,7 +226,7 @@ Get current quota limits and available storage space
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -248,7 +249,7 @@ Create or retrieve wicket hub for external meeting handling (one per user)
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -273,7 +274,7 @@ Set multi-factor authentication (MFA) for user account
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -313,7 +314,7 @@ Leave a shared hub (remove user membership from hub)
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -348,7 +349,7 @@ Reorder items in user's workspace by updating rank positions
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -404,7 +405,7 @@ Export contacts as VCF (vCard) file
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -420,27 +421,11 @@ https://hostname/-/svc/desk.backup
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
 https://hostname/-/svc/desk.create_external_room
-```
-
----
-
-## desk.create_website
-
-*No description provided*
-
-| Property | Value |
-|----------|-------|
-| **Scope** | Domain (requires authentication) |
-| **Permission** | Admin (6) |
-
-**Endpoint:**
-```
-https://hostname/-/svc/desk.create_website
 ```
 
 ---
@@ -452,7 +437,7 @@ https://hostname/-/svc/desk.create_website
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -468,7 +453,7 @@ https://hostname/-/svc/desk.get_alternate_account
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -484,7 +469,7 @@ https://hostname/-/svc/desk.get_workers
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -493,8 +478,46 @@ https://hostname/-/svc/desk.quick_share
 
 ---
 
+## desk.recent_files
+
+Get recently modified files across all user hubs, sorted by modification time DESC
+
+| Property | Value |
+|----------|-------|
+| **Scope** | Hub (requires hub context) |
+| **Permission** | Owner (32) |
+
+**Endpoint:**
+```
+https://hostname/-/svc/desk.recent_files
+```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `page` | `number (min: 1)` | No | `1` | Page number for pagination |
+
+### Returns
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `items` | `array<object>` | Recent files across all accessible hubs, sorted by mtime DESC |
+| `items[].nid` | `string` | Node ID |
+| `items[].hub_id` | `string` | Hub the file belongs to |
+| `items[].filename` | `string` | File name |
+| `items[].filetype` | `string` | Node type (file, folder, etc.) |
+| `items[].filesize` | `number` | File size in bytes |
+| `items[].mtime` | `number` | Last modified timestamp (unix) |
+| `items[].ctime` | `number` | Created timestamp (unix) |
+| `items[].vhost` | `string` | Hub virtual hostname |
+| `items[].ownpath` | `string` | File path within hub |
+
+---
+
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

@@ -1,28 +1,30 @@
 import React, { useState } from 'react';
 import './PermissionVisualizer.css';
 
+// Single permission bits, per server-essentials/lib/lex/permission.js (6-bit word)
 const PERMISSIONS = {
-  owner: { bit: 64, description: 'Full control over resource' },
-  admin: { bit: 32, description: 'Administrative access' },
-  delete: { bit: 8, description: 'Delete or modify resource' },
-  write: { bit: 4, description: 'Write or upload to resource' },
+  owner: { bit: 32, description: 'Full control over resource' },
+  admin: { bit: 16, description: 'Administrative access' },
+  write: { bit: 8, description: 'Write, delete, modify or upload' },
+  get: { bit: 4, description: 'Download or get the resource' },
   read: { bit: 2, description: 'Read or view resource' },
   anonymous: { bit: 1, description: 'Minimal guest access' },
 };
 
+// Composite hub privilege words, per server-essentials/lib/lex/constants.js (PRIV_HUB_*)
 const PRIVILEGE_MASKS = {
-  owner: 127,     // 0b0111111
-  admin: 63,      // 0b0011111
-  delete: 31,     // 0b0001111
-  write: 15,      // 0b0000111
-  read: 7,        // 0b0000011
-  anonymous: 1,   // 0b0000001
+  owner: 63,        // PRIV_HUB_OWNER   0b111111
+  admin: 31,        // PRIV_HUB_ADMIN   0b011111
+  manager: 15,      // PRIV_HUB_MANAGER 0b001111
+  designer: 7,      // PRIV_HUB_DESIGNER 0b000111
+  contributor: 3,   // PRIV_HUB_CONTRIB 0b000011
+  guest: 1,         // PRIV_HUB_GUEST   0b000001
 };
 
 export default function PermissionBitmaskVisualizer() {
-  const [selectedPrivilege, setSelectedPrivilege] = useState<keyof typeof PRIVILEGE_MASKS>('read');
+  const [selectedPrivilege, setSelectedPrivilege] = useState<keyof typeof PRIVILEGE_MASKS>('designer');
   const [requiredPermission, setRequiredPermission] = useState<number>(2); // read
-  const [customBitmask, setCustomBitmask] = useState<string>('0000011');
+  const [customBitmask, setCustomBitmask] = useState<string>('000010');
 
   const userPrivilege = PRIVILEGE_MASKS[selectedPrivilege];
   const hasPermission = (userPrivilege & requiredPermission) === requiredPermission;
@@ -54,7 +56,7 @@ export default function PermissionBitmaskVisualizer() {
           >
             {Object.entries(PRIVILEGE_MASKS).map(([name, value]) => (
               <option key={name} value={name}>
-                {name} (0b{value.toString(2).padStart(7, '0')} = {value})
+                {name} (0b{value.toString(2).padStart(6, '0')} = {value})
               </option>
             ))}
           </select>
@@ -80,8 +82,8 @@ export default function PermissionBitmaskVisualizer() {
               type="text"
               value={customBitmask}
               onChange={(e) => updateCustomBitmask(e.target.value)}
-              pattern="[01]{1,7}"
-              maxLength={7}
+              pattern="[01]{1,6}"
+              maxLength={6}
             />
             <span> = {requiredPermission} (decimal)</span>
           </div>
@@ -96,18 +98,18 @@ export default function PermissionBitmaskVisualizer() {
                 {bit}
               </div>
               <div className="bit-label">{name}</div>
-              <div className="bit-binary">0b{bit.toString(2).padStart(7, '0').slice(-7)}</div>
+              <div className="bit-binary">0b{bit.toString(2).padStart(6, '0').slice(-6)}</div>
             </div>
           ))}
         </div>
 
         <div className="calculation">
           <div className="operation">
-            <div>User Privilege: 0b{userPrivilege.toString(2).padStart(7, '0')} ({userPrivilege})</div>
-            <div>Required Permission: 0b{requiredPermission.toString(2).padStart(7, '0')} ({requiredPermission})</div>
+            <div>User Privilege: 0b{userPrivilege.toString(2).padStart(6, '0')} ({userPrivilege})</div>
+            <div>Required Permission: 0b{requiredPermission.toString(2).padStart(6, '0')} ({requiredPermission})</div>
             <div className="operator">AND (&) Operation:</div>
             <div className="result">
-              0b{(userPrivilege & requiredPermission).toString(2).padStart(7, '0')} = {userPrivilege & requiredPermission}
+              0b{(userPrivilege & requiredPermission).toString(2).padStart(6, '0')} = {userPrivilege & requiredPermission}
             </div>
           </div>
 
@@ -125,17 +127,17 @@ export default function PermissionBitmaskVisualizer() {
       <div className="hierarchy">
         <h4>Permission Hierarchy</h4>
         <div className="hierarchy-tree">
-          <div className="hierarchy-node owner">owner (127)</div>
+          <div className="hierarchy-node owner">owner (63)</div>
           <div className="hierarchy-connector">↓ includes</div>
-          <div className="hierarchy-node admin">admin (63)</div>
+          <div className="hierarchy-node admin">admin (31)</div>
           <div className="hierarchy-connector">↓ includes</div>
-          <div className="hierarchy-node delete">delete (31)</div>
+          <div className="hierarchy-node delete">manager (15)</div>
           <div className="hierarchy-connector">↓ includes</div>
-          <div className="hierarchy-node write">write (15)</div>
+          <div className="hierarchy-node write">designer (7)</div>
           <div className="hierarchy-connector">↓ includes</div>
-          <div className="hierarchy-node read">read (7)</div>
+          <div className="hierarchy-node read">contributor (3)</div>
           <div className="hierarchy-connector">↓ includes</div>
-          <div className="hierarchy-node anonymous">anonymous (1)</div>
+          <div className="hierarchy-node anonymous">guest (1)</div>
         </div>
       </div>
     </div>

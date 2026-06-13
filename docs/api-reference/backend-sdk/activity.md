@@ -11,8 +11,8 @@ sidebar_label: activity
 **Service Files:**
 - Private: `service/private/activity.js`
 
-**Available Services:** 7
-**Documented Services:** 7
+**Available Services:** 14
+**Documented Services:** 14
 
 ---
 
@@ -54,7 +54,7 @@ Mark all MFS notifications as read for current user. Updates the mfs_ack table w
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -163,7 +163,7 @@ Mark a specific file/folder as seen. Updates the mfs_ack table with the changelo
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -277,8 +277,225 @@ https://hostname/-/svc/activity.folder_log
 
 ---
 
+## activity.dismiss
+
+Dismiss a single activity notification so it no longer appears in the feed.
+
+| Property | Value |
+|----------|-------|
+| **Scope** | Hub (requires hub context) |
+| **Permission** | Write (8) |
+
+**Endpoint:**
+```
+https://hostname/-/svc/activity.dismiss
+```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `changelog_id` | `integer` | **Yes** | - | - |
+
+### Returns
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `type` | `any` | - |
+| `properties` | `any` | - |
+
+---
+
+## activity.dismiss_contact_event
+
+Dismiss a single contact_activity row (hub invite, contact invite, etc.) so it no longer appears in the activity feed. Stamps yp.contact_activity.dismissed_at without deleting the underlying audit row.
+
+| Property | Value |
+|----------|-------|
+| **Scope** | Hub (requires hub context) |
+| **Permission** | Write (8) |
+
+**Endpoint:**
+```
+https://hostname/-/svc/activity.dismiss_contact_event
+```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `activity_id` | `integer` | **Yes** | - | - |
+
+### Returns
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `type` | `any` | - |
+| `properties` | `any` | - |
+
+---
+
+## activity.list
+
+Single-call notification feed combining notification_center rollups + standalone hub-invite rows. Returns a flat array; client renders by `category` (chat | contact | media | teamchat | ticket | hub_invite).
+
+| Property | Value |
+|----------|-------|
+| **Scope** | Hub (requires hub context) |
+| **Permission** | Read (2) |
+
+**Endpoint:**
+```
+https://hostname/-/svc/activity.list
+```
+
+### Parameters
+
+*No parameters*
+
+### Returns
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `type` | `any` | - |
+| `items` | `object` | - |
+| `items.category` | `string` | - |
+| `items.key_id` | `string` | - |
+| `items.hub_id` | `string` | - |
+| `items.last_id` | `integer` | - |
+| `items.cnt` | `integer` | - |
+| `items.ctime` | `integer` | - |
+
+---
+
+## activity.dismiss_rollup
+
+Alias of notification_dismiss under the consolidated activity.* API. Hides a rollup row from the feed. Allowed to all mebers
+
+| Property | Value |
+|----------|-------|
+| **Scope** | Hub (requires hub context) |
+| **Permission** | Read (2) |
+
+**Endpoint:**
+```
+https://hostname/-/svc/activity.dismiss_rollup
+```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `category` | `string` | **Yes** | - | - |
+| `key_id` | `string` | **Yes** | - | - |
+| `hub_id` | `string` | No | - | - |
+| `last_id` | `integer` | No | `0` | - |
+
+### Returns
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `type` | `any` | - |
+
+---
+
+## activity.read
+
+Mark a rollup as read (advance read pointer) without hiding it. For chat/teamchat/ticket this is identical to dismiss; for media we only advance mfs_ack; for contact this is a no-op (use dismiss to hide).
+
+| Property | Value |
+|----------|-------|
+| **Scope** | Hub (requires hub context) |
+| **Permission** | Write (8) |
+
+**Endpoint:**
+```
+https://hostname/-/svc/activity.read
+```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `category` | `string` | **Yes** | - | - |
+| `key_id` | `string` | **Yes** | - | - |
+| `hub_id` | `string` | No | - | - |
+| `last_id` | `integer` | No | `0` | - |
+
+### Returns
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `type` | `any` | - |
+
+---
+
+## activity.create
+
+Publish a new notification via the activity.* namespace. Routes by category to the underlying table (mfs_changelog for media, contact_activity for invites). chat/teamchat/ticket are not supported here — use the domain endpoint (chat.post / channel.post / ticket.post).
+
+| Property | Value |
+|----------|-------|
+| **Scope** | Hub (requires hub context) |
+| **Permission** | Write (8) |
+
+**Endpoint:**
+```
+https://hostname/-/svc/activity.create
+```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `category` | `string` | **Yes** | - | - |
+| `key_id` | `string` | **Yes** | - | - |
+| `hub_id` | `string` | No | - | - |
+| `payload` | `object` | No | - | - |
+
+### Returns
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `type` | `any` | - |
+
+---
+
+## activity.notification_dismiss
+
+Unified dismiss for any rollup returned by drumate.notification_center. Routes by category to the right read-pointer/status update (chat → p2p_read, contact → contact.dismissed_at, media → mfs_dismissed, teamchat → &lt;hub&gt;.read_channel, ticket → yp.read_ticket_channel).
+
+| Property | Value |
+|----------|-------|
+| **Scope** | Hub (requires hub context) |
+| **Permission** | Write (8) |
+
+**Endpoint:**
+```
+https://hostname/-/svc/activity.notification_dismiss
+```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `category` | `string` | **Yes** | - | - |
+| `key_id` | `string` | **Yes** | - | - |
+| `hub_id` | `string` | No | - | - |
+| `last_id` | `integer` | No | `0` | - |
+
+### Returns
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `type` | `any` | - |
+| `properties` | `any` | - |
+
+---
+
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

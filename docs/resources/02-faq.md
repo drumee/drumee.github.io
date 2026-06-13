@@ -243,5 +243,5 @@ Always verify SQL syntax against the MariaDB version running on the target envir
 - [Troubleshooting](./03-troubleshooting.md) — specific errors with step-by-step solutions
 - [Glossary](./01-glossary.md) — definitions of Drumee-specific terms
 - [ACL Specification](../api-reference/acl-spec.md) — complete ACL field reference
-- [Permission Management](../guides/permission-management.md) — guide to choosing the right scope and permission level
+- [Configuring ACL Permissions](../product-guides/04-acl-permissions.md) — guide to choosing the right scope and permission level
 - [Stored Procedures](../api-reference/stored-procedures.md) — calling conventions and procedure catalogue

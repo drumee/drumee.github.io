@@ -12,8 +12,8 @@ sidebar_label: drumate
 - Private: `service/private/drumate.js`
 - Public: `service/yp.js`
 
-**Available Services:** 43
-**Documented Services:** 20
+**Available Services:** 47
+**Documented Services:** 23
 
 ---
 
@@ -24,7 +24,7 @@ Get current user's complete profile information
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -51,7 +51,7 @@ Update user profile information (may require OTP verification for sensitive fiel
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -87,7 +87,7 @@ Change user password with old password verification
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -119,12 +119,12 @@ https://hostname/-/svc/drumate.change_password
 
 ## drumate.change_email
 
-Change user email address (must be unique and valid format)
+Change user email address. Verifier branches on profile.password_set: password OR (secret+code).
 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -136,6 +136,9 @@ https://hostname/-/svc/drumate.change_email
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
 | `email` | `string (pattern: `^[^@]+@[^@]+\.[^@]+$`)` | **Yes** | - | New email address |
+| `password` | `string` | No | - | Required when password_set=1 |
+| `secret` | `string` | No | - | OTP secret (required when password_set=0) |
+| `code` | `string (min: 6, max: 6)` | No | - | OTP code (required when password_set=0) |
 
 ### Returns
 
@@ -159,7 +162,7 @@ Get current disk usage and quota information for user
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -184,7 +187,7 @@ Get list of all notifications for current user
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -210,7 +213,7 @@ Logout user and cleanup session
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 | **Logging** | Enabled |
 
 **Endpoint:**
@@ -239,7 +242,7 @@ Generate and send One-Time Password via SMS or email
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -271,7 +274,7 @@ Set user avatar using a media file from MFS
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -306,7 +309,7 @@ Remove user avatar and restore default
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -329,7 +332,7 @@ Get paginated list of hubs that user owns
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -361,7 +364,7 @@ Get detailed MFS manifest showing all files and folders with sizes
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -387,7 +390,7 @@ Get paginated login history with device and location information
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -421,7 +424,7 @@ Update user settings (merged with existing settings)
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -449,7 +452,7 @@ Mark notifications as read/acknowledged for a specific entity (hub or user)
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -472,12 +475,12 @@ https://hostname/-/svc/drumate.notification_remove
 
 ## drumate.delete_account
 
-Initiate account deletion process (requires OTP verification, returns deletion token)
+Initiate account deletion. Verifier branches on profile.password_set: password OR (secret+code).
 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 | **Logging** | Enabled |
 
 **Endpoint:**
@@ -489,8 +492,9 @@ https://hostname/-/svc/drumate.delete_account
 
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
-| `secret` | `string` | **Yes** | - | OTP secret from get_otp |
-| `code` | `string (min: 6, max: 6)` | **Yes** | - | OTP verification code |
+| `password` | `string` | No | - | Required when password_set=1 |
+| `secret` | `string` | No | - | OTP secret (required when password_set=0) |
+| `code` | `string (min: 6, max: 6)` | No | - | OTP code (required when password_set=0) |
 
 ### Returns
 
@@ -506,6 +510,73 @@ https://hostname/-/svc/drumate.delete_account
 
 ---
 
+## drumate.list_oauth_links
+
+List OAuth providers linked to this account.
+
+| Property | Value |
+|----------|-------|
+| **Scope** | Hub (requires hub context) |
+| **Permission** | Owner (32) |
+
+**Endpoint:**
+```
+https://hostname/-/svc/drumate.list_oauth_links
+```
+
+---
+
+## drumate.unlink_oauth
+
+Disconnect an OAuth provider. Refuses if it would leave the account with no auth method.
+
+| Property | Value |
+|----------|-------|
+| **Scope** | Hub (requires hub context) |
+| **Permission** | Owner (32) |
+| **Logging** | Enabled |
+
+**Endpoint:**
+```
+https://hostname/-/svc/drumate.unlink_oauth
+```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `provider` | `string` | **Yes** | - | OAuth provider key (google|apple|...) |
+| `password` | `string` | No | - | - |
+| `secret` | `string` | No | - | - |
+| `code` | `string (min: 6, max: 6)` | No | - | - |
+
+---
+
+## drumate.set_initial_password
+
+Set first password for an OAuth-only account. OTP-gated. Refuses if a password already exists.
+
+| Property | Value |
+|----------|-------|
+| **Scope** | Hub (requires hub context) |
+| **Permission** | Owner (32) |
+| **Logging** | Enabled |
+
+**Endpoint:**
+```
+https://hostname/-/svc/drumate.set_initial_password
+```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `password` | `string` | **Yes** | - | - |
+| `secret` | `string` | **Yes** | - | - |
+| `code` | `string (min: 6, max: 6)` | **Yes** | - | - |
+
+---
+
 ## drumate.confirm_delete_account
 
 Confirm and execute account deletion (freezes account, removes from hubs, sends reactivation link)
@@ -513,7 +584,7 @@ Confirm and execute account deletion (freezes account, removes from hubs, sends 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -548,7 +619,7 @@ Change user's ident/username (must be unique within domain)
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -585,7 +656,7 @@ Upgrade free user account to Pro account with custom domain and organization
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -624,7 +695,7 @@ Get paginated helpdesk messages in user's language
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -655,7 +726,7 @@ https://hostname/-/svc/drumate.helpdesk
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -671,7 +742,7 @@ https://hostname/-/svc/drumate.change_mobile
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -687,7 +758,7 @@ https://hostname/-/svc/drumate.check_password
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -703,7 +774,7 @@ https://hostname/-/svc/drumate.color_add
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -719,7 +790,7 @@ https://hostname/-/svc/drumate.color_last
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -735,7 +806,7 @@ https://hostname/-/svc/drumate.contacts
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -751,7 +822,7 @@ https://hostname/-/svc/drumate.drumate_hubs
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -767,7 +838,7 @@ https://hostname/-/svc/drumate.font_add
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -783,7 +854,7 @@ https://hostname/-/svc/drumate.font_last
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -799,7 +870,7 @@ https://hostname/-/svc/drumate.get_drumate_detail
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -815,7 +886,7 @@ https://hostname/-/svc/drumate.get_languages
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -831,12 +902,29 @@ https://hostname/-/svc/drumate.hubs
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 | **Logging** | Enabled |
 
 **Endpoint:**
 ```
 https://hostname/-/svc/drumate.intro_acknowledged
+```
+
+---
+
+## drumate.mark_onboarding_complete
+
+*No description provided*
+
+| Property | Value |
+|----------|-------|
+| **Scope** | Hub (requires hub context) |
+| **Permission** | Owner (32) |
+| **Logging** | Enabled |
+
+**Endpoint:**
+```
+https://hostname/-/svc/drumate.mark_onboarding_complete
 ```
 
 ---
@@ -847,19 +935,33 @@ https://hostname/-/svc/drumate.intro_acknowledged
 
 ---
 
-## drumate.prepare_data_backup
+## drumate.backup
 
-*No description provided*
+Export user data as a ZIP archive. Accepts flags: personal (user-owned files/folders), hubs (workspace files where user has download permission), chat (P2P chat history per peer as CSV), logs (services_log + mfs_changelog + contact_activity as CSV). Runs as offline queue job — download link sent via email on completion.
 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/drumate.prepare_data_backup
+https://hostname/-/svc/drumate.backup
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `flags` | `array` | **Yes** | - | One or more of: files (user-owned files/folders), workspace (hub files where user has access), chat (team chat history per hub as CSV), activity (services_log + mfs_changelog + contact_activity as CSV) |
+| `socket_id` | `string` | **Yes** | - | WebSocket connection ID for real-time progress notifications |
+
+### Returns
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `zipid` | `string` | Unique job ID — used by frontend to track progress via WebSocket events |
+| `status` | `string` | Always 'queued' — confirms the job was accepted |
 
 ---
 
@@ -870,7 +972,7 @@ https://hostname/-/svc/drumate.prepare_data_backup
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -886,7 +988,7 @@ https://hostname/-/svc/drumate.reset_forgot_password
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -902,7 +1004,7 @@ https://hostname/-/svc/drumate.send_account_deletion_code
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -918,7 +1020,7 @@ https://hostname/-/svc/drumate.send_forgot_password_token
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -934,7 +1036,7 @@ https://hostname/-/svc/drumate.set_lang
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -950,7 +1052,7 @@ https://hostname/-/svc/drumate.show_backup_log
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -966,7 +1068,7 @@ https://hostname/-/svc/drumate.validate_account_deletion_code
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -982,7 +1084,7 @@ https://hostname/-/svc/drumate.validate_forgot_password_token
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -998,7 +1100,7 @@ https://hostname/-/svc/drumate.verify_email
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -1010,5 +1112,6 @@ https://hostname/-/svc/drumate.check_drumate_exist
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

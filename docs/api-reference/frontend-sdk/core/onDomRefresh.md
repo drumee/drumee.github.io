@@ -12,7 +12,7 @@ A **lifecycle hook** called automatically by Drumee once the widget's DOM elemen
 
 ## When It's Called
 
-`onDomRefresh` fires **once** after the widget is mounted — after the DOM element exists but before any children are rendered. Think of it as the widget's "ready" signal.
+`onDomRefresh` fires after the widget's DOM element is attached/refreshed (Marionette's `dom:refresh` event). The element exists by the time it runs, so it is the usual place to render the widget's content. Think of it as the widget's "DOM ready" signal.
 
 ```
 Widget created

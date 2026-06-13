@@ -1,7 +1,7 @@
 ---
 id: index
-title: Backend API Reference
-sidebar_label: Backend API Reference
+title: API Reference
+sidebar_label: Overview
 ---
 
 # Drumee Backend API Reference
@@ -58,6 +58,7 @@ Complete API documentation for all Drumee backend services.
 - [font](./font.md)
 - [form](./form.md)
 - [input](./input.md)
+- [label](./label.md)
 - [locale](./locale.md)
 - [log](./log.md)
 - [menu](./menu.md)
@@ -66,6 +67,7 @@ Complete API documentation for all Drumee backend services.
 - [ops](./ops.md)
 - [otp](./otp.md)
 - [reminder](./reminder.md)
+- [secure_share](./secure_share.md)
 - [seo](./seo.md)
 - [sharebox](./sharebox.md)
 - [signaling](./signaling.md)
@@ -73,6 +75,7 @@ Complete API documentation for all Drumee backend services.
 - [table](./table.md)
 - [tag](./tag.md)
 - [tagcontact](./tagcontact.md)
+- [task](./task.md)
 - [transfer](./transfer.md)
 - [trash](./trash.md)
 - [util](./util.md)
@@ -84,8 +87,8 @@ Complete API documentation for all Drumee backend services.
 ## Quick Links
 
 - [Getting Started](../../getting-started/01-starter-kit.md)
-- [Core Concepts](../../technology/01-overview.md)
-- [Guides](../../product-guides/01-creating-widget.md)
+- [Technology Overview](../../technology/01-overview.md)
+- [Creating a Service](../../product-guides/02-creating-service.md)
 
 ## Documentation Format
 
@@ -98,6 +101,6 @@ Each module page includes:
 
 ## Need Help?
 
-- Check [Troubleshooting Guide](/resources/03-troubleshooting)
-- Review Common Patterns
-- See Example Implementations
+- Check [Troubleshooting Guide](../../resources/03-troubleshooting.md)
+- Review [Configuring ACL Permissions](../../product-guides/04-acl-permissions.md)
+- See [Error Handling](../../product-guides/05-error-handling.md)

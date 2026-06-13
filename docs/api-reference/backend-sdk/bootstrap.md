@@ -24,11 +24,11 @@ Generate and return the JavaScript bootstrap bundle for the current hub. Merges 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/bootstrap.js
+https://hostname/-/api/bootstrap.js
 ```
 
 ### Parameters
@@ -58,11 +58,11 @@ Resolve the entry point path for a named UI plugin. Searches first under the end
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/bootstrap.plugin
+https://hostname/-/api/bootstrap.plugin
 ```
 
 ### Parameters
@@ -86,11 +86,11 @@ Generate and return the CSS font stylesheet for the current hub. Renders the fon
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/bootstrap.css
+https://hostname/-/api/bootstrap.css
 ```
 
 ### Parameters
@@ -118,11 +118,11 @@ Generate and return the DOM bootstrap JavaScript for the current hub. Merges run
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/bootstrap.dom
+https://hostname/-/api/bootstrap.dom
 ```
 
 ### Parameters
@@ -152,11 +152,11 @@ Accept and log a client-side error report. Reads the raw request payload for deb
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/bootstrap.report_error
+https://hostname/-/api/bootstrap.report_error
 ```
 
 ### Parameters
@@ -180,11 +180,11 @@ Return the platform RSA public key in PEM format. Reads the key from /etc/drumee
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/bootstrap.publicKey
+https://hostname/-/api/bootstrap.publicKey
 ```
 
 ### Parameters
@@ -206,11 +206,11 @@ Return a pair of timestamps used for client-server time synchronization. t2 is d
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/bootstrap.getSyncTimes
+https://hostname/-/api/bootstrap.getSyncTimes
 ```
 
 ### Parameters
@@ -233,11 +233,11 @@ Exchange an HTTP Authorization header credential for a short-lived opaque token.
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | anyone |
+| **Permission** | Anyone (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/bootstrap.authn
+https://hostname/-/api/bootstrap.authn
 ```
 
 ### Parameters
@@ -265,5 +265,6 @@ https://hostname/-/svc/bootstrap.authn
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

@@ -19,16 +19,17 @@ Two deployment options are supported:
 
 ## Architecture Overview
 
-Drumee is packaged as four Debian packages, all built from the [`drumee/debian`](https://github.com/drumee/debian) repository:
+Drumee is packaged as five core Debian packages, all built from the [`drumee/debian`](https://github.com/drumee/debian) repository. Each package bundles a different source repository:
 
-| Package | Repository | Contents |
-|---------|-----------|---------|
-| `static` | `drumee/static` | Fonts, icons, locale files, stylesheets |
-| `schemas` | `drumee/schemas` | MariaDB stored procedures and table definitions |
-| `server-team` | `drumee/server-team` | Backend Node.js services and ACL configuration |
-| `ui-team` | `drumee/ui-team` | Frontend LETC rendering engine |
+| Package | Source repository | Contents |
+|---------|-------------------|---------|
+| `drumee-infra` | `drumee/setup-infra` | nginx, PM2 ecosystem and system configuration |
+| `drumee-schemas` | `drumee/schemas` | MariaDB stored procedures and table definitions |
+| `drumee-static` | `drumee/static` | Fonts, icons, locale files, stylesheets |
+| `drumee-server-pod` | `drumee/server-team` | Backend Node.js services and ACL configuration |
+| `drumee-ui-pod` | `drumee/ui-team` | Frontend LETC rendering engine |
 
-Both Docker and bare metal installations use the same four packages. Docker simply wraps them in a container with all system dependencies pre-installed.
+They are installed in dependency order: `drumee-infra` → `drumee-schemas` → `drumee-static` → `drumee-server-pod` → `drumee-ui-pod`. A separate `drumee-schemas-patch` package ships incremental schema migrations. Both Docker and bare metal installations use the same packages; Docker simply wraps them in a container with all system dependencies pre-installed.
 
 ---
 
@@ -187,7 +188,7 @@ The browser will show an SSL certificate warning for the local domain — click 
 You can set the password at anytime with 
 
 ```bash
-  docker exec drumme mariadb yp -e "call set_password('admin@local.drumee', 'your-password')"
+  docker exec drumee mariadb yp -e "call set_password('admin@local.drumee', 'your-password')"
 ```
 
 ---
@@ -354,7 +355,7 @@ cd /path/to/debian-hosted
 ```
 
 The installer:
-1. Installs all system dependencies (nginx, MariaDB, Node.js v21, Redis, Jitsi, Postfix, bind9, ffmpeg, LibreOffice, and more)
+1. Installs all system dependencies (nginx, MariaDB, Node.js v22, Redis, Jitsi, Postfix, bind9, ffmpeg, LibreOffice, and more)
 2. Downloads and installs the Drumee Debian packages from the package repository
 3. Generates SSL certificates via the ACME server
 4. Starts all services (drumee, nginx, mariadb, redis, prosody, jitsi, postfix)

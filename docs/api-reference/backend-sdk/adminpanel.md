@@ -23,7 +23,7 @@ Create a new organisation for the current domain owner. Requires an active subsc
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -61,7 +61,7 @@ Update the display name of the current user's organisation. Requires admin-level
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -99,7 +99,7 @@ Update the password strength policy level for the organisation. Requires securit
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -137,7 +137,7 @@ Update the two-factor authentication policy for the organisation. Requires secur
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -175,7 +175,7 @@ Update the directory visibility policy for the organisation (controls whether me
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -213,7 +213,7 @@ Update the directory information policy for the organisation (controls which mem
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -251,7 +251,7 @@ Retrieve the current user's active subscription record.
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -282,7 +282,7 @@ Retrieve the organisation that the current user belongs to.
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -313,7 +313,7 @@ Retrieve the current user's privilege level within the domain. Returns dom_owner
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -345,7 +345,7 @@ Forcibly set a user's password by their ID. Admin operation that does not requir
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -381,7 +381,7 @@ Enable or disable multi-factor authentication for a specific member. Updates the
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -418,7 +418,7 @@ Add a new role to the current domain's organisation. Requires member-admin privi
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -490,7 +490,7 @@ Delete a role from the current domain's organisation by role ID. Requires member
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -527,7 +527,7 @@ Assign one or more roles to a member within the current domain's organisation. V
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -600,7 +600,7 @@ Rename an existing role in the current domain's organisation. No-op if the new n
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -638,7 +638,7 @@ Reorder roles within the organisation by updating their rank positions.
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -671,7 +671,7 @@ Create and register a new member in the domain's organisation. Creates the user 
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -714,7 +714,7 @@ Update an existing member's profile, role assignments, and OTP settings within t
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -764,12 +764,12 @@ https://hostname/-/svc/adminpanel.member_update
 
 ## adminpanel.member_delete
 
-Move a member to the Free plan (domain_id=1) instead of deleting them permanently. The member leaves all paid domain hubs; hub ownership is transferred to domain admins where applicable. Sends a removal notification email and broadcasts the change via WebSocket.
+Move a member to the Free plan (domain_id=1) instead of deleting them permanently. The member leaves all paid domain hubs; hub ownership is transferred to domain admins where applicable. Sends a removal notification email and broadcasts the change via WebSocket. Caller must have admin privilege and must outrank the target member.
 
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Owner (7) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -796,17 +796,19 @@ https://hostname/-/svc/adminpanel.member_delete
 |------------|-------------|-------------|
 | `NO_ORG` | 404 | Sanity check failed: user not found, missing db_name, or domain mismatch |
 | `NO_MEMBER` | 404 | Target user is not a member of the organisation |
+| `NOT_ENOUGH_PRIVILEGE` | 403 | Caller's privilege is lower than the target member's privilege |
+| `INCORRECT_DOMAIN` | 403 | Target member has no domain privilege record |
 
 ---
 
 ## adminpanel.member_disconnect
 
-Permanently remove a member who has never connected (connected=0) from the organisation. Removes them from all hubs, transfers hub ownership to eligible members, and deletes their home directory. This is a destructive, irreversible operation.
+Permanently remove a member who has never connected (connected=0) from the organisation. Removes them from all hubs, transfers hub ownership to eligible members, and deletes their home directory. This is a destructive, irreversible operation. Caller must have admin privilege and must outrank the target member.
 
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Owner (7) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -920,7 +922,7 @@ Change a member's account status within the organisation. Valid transitions: act
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -965,7 +967,7 @@ Retrieve the paginated login history for a specific member. Validates that the t
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -1001,7 +1003,7 @@ Bulk import members into the organisation. Implementation is handled internally.
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -1017,7 +1019,7 @@ Grant an elevated admin privilege level to one or more existing members. Require
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -1058,7 +1060,7 @@ List admin-level members of the organisation. Deprecated: code is marked for del
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -1093,7 +1095,7 @@ Revoke admin privilege from one or more members, downgrading them to regular mem
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -1131,7 +1133,7 @@ Set a member's profile blocked flag to yes. Deprecated: code is marked for delet
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -1169,7 +1171,7 @@ Clear a member's profile blocked flag (set to no). Deprecated: code is marked fo
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -1207,7 +1209,7 @@ Update the OTP authentication method for a specific member. Validates privilege 
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -1248,7 +1250,7 @@ Parse and validate a CSV file for bulk member import. Checks email availability,
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -1289,7 +1291,7 @@ Generate a new random password and send a reset or invitation link to one or mor
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -1327,7 +1329,7 @@ Initiate an admin impersonation (mimic) session targeting a specific member. For
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -1365,7 +1367,7 @@ Reject a pending mimic session. Must be called by the target user (the one being
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -1402,7 +1404,7 @@ Accept and activate a pending mimic session. Must be called by the target user. 
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -1441,7 +1443,7 @@ Terminate an active mimic session initiated by the impersonating admin (mimicker
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -1478,7 +1480,7 @@ Terminate an active mimic session by the target user being impersonated. Restore
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -1515,7 +1517,7 @@ Terminate an active mimic session that has exceeded its allowed duration. Waits 
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -1553,7 +1555,7 @@ Update the list of organisation members that a specific member is allowed to see
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -1593,7 +1595,7 @@ Retrieve the current list of organisation members that a specific member is allo
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -1630,7 +1632,7 @@ Create a new organisation for a user currently on the default domain (domain_id=
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -1655,7 +1657,7 @@ https://hostname/-/svc/adminpanel.create_organisation
 
 | Error Code | HTTP Status | Description |
 |------------|-------------|-------------|
-| `already_in_other_domain` | 409 | Current user already belongs to a non-default organisation (domain_id > 1) |
+| `already_in_other_domain` | 409 | Current user already belongs to a non-default organisation (domain_id &gt; 1) |
 | `domain_not_available` | 409 | Requested ident is already registered as a domain identifier |
 
 ---
@@ -1663,5 +1665,6 @@ https://hostname/-/svc/adminpanel.create_organisation
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes
