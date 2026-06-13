@@ -73,12 +73,16 @@ You don't need to manually add these — they are injected automatically:
 
 ### Default headers
 
-| Header             | Value                               |
-| ------------------ | ----------------------------------- |
-| `Accept`           | `*/*`                               |
-| `Content-Type`     | `application/json`                  |
-| `x-param-keysel`   | Session key selector (if available) |
-| `x-param-{keysel}` | Session token (if available)        |
+| Header                 | Value                               |
+| ---------------------- | ----------------------------------- |
+| `Accept`               | `*/*`                               |
+| `Content-Type`         | `application/json`                  |
+| `x-param-lang`         | UI language                         |
+| `x-param-page-language`| Page language                       |
+| `x-param-device`       | Device type                         |
+| `x-param-device-id`    | Device identifier                   |
+| `x-param-keysel`       | Session key selector (if available) |
+| `x-param-{keysel}`     | Session token (if available)        |
 
 Header keys with underscores or spaces are **automatically normalized to kebab-case**:  
 `my_custom_header` → `my-custom-header`

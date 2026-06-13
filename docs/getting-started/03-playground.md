@@ -101,6 +101,6 @@ The sandbox runs against the live Drumee platform, so responses reflect real sys
 
 ## See Also
 
-- [ACL System](../concepts/acl-system.md) — how permission checks work
+- [ACL System](../technology/02-acl-system.md) — how permission checks work
 - [ACL Field Specification](../api-reference/acl-spec.md) — full reference for service permission fields
 - [Backend SDK Reference](../api-reference/backend-sdk/index.md) — all available services grouped by module

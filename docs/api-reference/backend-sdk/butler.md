@@ -12,7 +12,7 @@ sidebar_label: butler
 - Private: `service/butler.js`
 - Public: `service/butler.js`
 
-**Available Services:** 26
+**Available Services:** 27
 **Documented Services:** 12
 
 ---
@@ -24,7 +24,7 @@ Check if a domain is associated with an organization. Validates domain, retrieve
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -57,7 +57,7 @@ Validate a token (used for password reset, email verification, etc.). Checks tok
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -93,7 +93,7 @@ Complete the signup process. Final step in multi-stage registration flow to fina
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -109,7 +109,7 @@ Generate and send a password reset token via email. Creates a secret token and e
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -145,7 +145,7 @@ Get geographic IP information for the current request. Uses geoip-lite to lookup
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -176,7 +176,7 @@ Health check endpoint. Returns visitor information and debug data. Used for test
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -208,7 +208,7 @@ Unsubscribe an email from mailing list. Updates the emailing table to mark the e
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -241,7 +241,7 @@ Set new password through reset link. Validates the reset token and updates user 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -280,7 +280,7 @@ Create a new Drumee account. Validates socket binding, checks for existing user,
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 | **Logging** | Enabled |
 
 **Endpoint:**
@@ -323,7 +323,7 @@ Initiate Google OAuth authentication flow. Redirects user to Google login page f
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -339,11 +339,27 @@ Handle Google OAuth callback. Processes authorization code from Google and compl
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
 https://hostname/-/svc/butler.google_callback
+```
+
+---
+
+## butler.google_drive_callback
+
+Handle Google Drive OAuth elevation callback. Exchanges the auth code for an access_token + refresh_token with drive.readonly scope and UPDATEs the existing oauth_accounts row. Returns a self-closing HTML page that postMessages the opener.
+
+| Property | Value |
+|----------|-------|
+| **Scope** | Hub (requires hub context) |
+| **Permission** | Anonymous (1) |
+
+**Endpoint:**
+```
+https://hostname/-/svc/butler.google_drive_callback
 ```
 
 ---
@@ -355,7 +371,7 @@ B2B signup step 1: Collect company information. First step in business account r
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -371,7 +387,7 @@ B2B signup step 2: Set account password. Create password for business account af
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 | **Logging** | Enabled |
 
 **Endpoint:**
@@ -388,7 +404,7 @@ B2B signup step 3: Collect personal data. Gather user's personal information for
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -404,7 +420,7 @@ B2B signup step 4: Verify OTP code. Validate one-time password sent via SMS to c
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -420,7 +436,7 @@ B2B signup: Resend OTP code. Request a new one-time password if previous code ex
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -436,7 +452,7 @@ B2C signup: Skip OTP verification. Allow user to complete registration without S
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -452,7 +468,7 @@ B2C signup: Set account password. Create password for consumer account during re
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 | **Logging** | Enabled |
 
 **Endpoint:**
@@ -469,7 +485,7 @@ B2C signup: Verify OTP code. Validate one-time password sent via SMS to complete
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -485,7 +501,7 @@ Get OTP (One-Time Password) code. Generates and sends OTP via SMS to the user's 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -518,7 +534,7 @@ B2C signup: Resend OTP code. Request a new one-time password if previous code ex
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -534,7 +550,7 @@ Set password in forgot password flow. Part of multi-step password reset process.
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -575,7 +591,7 @@ Verify OTP code for password reset flow. Final step in forgot password with OTP.
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -614,7 +630,7 @@ Resend OTP code for password reset. Generates a new OTP and sends it via SMS. Us
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -651,7 +667,7 @@ Send files via transferbox. Transfer files to external recipients without requir
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -667,7 +683,7 @@ Delete files from transferbox. Remove previously sent files from transferbox sto
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -679,5 +695,6 @@ https://hostname/-/svc/butler.transferbox_files_delete
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

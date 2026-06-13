@@ -24,7 +24,7 @@ Create a new transfer folder node for the current hub. Generates a random folder
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 | **Logging** | Enabled |
 
 **Endpoint:**
@@ -57,7 +57,7 @@ Send a transfer download link to one or more email recipients. Spawns an offline
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 | **Logging** | Enabled |
 
 **Endpoint:**
@@ -98,7 +98,7 @@ Package the source-granted transfer folder into a ZIP archive and generate a pub
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 | **Logging** | Enabled |
 
 **Endpoint:**
@@ -353,5 +353,6 @@ https://hostname/-/svc/transfer.delete
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

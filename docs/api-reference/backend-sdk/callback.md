@@ -28,7 +28,7 @@ Stripe webhook receiver. Validates the incoming request signature using the stri
 
 **Endpoint:**
 ```
-https://hostname/-/svc/callback.stripe
+https://hostname/-/api/callback.stripe
 ```
 
 ### Parameters
@@ -63,7 +63,7 @@ Stripe checkout success callback. Retrieves the completed checkout session from 
 
 **Endpoint:**
 ```
-https://hostname/-/svc/callback.check_out_success
+https://hostname/-/api/callback.check_out_success
 ```
 
 ### Parameters
@@ -97,7 +97,7 @@ Stripe checkout cancellation callback. Redirects the browser to the desk payment
 
 **Endpoint:**
 ```
-https://hostname/-/svc/callback.check_out_cancel
+https://hostname/-/api/callback.check_out_cancel
 ```
 
 ### Parameters
@@ -115,5 +115,6 @@ https://hostname/-/svc/callback.check_out_cancel
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

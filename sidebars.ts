@@ -74,6 +74,7 @@ const sidebars: SidebarsConfig = {
                     "api-reference/backend-sdk/transfer",
                     "api-reference/backend-sdk/trash",
                     "api-reference/backend-sdk/sharebox",
+                    "api-reference/backend-sdk/secure_share",
                     "api-reference/backend-sdk/util",
                   ],
                 },
@@ -95,6 +96,7 @@ const sidebars: SidebarsConfig = {
                     "api-reference/backend-sdk/contact",
                     "api-reference/backend-sdk/tagcontact",
                     "api-reference/backend-sdk/tag",
+                    "api-reference/backend-sdk/label",
                     "api-reference/backend-sdk/blacklist",
                     "api-reference/backend-sdk/block",
                   ],
@@ -109,6 +111,7 @@ const sidebars: SidebarsConfig = {
                     "api-reference/backend-sdk/room",
                     "api-reference/backend-sdk/signaling",
                     "api-reference/backend-sdk/activity",
+                    "api-reference/backend-sdk/task",
                   ],
                 },
                 {
@@ -264,6 +267,8 @@ const sidebars: SidebarsConfig = {
         "product-guides/01-creating-widget",
         "product-guides/02-creating-service",
         "product-guides/03-permission-management",
+        "product-guides/04-acl-permissions",
+        "product-guides/05-error-handling",
       ],
     },
     {

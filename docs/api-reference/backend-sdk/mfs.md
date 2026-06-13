@@ -24,7 +24,7 @@ Export files/folders to server filesystem for cross-Drumee transfer or backup
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -69,7 +69,7 @@ Import files/folders from server filesystem into MFS
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -126,8 +126,8 @@ https://hostname/-/svc/mfs.node_summary
 
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
-| `hub_id` | `string` (pattern: `^[a-z0-9]{16}$`) | **Yes** | - | Hub ID containing the node |
-| `nid` | `string` (pattern: `^[a-z0-9]{16}$`) | **Yes** | - | Node ID (file or folder) |
+| `hub_id` | `string (pattern: `^[a-z0-9]{16}$`)` | **Yes** | - | Hub ID containing the node |
+| `nid` | `string (pattern: `^[a-z0-9]{16}$`)` | **Yes** | - | Node ID (file or folder) |
 
 ### Returns
 
@@ -154,5 +154,6 @@ https://hostname/-/svc/mfs.node_summary
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

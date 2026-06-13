@@ -24,7 +24,7 @@ Submit a bug report from the current user. Reads all fields from the vars input 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -57,7 +57,7 @@ Submit a feedback comment. Calls feedback_create stored procedure with the provi
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -90,7 +90,7 @@ List all submitted feedback with sorting and pagination. Requires special_access
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 | **Pre-check** | `special_access` (validation before execution) |
 
 **Endpoint:**
@@ -122,5 +122,6 @@ https://hostname/-/svc/support.list_feedback
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

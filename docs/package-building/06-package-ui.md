@@ -43,7 +43,7 @@ UI_BUILD_MODE=production
 
 Webpack is run from within the `ui-team` source directory. The compiled bundles are packaged into the `.deb`.
 
-`--compile` defaults to `yes`; pass `--compile=no` to skip the webpack step (the build directory is wiped and rebuilt on every run regardless).
+`--compile` is accepted for backward compatibility but is **currently not honoured** — `ui/build.sh` parses the flag yet never reads it, so webpack always runs regardless of `--compile=no`. The build directory is wiped and rebuilt on every run.
 
 ## Installed Paths
 

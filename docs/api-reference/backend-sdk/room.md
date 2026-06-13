@@ -24,7 +24,7 @@ Book a new meeting room. Creates a scheduled meeting node (category=schedule, ex
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -60,7 +60,7 @@ Get all members invited to a meeting room. Returns the list of DMZ users who hav
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -175,7 +175,7 @@ Register a guest user session for public meeting access. Binds a guest name to t
 
 **Endpoint:**
 ```
-https://hostname/-/svc/room.hello
+https://hostname/-/api/room.hello
 ```
 
 ### Parameters
@@ -204,7 +204,7 @@ Invite a peer to join an active room. Sends a room_invite_next event to the targ
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -318,7 +318,7 @@ Generate a public shareable link for a meeting room node. Creates a DMZ grant to
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -356,7 +356,7 @@ Shut down an active room session. Reserved for admin-level room lifecycle manage
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -389,7 +389,7 @@ Remove a meeting room and revoke all permissions. Revokes all permissions on the
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -458,7 +458,7 @@ Request access to join an active room as a participant. Verifies room permission
 
 **Endpoint:**
 ```
-https://hostname/-/svc/room.requestAccess
+https://hostname/-/api/room.requestAccess
 ```
 
 ### Parameters
@@ -496,7 +496,7 @@ Manage unified room state for multi-participant sessions. Supports four operatio
 
 **Endpoint:**
 ```
-https://hostname/-/svc/room.unified_room
+https://hostname/-/api/room.unified_room
 ```
 
 ### Parameters
@@ -532,7 +532,7 @@ Update a scheduled meeting room. Supports partial or full updates controlled by 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -598,5 +598,6 @@ https://hostname/-/svc/room.users
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

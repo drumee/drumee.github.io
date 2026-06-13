@@ -44,10 +44,10 @@ Drumee uses a **numeric (bitwise)privilege model**. One bit represents a particu
 | owner | 32 | The resource owner. Highest privilege level. |
 
 
-Example: to write into a file, the user must request the permission 8 (0b01000).  
-If the granted privilege is read only 3 (anonymous + read, i.e 0b00011) the request is rejected.
+Example: to write into a file, the user must request the permission 8 (`0b001000`).  
+If the granted privilege is read only 3 (anonymous + read, i.e `0b000011`) the request is rejected.
 
-A caller with the owner privilege (0b0111111, i.e 63) satisfies any permission requirement. A caller with write privilege (0b0001111, i.e 15) cannot call services requiring admin permission (16) or owner (32).
+A privilege word combines several of these bits. A caller with the owner privilege word (`0b111111`, i.e 63) satisfies any permission requirement. A caller whose privilege word is the "manager" level (`0b001111`, i.e 15 — anonymous + read + download + write) holds the write bit but **not** the admin (16) or owner (32) bits, so it cannot call services requiring admin or owner permission.
 
 ## Scope Types
 

@@ -39,7 +39,6 @@ Skeletons.RichText("My text", "my-class")
 | `autofocus`   | Number / Boolean | Focus the editor on render                          |
 | `placeholder` | String           | Placeholder text shown when empty                   |
 | `service`     | String           | Service triggered on submit or raise                |
-| `autolink`    | Number           | `1` to automatically detect and linkify URLs        |
 | `tags`        | Any              | Tag configuration for tagging support               |
 | `uiHandler`   | Widget           | Routes interaction events to `onUiEvent`            |
 
@@ -47,7 +46,7 @@ Skeletons.RichText("My text", "my-class")
 
 ## Examples
 
-### Editable note with autolink and tags
+### Editable note with tags
 
 ```js
 Skeletons.RichText({
@@ -57,12 +56,15 @@ Skeletons.RichText({
   role: "editor",
   readwrite: 1,
   autofocus: 1,
-  autolink: 1,
   placeholder: LOCALE.MY_PLACEHOLDER,
   service: "raise",
   tags,
 });
 ```
+
+> **Note:** automatic URL linkification (`autolink`) is **not currently implemented** — the
+> `Autolinker` integration is commented out in `widgets/text/editable`. Passing `autolink`
+> has no effect; it has been removed from the prop list above until the feature is restored.
 
 ### Interactive viewer with initial content
 

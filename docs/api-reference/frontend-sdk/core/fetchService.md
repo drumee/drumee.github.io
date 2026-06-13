@@ -65,12 +65,17 @@ fetchService(service, payload)
 
 ### Flat payload — key=value pairs
 
-When all values are primitives (string, number, boolean), each is URI-encoded and joined:
+When all values are primitives (string, number, boolean), each is encoded with `encodeURI` and joined:
 
 ```js
 // payload: { uid: "abc 123", page: 1 }
 // → ?uid=abc%20123&page=1&
 ```
+
+> **Caveat:** flat values are encoded with `encodeURI`, **not** `encodeURIComponent`. `encodeURI`
+> does not escape `&`, `=`, `+`, `?`, or `#`, so a flat string value containing those characters
+> will corrupt the query string. For values that may contain such characters, pass a nested
+> object/array instead (which is JSON-stringified and fully `encodeURIComponent`-encoded).
 
 ### Nested payload — JSON-encoded
 
@@ -98,12 +103,16 @@ The same automatic injections as `postService` — you don't need to add these m
 
 ### Default headers
 
-| Header             | Value                               |
-| ------------------ | ----------------------------------- |
-| `Accept`           | `*/*`                               |
-| `Content-Type`     | `application/json`                  |
-| `x-param-keysel`   | Session key selector (if available) |
-| `x-param-{keysel}` | Session token (if available)        |
+| Header                 | Value                               |
+| ---------------------- | ----------------------------------- |
+| `Accept`               | `*/*`                               |
+| `Content-Type`         | `application/json`                  |
+| `x-param-lang`         | UI language                         |
+| `x-param-page-language`| Page language                       |
+| `x-param-device`       | Device type                         |
+| `x-param-device-id`    | Device identifier                   |
+| `x-param-keysel`       | Session key selector (if available) |
+| `x-param-{keysel}`     | Session token (if available)        |
 
 Header keys with underscores or spaces are **automatically normalized to kebab-case**:  
 `my_custom_header` → `my-custom-header`

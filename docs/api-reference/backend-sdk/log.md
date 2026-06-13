@@ -18,12 +18,12 @@ sidebar_label: log
 
 ## log.read
 
-Read paginated entries from the server debug log file (log_dir/instance_name/debug.log). Reads the file, splits by newline, reverses the array to return most recent entries first, and returns a page of 20 entries starting from the requested page offset. Each line is parsed as JSON via parseJSON. Requires special_access precheck: the authenticated user must have remit >= 2 in the visitor table.
+Read paginated entries from the server debug log file (log_dir/instance_name/debug.log). Reads the file, splits by newline, reverses the array to return most recent entries first, and returns a page of 20 entries starting from the requested page offset. Each line is parsed as JSON via parseJSON. Requires special_access precheck: the authenticated user must have remit &gt;= 2 in the visitor table.
 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -48,7 +48,7 @@ https://hostname/-/svc/log.read
 
 | Error Code | HTTP Status | Description |
 |------------|-------------|-------------|
-| `DENIED` | - | User does not have sufficient remit level (remit < 2) to access logs |
+| `DENIED` | - | User does not have sufficient remit level (remit &lt; 2) to access logs |
 | `INTERNAL_ERROR` | - | Failed to read the debug log file from the filesystem |
 
 ---
@@ -56,5 +56,6 @@ https://hostname/-/svc/log.read
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

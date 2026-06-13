@@ -23,7 +23,7 @@ Add one or more email addresses to the hub blacklist. A single email string is a
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -58,7 +58,7 @@ Remove one or more email addresses from the hub blacklist. A single email string
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -93,7 +93,7 @@ List all blacklisted email addresses for the current hub, paginated via the blac
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -123,5 +123,6 @@ https://hostname/-/svc/blacklist.show
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

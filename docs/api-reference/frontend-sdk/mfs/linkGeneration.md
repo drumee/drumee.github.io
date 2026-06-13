@@ -40,12 +40,15 @@ Returns the URL for displaying a media node — defaulting to a **vignette (thum
 ```
 url(format)
   │
-  ├── filetype is "vector" → default format = _a.orig
-  └── anything else        → default format = _a.vignette
+  ├── type is "vector" → default format = _a.orig
+  └── anything else     → default format = _a.vignette
   │
   └── format param overrides the default
         → delegates to super.url(resolvedFormat)
 ```
+
+> The variant is selected from the node's `type` field (`this.mget(_a.type)`), **not** `filetype`.
+> `viewerLink()` resolves its format the same way.
 
 ### Example
 

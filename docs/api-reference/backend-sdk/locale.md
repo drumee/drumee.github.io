@@ -23,8 +23,8 @@ Add a new internationalisation key with translations for all supported languages
 
 | Property | Value |
 |----------|-------|
-| **Scope** | plateform |
-| **Permission** | Write (4) |
+| **Scope** | Platform (cross-organisation; spelling per code) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -62,8 +62,8 @@ Rebuild all locale JSON files on the filesystem from the database. Iterates over
 
 | Property | Value |
 |----------|-------|
-| **Scope** | plateform |
-| **Permission** | modify |
+| **Scope** | Platform (cross-organisation; spelling per code) |
+| **Permission** | Modify (8) |
 
 **Endpoint:**
 ```
@@ -96,8 +96,8 @@ Delete an internationalisation key and all its language entries from the databas
 
 | Property | Value |
 |----------|-------|
-| **Scope** | plateform |
-| **Permission** | modify |
+| **Scope** | Platform (cross-organisation; spelling per code) |
+| **Permission** | Modify (8) |
 
 **Endpoint:**
 ```
@@ -134,8 +134,8 @@ List available internationalisation key codes matching an optional filter string
 
 | Property | Value |
 |----------|-------|
-| **Scope** | plateform |
-| **Permission** | Write (4) |
+| **Scope** | Platform (cross-organisation; spelling per code) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -172,7 +172,7 @@ Retrieve a single internationalisation entry by key code and type. Calls stored 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -210,7 +210,7 @@ Retrieve all internationalisation entries belonging to a named group. Calls stor
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -246,8 +246,8 @@ List internationalisation entries for a given category with pagination. Calls st
 
 | Property | Value |
 |----------|-------|
-| **Scope** | plateform |
-| **Permission** | Anonymous (0) |
+| **Scope** | Platform (cross-organisation; spelling per code) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -284,7 +284,7 @@ Search internationalisation entries by value string and category with pagination
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -321,8 +321,8 @@ Update an internationalisation entry value. When id is provided, updates the ent
 
 | Property | Value |
 |----------|-------|
-| **Scope** | plateform |
-| **Permission** | modify |
+| **Scope** | Platform (cross-organisation; spelling per code) |
+| **Permission** | Modify (8) |
 
 **Endpoint:**
 ```
@@ -362,5 +362,6 @@ https://hostname/-/svc/locale.update
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

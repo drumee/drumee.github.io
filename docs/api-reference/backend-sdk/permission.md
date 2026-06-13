@@ -23,7 +23,7 @@ Add users to hub with owner privileges. Grants owner-level access to specified u
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -60,7 +60,7 @@ Grant permissions to users for a specific node or entire hub. Assigns access pri
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -98,7 +98,7 @@ Revoke permissions from users for a specific node. Removes access privileges fro
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -135,7 +135,7 @@ Get or update permission settings for the hub. Manages default permission levels
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -151,7 +151,7 @@ Show all users with permissions for a specific node. Lists users who have access
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -181,5 +181,6 @@ https://hostname/-/svc/permission.show_users
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

@@ -23,7 +23,7 @@ Create a new contact tag. Adds a named tag to the user's hub for categorising co
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -57,7 +57,7 @@ Assign one or more tags to a contact entity or shared hub. Replaces all existing
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -99,7 +99,7 @@ Get all tags currently assigned to a contact entity. Queries the calling user's 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -136,7 +136,7 @@ Set a parent-child relationship between two tags. Validates that both tag and pa
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -174,7 +174,7 @@ Reorder the display position of tags. Accepts an ordered list of tag position en
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -211,7 +211,7 @@ Delete a contact tag by ID. Removes the tag record via the tag_remove stored pro
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -244,7 +244,7 @@ Rename an existing contact tag. Verifies the tag exists before applying the new 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -281,7 +281,7 @@ List tags with optional filtering and pagination. Wraps the tag_get_next stored 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -318,5 +318,6 @@ https://hostname/-/svc/tagcontact.show_tag_by
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

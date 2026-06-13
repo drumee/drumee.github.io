@@ -168,5 +168,5 @@ This means plugin updates can be applied without a full service restart by sendi
 ## See Also
 
 - [Own Cloud](./02-own-cloud.md) — server management commands and file structure
-- [Creating a Service](../guides/creating-service.md) — how to implement a service following the ACL pattern
+- [Creating a Service](../product-guides/02-creating-service.md) — how to implement a service following the ACL pattern
 - [ACL Field Specification](../api-reference/acl-spec.md) — ACL JSON field reference

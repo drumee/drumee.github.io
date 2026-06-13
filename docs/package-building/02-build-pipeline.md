@@ -48,7 +48,7 @@ Only these flags actually affect a build:
 
 | Script | Flag | Effect |
 |---|---|---|
-| `ui/build.sh` | `--compile=yes\|no` | Run the webpack compile step (default `yes`) |
+| `ui/build.sh` | `--compile=yes\|no` | Parsed but currently **not used** — webpack always runs, so this flag has no effect |
 | `ui/build.sh` | `--enable-api=yes\|no` | Also compile the `api` webpack target (default `no`) |
 | `schemas-patch/build.sh` | `--manifest=auto\|<file>` | **Required** — selects the patch manifest (see [schemas-patch](./08-package-schemas-patch.md)) |
 | `schemas-patch/build.sh` | `<N>` (positional) | Commit depth for `--manifest=auto` (default `2`) |

@@ -12,8 +12,8 @@ sidebar_label: contact
 - Private: `service/private/contact.js`
 - Public: `service/contact.js`
 
-**Available Services:** 42
-**Documented Services:** 22
+**Available Services:** 43
+**Documented Services:** 23
 
 ---
 
@@ -24,7 +24,7 @@ Send a contact invitation by email. Creates a contact entry and dispatches an in
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -67,7 +67,7 @@ Accept a pending contact invitation from another Drumee user. Creates a bidirect
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -104,7 +104,7 @@ Refuse a pending contact invitation from another Drumee user. Updates the invita
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -141,7 +141,7 @@ Manually add a new contact by Drumee user ID or by email address list. These two
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -153,12 +153,12 @@ https://hostname/-/svc/contact.add
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
 | `invitee_id` | `string` | No | - | Drumee user ID of the contact to add. Mutually exclusive with email array. |
-| `email` | `array` | No | - | Array of email objects: [`{ email, is_default, category }`]. Required if invitee_id is not provided. One entry must have is_default=1. |
+| `email` | `array` | No | - | Array of email objects: [\{ email, is_default, category \}]. Required if invitee_id is not provided. One entry must have is_default=1. |
 | `firstname` | `string` | No | - | Contact's first name |
 | `lastname` | `string` | No | - | Contact's last name |
 | `surname` | `string` | No | - | Contact's middle or additional name |
-| `mobile` | `array` | No | - | Array of phone objects: [`{ phone, areacode, category, is_default }`] |
-| `address` | `array` | No | - | Array of address objects: [`{ street, city, country, category, is_default }`] |
+| `mobile` | `array` | No | - | Array of phone objects: [\{ phone, areacode, category, is_default \}] |
+| `address` | `array` | No | - | Array of address objects: [\{ street, city, country, category, is_default \}] |
 | `tag` | `array` | No | - | Array of tag identifiers to assign to this contact |
 | `comment` | `string` | No | - | Internal comment or note about this contact |
 | `message` | `string` | No | - | Personal message included in invitation email when invite=1 |
@@ -194,7 +194,7 @@ Update an existing contact's information including name, email addresses, phone 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -209,9 +209,9 @@ https://hostname/-/svc/contact.update
 | `firstname` | `string` | No | - | Updated first name. Required when the contact is linked to a Drumee user (uid is set). |
 | `lastname` | `string` | No | - | Updated last name. Required when the contact is linked to a Drumee user (uid is set). |
 | `surname` | `string` | No | - | Updated middle or additional name |
-| `email` | `array` | No | - | Replacement email list: [`{ email, is_default, category }`]. Fully replaces existing emails. |
-| `mobile` | `array` | No | - | Replacement phone list: [`{ phone, areacode, category, is_default }`]. Fully replaces existing phones. |
-| `address` | `array` | No | - | Replacement address list: [`{ street, city, country, category, is_default }`]. Fully replaces existing addresses. |
+| `email` | `array` | No | - | Replacement email list: [\{ email, is_default, category \}]. Fully replaces existing emails. |
+| `mobile` | `array` | No | - | Replacement phone list: [\{ phone, areacode, category, is_default \}]. Fully replaces existing phones. |
+| `address` | `array` | No | - | Replacement address list: [\{ street, city, country, category, is_default \}]. Fully replaces existing addresses. |
 | `tag` | `array` | No | - | Replacement tag list. Fully replaces existing tags. |
 | `comment` | `string` | No | - | Updated internal comment |
 | `message` | `string` | No | - | Message for invitation email (used when invite=1) |
@@ -243,12 +243,12 @@ https://hostname/-/svc/contact.update
 
 ## contact.show_contact
 
-List the current user's contacts with optional filtering by tag, name, and status. Free users (domain_id=1) see only their personal contact table. Paid users (domain_id>1) see personal contacts only; same-domain colleagues are available via my_contacts.
+List the current user's contacts with optional filtering by tag, name, and status. Free users (domain_id=1) see only their personal contact table. Paid users (domain_id&gt;1) see personal contacts only; same-domain colleagues are available via my_contacts.
 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -281,12 +281,12 @@ https://hostname/-/svc/contact.show_contact
 
 ## contact.my_contacts
 
-Search and filter the current user's contacts. Free users (domain_id=1) see only their personal contact table. Paid users (domain_id>1) see personal contacts UNION colleagues from the same domain. Returns an empty array when the search key is empty.
+Search and filter the current user's contacts. Free users (domain_id=1) see only their personal contact table. Paid users (domain_id&gt;1) see personal contacts UNION colleagues from the same domain. Returns an empty array when the search key is empty.
 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -317,6 +317,41 @@ https://hostname/-/svc/contact.my_contacts
 
 ---
 
+## contact.email_in_use
+
+Check whether an email is already referenced by any of the caller's contacts — as the contact's entity (default identifier) or in their contact_email rows. Pass contact_id when editing to exclude that contact from the check.
+
+| Property | Value |
+|----------|-------|
+| **Scope** | Hub (requires hub context) |
+| **Permission** | Owner (32) |
+
+**Endpoint:**
+```
+https://hostname/-/svc/contact.email_in_use
+```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `email` | `string` | **Yes** | - | Email address to check |
+| `contact_id` | `string` | No | - | Contact ID to exclude (the one being edited) |
+
+### Returns
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `type` | `any` | - |
+| `doc` | `any` | - |
+| `properties` | `any` | - |
+
+### Possible Errors
+
+*Error codes not documented*
+
+---
+
 ## contact.get_contact
 
 Retrieve full details of a specific contact including all associated email addresses, phone numbers, postal addresses, and tags.
@@ -324,7 +359,7 @@ Retrieve full details of a specific contact including all associated email addre
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -358,7 +393,7 @@ Permanently delete a contact from the current user's contact list. Sends a real-
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -392,7 +427,7 @@ Search for Drumee users across the platform by keyword within the current domain
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -428,7 +463,7 @@ Retrieve the list of pending contact invitations received by the current user. U
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -460,7 +495,7 @@ Get the count of pending contact invitations received by the current user. Used 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -492,7 +527,7 @@ Acknowledge that the current user has been notified that their sent invitation w
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -529,7 +564,7 @@ Block a contact to prevent further interaction. Updates the contact relationship
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -563,7 +598,7 @@ Unblock a previously blocked contact, restoring the contact relationship. Sends 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -597,7 +632,7 @@ Change the status of a contact to 'active' (restore) or 'archived' (soft-archive
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -635,7 +670,7 @@ Join a contact network via an invitation token received in an invitation email. 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -672,7 +707,7 @@ Get a contact summary for a hub node. Returns the count of active contacts and t
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -710,7 +745,7 @@ Initiate the Google OAuth authorization flow to import contacts from Google Cont
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -742,7 +777,7 @@ Check the status of a contact invitation using its token. Public endpoint (no au
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -777,7 +812,7 @@ Import contacts from an uploaded CSV or VCF (vCard) file. Processes the file and
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -818,7 +853,7 @@ Retrieve the current online/offline presence state of all contacts. Used to disp
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -850,7 +885,7 @@ https://hostname/-/svc/contact.connection_status
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -866,7 +901,7 @@ https://hostname/-/svc/contact.add_to_group
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -882,7 +917,7 @@ https://hostname/-/svc/contact.create_group
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -898,7 +933,7 @@ https://hostname/-/svc/contact.delete
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -914,7 +949,7 @@ https://hostname/-/svc/contact.delete_contact_address
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -930,7 +965,7 @@ https://hostname/-/svc/contact.delete_contact_email
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -946,7 +981,7 @@ https://hostname/-/svc/contact.delete_contact_phone
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -962,7 +997,7 @@ https://hostname/-/svc/contact.delete_group
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -978,7 +1013,7 @@ https://hostname/-/svc/contact.export_all
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -994,7 +1029,7 @@ https://hostname/-/svc/contact.get
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -1010,7 +1045,7 @@ https://hostname/-/svc/contact.get_group_avatar
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -1026,7 +1061,7 @@ https://hostname/-/svc/contact.import
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -1042,7 +1077,7 @@ https://hostname/-/svc/contact.invite_drumate
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -1058,7 +1093,7 @@ https://hostname/-/svc/contact.remove_from_group
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -1074,7 +1109,7 @@ https://hostname/-/svc/contact.search_drumee_contacts
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -1090,7 +1125,7 @@ https://hostname/-/svc/contact.search_my_contacts
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -1106,7 +1141,7 @@ https://hostname/-/svc/contact.set_group_avatar
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -1122,7 +1157,7 @@ https://hostname/-/svc/contact.show
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -1138,7 +1173,7 @@ https://hostname/-/svc/contact.show_gmail_contacts
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -1154,7 +1189,7 @@ https://hostname/-/svc/contact.show_groups
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -1166,5 +1201,6 @@ https://hostname/-/svc/contact.show_members
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

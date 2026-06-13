@@ -24,7 +24,7 @@ Accept a pending share notification and grant the shared node access to the curr
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -57,7 +57,7 @@ Assign sharing permissions to one or more users (drumates or guests) for source 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 | **Pre-check** | `pre_assign` (validation before execution) |
 
 **Endpoint:**
@@ -101,7 +101,7 @@ Copy (clone) a share link for a node granting permission to the nobody/public us
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 | **Pre-check** | `pre_link` (validation before execution) |
 
 **Endpoint:**
@@ -139,7 +139,7 @@ Copy source nodes to a sharebox outbound folder. Renames nodes via rename_trash 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 | **Pre-check** | `pre_transact` (validation before execution) |
 
 **Endpoint:**
@@ -171,7 +171,7 @@ Create an inbound drop link for specific recipient email addresses. Creates a su
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 | **Pre-check** | `pre_share_in` (validation before execution) |
 
 **Endpoint:**
@@ -210,7 +210,7 @@ Create an outbound share link for source nodes. Checks or creates a DMZ share to
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 | **Pre-check** | `pre_link` (validation before execution) |
 
 **Endpoint:**
@@ -246,7 +246,7 @@ Create a private sharebox folder accessible only by a specific guest email. Veri
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -288,7 +288,7 @@ Create a public sharebox folder accessible to anyone with the link. Creates a na
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -329,7 +329,7 @@ Get attributes and link for a sharebox node. Retrieves DMZ share link content vi
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -396,7 +396,7 @@ Get sharing attributes for a specific node with a given option context. Queries 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -430,7 +430,7 @@ Get outbound sharing attributes for one or more nodes. Returns sharing metadata 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -463,7 +463,7 @@ Get count of pending sharebox notifications for the current user. The private im
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -494,7 +494,7 @@ Get list of pending sharebox notifications for the current user. The private imp
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -525,7 +525,7 @@ Refuse (decline) a pending share notification. Removes the notification via yp_n
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -558,7 +558,7 @@ Remove a share link for a node. Deletes the DMZ share record via dmz_delete_shar
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -592,7 +592,7 @@ Remove an open (public) share link. Reserved endpoint for removing publicly acce
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -623,7 +623,7 @@ Revoke sharing permissions from one or more users for the preloaded source nodes
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 | **Pre-check** | `pre_revoke` (validation before execution) |
 
 **Endpoint:**
@@ -657,7 +657,7 @@ Update the permission and expiry settings of an existing sharebox. Looks up the 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -697,7 +697,7 @@ Update permission and expiry for an existing share link identified by share ID. 
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -730,5 +730,6 @@ https://hostname/-/svc/sharebox.update_link
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

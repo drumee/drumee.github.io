@@ -12,8 +12,8 @@ sidebar_label: authn
 - Private: `service/authn.js`
 - Public: `service/authn.js`
 
-**Available Services:** 1
-**Documented Services:** 1
+**Available Services:** 5
+**Documented Services:** 5
 
 ---
 
@@ -24,11 +24,11 @@ Exchange an HTTP Authorization header credential for a short-lived opaque token.
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | anyone |
+| **Permission** | Anyone (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/authn.create
+https://hostname/-/api/authn.create
 ```
 
 ### Parameters
@@ -52,8 +52,131 @@ https://hostname/-/svc/authn.create
 
 ---
 
+## authn.begin
+
+Begin a CLI device-pairing (npm-style login). Creates a pending pairing and returns a device_code the CLI polls with and a short user_code the user approves in the app. Anonymous.
+
+| Property | Value |
+|----------|-------|
+| **Scope** | Hub (requires hub context) |
+| **Permission** | Anonymous (1) |
+
+**Endpoint:**
+```
+https://hostname/-/api/authn.begin
+```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `label` | `string` | No | - | Human label for the device/session being paired |
+
+### Returns
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `device_code` | `string` | Secret handle the CLI polls with |
+| `user_code` | `string` | Short code the user approves in the app |
+| `expires` | `integer` | Unix timestamp when the pairing expires |
+| `interval_seconds` | `integer` | Suggested poll interval in seconds |
+
+---
+
+## authn.poll
+
+Poll a pending CLI pairing by device_code. Returns the minted token once the user has approved it in the app (one-time delivery), otherwise the current status. Anonymous.
+
+| Property | Value |
+|----------|-------|
+| **Scope** | Hub (requires hub context) |
+| **Permission** | Anonymous (1) |
+
+**Endpoint:**
+```
+https://hostname/-/api/authn.poll
+```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `device_code` | `string` | **Yes** | - | The device_code returned by authn.begin |
+
+### Returns
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `status` | `string` | pending, approved, expired or unknown |
+| `token` | `string` | The minted CLI token, present only when status is approved |
+
+---
+
+## authn.approve
+
+Approve a pending CLI pairing for the currently signed-in user. Called from the app Authorize action. Requires owner privilege. The identity is taken from the session, not the request body. Mints a CLI token bound to this user and attaches it to the pairing.
+
+| Property | Value |
+|----------|-------|
+| **Scope** | Hub (requires hub context) |
+| **Permission** | Owner (32) |
+
+**Endpoint:**
+```
+https://hostname/-/svc/authn.approve
+```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `user_code` | `string` | **Yes** | - | The user_code shown by the CLI |
+| `label` | `string` | No | - | Human label for the device/session |
+| `ttl_days` | `integer` | No | - | Token lifetime in days; 0 means no expiry; defaults to 90 |
+
+### Returns
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `failed` | `integer` | 0 on success, 1 on failure |
+| `reason` | `string` | Failure reason when failed is 1 |
+
+---
+
+## authn.create_pat
+
+Mint a Personal Access Token for headless or CI use, bound to the currently signed-in user. Called from account settings. Requires owner privilege. Returns the token once.
+
+| Property | Value |
+|----------|-------|
+| **Scope** | Hub (requires hub context) |
+| **Permission** | Owner (32) |
+
+**Endpoint:**
+```
+https://hostname/-/svc/authn.create_pat
+```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `label` | `string` | No | - | Human label for the token |
+| `ttl_days` | `integer` | No | - | Token lifetime in days; 0 means no expiry; defaults to 0 |
+
+### Returns
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `token` | `string` | The Personal Access Token, shown once |
+| `exp` | `integer` | Unix expiry timestamp, 0 when no expiry |
+| `label` | `string` | The token label |
+
+---
+
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

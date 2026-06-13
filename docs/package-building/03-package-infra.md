@@ -21,7 +21,7 @@ The foundation package. Must be installed first on any Drumee server. Its post-i
 | Repo | Branch | Destination |
 |---|---|---|
 | `setup-infra` | main | `/var/lib/drumee/setup-infra/` |
-| `acme.sh` (GitHub: acmesh-official) | master | `/etc/acme/` |
+| `acme.sh` (GitHub: acmesh-official) | master | `/usr/share/acme/` |
 
 `acme.sh` is cloned via `bundle_acme` directly from `https://github.com/acmesh-official/acme.sh` — not from the Drumee GitHub org.
 
@@ -45,7 +45,7 @@ infra/build.sh
 │   ├── jitsi.js              # Jitsi-specific renderer
 │   └── templates/            # 88 lodash .tpl files mirroring /etc/ layout
 └── utils/                    # shared shell utilities
-/etc/acme/                    # acme.sh SSL tool
+/usr/share/acme/              # acme.sh SSL tool
 ```
 
 ## Dependencies

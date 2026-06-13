@@ -60,7 +60,7 @@ Retrieve attendee information for a conference participant. Calls the conference
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -131,7 +131,7 @@ Cancel a conference room and notify all participants. Calls conference_cancel to
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -202,7 +202,7 @@ Retrieve the active caller information for the current user from a specific gues
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -236,7 +236,7 @@ Invite a guest user to join a conference room. Checks for a pending cross-call s
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 | **Logging** | Enabled |
 
 **Endpoint:**
@@ -279,7 +279,7 @@ Join a conference room as an attendee or host. Calls conference_join with the pr
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 | **Logging** | Enabled |
 
 **Endpoint:**
@@ -324,11 +324,11 @@ Leave a conference room. Calls conference_leave to remove the socket from the ro
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/conference.leave
+https://hostname/-/api/conference.leave
 ```
 
 ### Parameters
@@ -359,7 +359,7 @@ Log a completed or terminated call as a chat message in both the caller and call
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -395,7 +395,7 @@ Revoke a conference invitation for a specific callee. Calls conference_revoke to
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -433,11 +433,11 @@ Update conference room metadata for the current socket and broadcast the updated
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/conference.update
+https://hostname/-/api/conference.update
 ```
 
 ### Parameters
@@ -467,5 +467,6 @@ https://hostname/-/svc/conference.update
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

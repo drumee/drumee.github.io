@@ -31,10 +31,14 @@ function escapeForMDX(text) {
     return text;
   }
   
-  // Escape curly braces: { → \{ and } → \}
+  // Escape curly braces ({ } → \{ \}) so MDX doesn't treat them as JS expressions,
+  // and angle brackets (< > → &lt; &gt;) so MDX doesn't treat them as JSX tags
+  // (e.g. "MEMBER (<31)" or "<hub>.read_channel" in ACL doc text).
   return text
     .replace(/\{/g, '\\{')
-    .replace(/\}/g, '\\}');
+    .replace(/\}/g, '\\}')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
 }
 
 /**
@@ -66,12 +70,25 @@ function getAllModules() {
  * Format permission level
  */
 function formatPermission(perm) {
+  // Permission bit values, per server-essentials/lib/lex/permission.js:
+  //   owner=0b100000(32) admin=0b010000(16) write/delete/modify/upload=0b001000(8)
+  //   get/download=0b000100(4) chat=0b000110(6) read/view=0b000010(2)
+  //   anonymous/anyone/guest=0b000001(1)
   const levels = {
-    'owner': 'Owner (7)',
-    'admin': 'Admin (6)',
-    'write': 'Write (4)',
+    'owner': 'Owner (32)',
+    'admin': 'Admin (16)',
+    'delete': 'Delete (8)',
+    'write': 'Write (8)',
+    'modify': 'Modify (8)',
+    'upload': 'Upload (8)',
+    'get': 'Get (4)',
+    'download': 'Download (4)',
+    'chat': 'Chat (6)',
     'read': 'Read (2)',
-    'anonymous': 'Anonymous (0)'
+    'view': 'View (2)',
+    'anonymous': 'Anonymous (1)',
+    'anyone': 'Anyone (1)',
+    'guest': 'Guest (1)'
   };
   return levels[perm] || perm;
 }
@@ -81,9 +98,9 @@ function formatPermission(perm) {
  */
 function formatScope(scope) {
   const scopes = {
-    'public': 'Public (no authentication)',
     'hub': 'Hub (requires hub context)',
-    'domain': 'Domain (requires authentication)'
+    'domain': 'Domain (requires authentication)',
+    'plateform': 'Platform (cross-organisation; spelling per code)'
   };
   return scopes[scope] || scope;
 }
@@ -289,9 +306,11 @@ function generateMethodDoc(moduleName, methodName, config, allServices) {
   md += `| **Scope** | ${formatScope(config.scope)} |\n`;
   md += `| **Permission** | ${formatPermission(config.permission?.src || 'unknown')} |\n`;
   
-  // Add preproc checker if present
-  if (config.permission?.preproc?.checker) {
-    md += `| **Pre-check** | \`${config.permission.preproc.checker}\` (validation before execution) |\n`;
+  // Add preproc checker if present (may be a string or an object with a `checker` field)
+  const preproc = config.permission?.preproc;
+  const preprocChecker = typeof preproc === 'string' ? preproc : preproc?.checker;
+  if (preprocChecker) {
+    md += `| **Pre-check** | \`${preprocChecker}\` (validation before execution) |\n`;
   }
   
   if (config.log) {
@@ -299,8 +318,8 @@ function generateMethodDoc(moduleName, methodName, config, allServices) {
   }
   md += '\n';
   
-  // URL
-  const scopePrefix = config.scope === 'public' ? 'api' : 'svc';
+  // URL — unauthenticated (public-api) services are served under /-/api/, the rest under /-/svc/
+  const scopePrefix = config.permission?.fast_check === 'public-api' ? 'api' : 'svc';
   md += '**Endpoint:**\n';
   md += `\`\`\`\nhttps://hostname/-/${scopePrefix}/${moduleName}.${methodName}\n\`\`\`\n\n`;
   
@@ -381,9 +400,10 @@ sidebar_label: ${moduleName}
   
   // Footer
   md += '## Related Documentation\n\n';
-  md += '- [ACL System](docs/concepts/acl-system.md) - Permission model\n';
-  md += '- [Service Routing](docs/concepts/service-routing.md) - URL patterns\n';
-  md += '- [Error Handling](docs/guides/error-handling.md) - Error codes\n';
+  md += '- [ACL System](../../technology/02-acl-system.md) - Permission model\n';
+  md += '- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference\n';
+  md += '- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed\n';
+  md += '- [Error Handling](../../product-guides/05-error-handling.md) - Error codes\n';
   
   return md;
 }
@@ -458,9 +478,9 @@ Complete API documentation for all Drumee backend services.
   
   md += `## Quick Links
 
-- [Getting Started](docs/getting-started/installation.md)
-- [Core Concepts](docs/concepts/overview.md)
-- [Guides](docs/guides/)
+- [Getting Started](../../getting-started/01-starter-kit.md)
+- [Technology Overview](../../technology/01-overview.md)
+- [Creating a Service](../../product-guides/02-creating-service.md)
 
 ## Documentation Format
 
@@ -473,9 +493,9 @@ Each module page includes:
 
 ## Need Help?
 
-- Check [Troubleshooting Guide](docs/resources/troubleshooting.md)
-- Review [Common Patterns](docs/guides/common-patterns.md)
-- See [Example Implementations](docs/examples/)
+- Check [Troubleshooting Guide](../../resources/03-troubleshooting.md)
+- Review [Configuring ACL Permissions](../../product-guides/04-acl-permissions.md)
+- See [Error Handling](../../product-guides/05-error-handling.md)
 `;
   
   const indexPath = path.join(CONFIG.outputDir, 'index.md');

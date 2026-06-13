@@ -6,7 +6,7 @@ sidebar_label: List
 
 # Skeletons.List
 
-Scrollable, data-driven list containers. Three variants exist for different rendering needs.
+Scrollable, data-driven list containers.
 
 ---
 
@@ -15,7 +15,7 @@ Scrollable, data-driven list containers. Three variants exist for different rend
 | Variant                 | Use for                                                                    |
 | ----------------------- | -------------------------------------------------------------------------- |
 | `Skeletons.List.Smart`  | Dynamic lists — supports API loading, item templates, spinner, empty state |
-| `Skeletons.List.Scroll` | Static scrollable lists with custom scrollbar styling                      |
+| `Skeletons.List.Scroll` | **Alias of `List.Smart`** — same factory; not a separate component         |
 | `Skeletons.List.Table`  | Tabular data with table-specific layout                                    |
 
 ---
@@ -50,8 +50,7 @@ The most capable variant. Supports **API-driven loading**, item templates (`item
 | `itemsOpt`    | Object   | Template applied to every item — defines `kind`, `uiHandler`, and any shared options |
 | `spinner`     | Boolean  | Show a loading spinner while data loads                                              |
 | `spinnerWait` | Number   | Delay in ms before showing the spinner                                               |
-| `placeholder` | Any      | Skeleton shown while loading                                                         |
-| `evArgs`      | Any      | Skeleton shown when the list is empty                                                |
+| `placeholder` | Any      | Skeleton shown when the list is empty (the empty-state content)                      |
 | `start`       | String   | Starting position — `"bottom"` to scroll to bottom on load                           |
 | `axis`        | String   | Scroll axis — `x` or `y`                                                             |
 | `timer`       | Number   | Debounce delay in ms                                                                 |
@@ -105,7 +104,7 @@ Skeletons.List.Smart({
   },
   spinner: true,
   spinnerWait: 500,
-  evArgs: Skeletons.Note(LOCALE.NO_MESSAGES, "no-content"),
+  placeholder: Skeletons.Note(LOCALE.NO_MESSAGES, "no-content"),
   vendorOpt: Preset.List.Orange_e,
 });
 ```
@@ -114,7 +113,10 @@ Skeletons.List.Smart({
 
 ## `Skeletons.List.Scroll`
 
-A **static scrollable container** with styled scrollbars. Use it when children are known at render time and no API loading is needed.
+`List.Scroll` is an **alias of `List.Smart`** — in the skeleton registry both resolve to the
+same factory, so it accepts the exact same props (`api`, `itemsOpt`, `spinner`, `placeholder`,
+etc.). Prefer `List.Smart` directly; `List.Scroll` exists only for backward compatibility. It is
+**not** a distinct "static, no-API" component.
 
 ### Example
 
@@ -176,9 +178,9 @@ vendorOpt: {
 
 ```
 Data comes from an API?                → List.Smart with api + itemsOpt
-Static children, needs scrollbar?      → List.Scroll
+Static children, needs scrollbar?      → List.Smart (List.Scroll is an alias)
 Tabular / row-column data?             → List.Table
-Need spinner or empty state?           → List.Smart with spinner + evArgs
+Need spinner or empty state?           → List.Smart with spinner + placeholder
 Need to start scrolled to bottom?      → List.Smart with start: "bottom"
 ```
 

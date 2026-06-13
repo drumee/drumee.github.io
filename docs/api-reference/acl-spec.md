@@ -8,7 +8,7 @@ description: Complete reference for the ACL JSON configuration format
 
 This page is the formal reference for the ACL JSON file format used in `server-team/acl/*.json`. Every backend service endpoint is declared through this format.
 
-For a conceptual explanation of why the ACL system exists and how it works, see [ACL System](../concepts/acl-system).
+For a conceptual explanation of why the ACL system exists and how it works, see [ACL System](../technology/02-acl-system.md).
 
 ---
 
@@ -97,9 +97,11 @@ Defines the execution context.
 
 | Value | Description |
 |-------|-------------|
-| `"hub"` | Requires an active Hub context. The request must carry a `hub_id`. Most services use this scope. |
+| `"hub"` | Requires an active Hub context. The request must carry a `hub_id`. Most services use this scope (the default). |
 | `"domain"` | Requires domain-level authentication. Used for organisation-wide operations. |
-| `"public"` | No Hub context required. Served via `/-/api/` instead of `/-/svc/`. |
+| `"plateform"` | Platform-level context (note the spelling used in the code). Used by a small number of cross-organisation services. |
+
+> Unauthenticated access is expressed with `permission.fast_check: "public-api"` (see below), **not** a scope. There is no `"public"` scope value.
 
 ```json
 "scope": "hub"
@@ -119,13 +121,17 @@ Defines the minimum privilege level required to call the service.
 
 #### `permission.src`
 
-| Value | Numeric | Who can call |
-|-------|---------|-------------|
-| `"anonymous"` | 0 | Anyone, no authentication required |
-| `"read"` | 2 | Any authenticated user with read access |
-| `"write"` | 4 | Authenticated user with write access |
-| `"admin"` | 6 | Hub or domain administrator |
-| `"owner"` | 7 | The resource owner |
+Each value is a single bit in a 6-bit privilege word (see `server-essentials/lib/lex/permission.js`). A caller passes the check when its privilege word includes the required bit.
+
+| Value | Numeric | Bit | Who can call |
+|-------|---------|-----|-------------|
+| `"anonymous"` (alias `"anyone"`, `"guest"`) | 1 | `0b000001` | Anyone, no authentication required |
+| `"read"` (alias `"view"`) | 2 | `0b000010` | Any authenticated user with read access |
+| `"get"` (alias `"download"`) | 4 | `0b000100` | Authenticated user with download access |
+| `"chat"` | 6 | `0b000110` | Read + get (chat participants) |
+| `"write"` (alias `"delete"`, `"modify"`, `"upload"`) | 8 | `0b001000` | Authenticated user with write access |
+| `"admin"` | 16 | `0b010000` | Hub or domain administrator |
+| `"owner"` | 32 | `0b100000` | The resource owner |
 
 #### `permission.fast_check`
 

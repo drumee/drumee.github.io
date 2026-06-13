@@ -24,7 +24,7 @@ Submit a form response as an anonymous user. Reads the form schema from the node
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 | **Logging** | Enabled |
 
 **Endpoint:**
@@ -62,7 +62,7 @@ Retrieve paginated form submissions from the form-specific database table (named
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -98,7 +98,7 @@ Update a single configuration field in the form node JSON file. Reads the curren
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -135,7 +135,7 @@ Retrieve the form configuration from the node JSON file. Returns the complete co
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -165,5 +165,6 @@ https://hostname/-/svc/form.info
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

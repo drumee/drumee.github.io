@@ -29,19 +29,17 @@ The Starter Kit requires a locally built Docker image. Clone the docker-file rep
 ```bash
 git clone git@github.com:drumee/docker-file.git
 cd docker-file
-docker build -f Dockerfile.starter-kit -t drumee/starter:local .
+docker build -f Dockerfile.starter-kit -t drumee/starter-kit:latest .
 ```
 
+The image must be tagged `drumee/starter-kit:latest` — that is the exact tag the generated `docker.yaml` references (see Step 2). If you already have the published image, you can skip this build and let `docker compose` pull `drumee/starter-kit:latest` automatically.
 
 This step installs all system dependencies (MariaDB, nginx, Redis, Node.js, etc.) inside the image. It takes approximately 10–20 minutes depending on network speed.
 
 Verify the image was built:
 
 ```bash
-docker images | grep drumee/starter # Expected: drumee/starter
-local
-<id>
-<size>
+docker images | grep drumee/starter-kit # Expected: drumee/starter-kit  latest  <id>  <size>
 ```
 
 ## Step 2 — Clone and Configure the Starter Kit
@@ -58,7 +56,7 @@ npm run configure sets up the local host environment — it creates the required
 
 After configure completes, open docker.yaml and verify the image tag matches what you built in Step 1:
 
-> image: drumee/starter:local
+> image: drumee/starter-kit:latest
 
 ## Step 3 — Add a Local DNS Entry
 
@@ -149,10 +147,11 @@ The docker.yaml maps the following host directories into the container:
 | Host path | Container path | Contents |
 | :---- | :---- | :---- |
 | storage/db | /var/lib/drumee/db | MariaDB data files |
-| storage/data | /data | MFS file storage |
-| runtime | /srv/drumee/runtime | Node.js server and service code |
+| storage/data | /var/lib/drumee/data | MFS file storage |
+| runtime | /var/lib/drumee/runtime | Node.js server and service code |
 | plugins | /var/lib/drumee/plugins | Custom plugins |
 | docker.d | /var/lib/drumee/start.d | Start and configure scripts |
+| bin | /usr/share/drumee/bin (read-only) | Helper shell scripts |
 
 
 All persistent data (database, uploaded files) lives in storage/ on the host. The container can be recreated without losing data. 

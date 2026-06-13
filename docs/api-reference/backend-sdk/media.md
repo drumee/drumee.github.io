@@ -12,8 +12,8 @@ sidebar_label: media
 - Private: `service/private/media.js`
 - Public: `service/media.js`
 
-**Available Services:** 90
-**Documented Services:** 27
+**Available Services:** 91
+**Documented Services:** 28
 
 ---
 
@@ -24,7 +24,7 @@ Upload new file to MFS (with quota and permission checks)
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 | **Pre-check** | `pre_upload` (validation before execution) |
 
 **Endpoint:**
@@ -113,7 +113,7 @@ Create new directory/folder in MFS
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -155,7 +155,7 @@ Move file/folder to trash bin
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 | **Pre-check** | `pre_trash` (validation before execution) |
 
 **Endpoint:**
@@ -199,7 +199,7 @@ Move files/folders to different location
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 | **Pre-check** | `pre_transact` (validation before execution) |
 
 **Endpoint:**
@@ -279,7 +279,7 @@ Rename file or folder
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -357,7 +357,7 @@ Permanently delete all files from trash bin (queued background job if trash_expi
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -389,7 +389,7 @@ Permanently delete specific items from trash bin
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -442,6 +442,42 @@ https://hostname/-/svc/media.restore_into
 
 ---
 
+## media.restore
+
+Restore a trashed file or folder to its original location. If the original parent no longer exists, returns parent_missing=1 so the FE can show a location picker and fall back to restore_into.
+
+| Property | Value |
+|----------|-------|
+| **Scope** | Hub (requires hub context) |
+| **Permission** | Read (2) |
+
+**Endpoint:**
+```
+https://hostname/-/svc/media.restore
+```
+
+### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `nid` | `string` | **Yes** | - | Node ID of the trashed item to restore (from show_bin results) |
+
+### Returns
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `parent_missing` | `number` | 1 if original parent no longer exists. FE should show location picker and call restore_into. |
+| `original_parent_id` | `string` | Original parent ID (only present when parent_missing=1). FE can use to show context. |
+| `nid` | `string` | Node ID (only present when parent_missing=1) |
+
+### Possible Errors
+
+| Error Code | HTTP Status | Description |
+|------------|-------------|-------------|
+| `RESTORE_FAILED` | 400 | Could not restore node (e.g. attempted to restore root) |
+
+---
+
 ## media.show_node_by
 
 Get paginated list of files/folders with sorting
@@ -449,7 +485,7 @@ Get paginated list of files/folders with sorting
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -480,7 +516,7 @@ Get paginated list of files/folders with sorting (includes folder sizes)
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -582,7 +618,7 @@ Get paginated list of files filtered by category
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -615,7 +651,7 @@ Get detailed file information (type-specific: document pages, video duration, im
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -655,7 +691,7 @@ Get node attributes (optionally for a relative path within folder)
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -809,7 +845,7 @@ Save text content to file (text editor function)
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -843,7 +879,7 @@ Rotate image by specified angle
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -881,7 +917,7 @@ Replace existing file content with new upload
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 | **Pre-check** | `pre_upload` (validation before execution) |
 
 **Endpoint:**
@@ -988,7 +1024,7 @@ https://hostname/-/svc/media.summary
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -1010,7 +1046,7 @@ https://hostname/-/svc/media.audio
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -1038,7 +1074,7 @@ https://hostname/-/svc/media.broadcast
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -1054,7 +1090,7 @@ https://hostname/-/svc/media.card
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -1070,7 +1106,7 @@ https://hostname/-/svc/media.check_media_child_exist
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -1086,7 +1122,7 @@ https://hostname/-/svc/media.list_server_files
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -1102,7 +1138,7 @@ https://hostname/-/svc/media.create_server_dir
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -1118,7 +1154,7 @@ https://hostname/-/svc/media.check_media_root_exist
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -1134,7 +1170,7 @@ https://hostname/-/svc/media.clear_notifications
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -1172,7 +1208,7 @@ https://hostname/-/svc/media.toPdf
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -1188,7 +1224,7 @@ https://hostname/-/svc/media.folder
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -1204,7 +1240,7 @@ https://hostname/-/svc/media.get_all
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -1220,7 +1256,7 @@ https://hostname/-/svc/media.get_filenames
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -1236,7 +1272,7 @@ https://hostname/-/svc/media.get_lock
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -1284,7 +1320,7 @@ https://hostname/-/svc/media.get_path
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -1316,7 +1352,7 @@ https://hostname/-/svc/media.home
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -1332,7 +1368,7 @@ https://hostname/-/svc/media.is_expired
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Owner (7) |
+| **Permission** | Owner (32) |
 
 **Endpoint:**
 ```
@@ -1348,7 +1384,7 @@ https://hostname/-/svc/media.lock
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -1364,7 +1400,7 @@ https://hostname/-/svc/media.link
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -1392,7 +1428,7 @@ https://hostname/-/svc/media.make_dir_special
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -1456,7 +1492,7 @@ https://hostname/-/svc/media.page
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -1494,7 +1530,7 @@ https://hostname/-/svc/media.raw
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -1510,7 +1546,7 @@ https://hostname/-/svc/media.remove_comment
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -1521,18 +1557,7 @@ https://hostname/-/svc/media.reorder
 
 ## media.relocate
 
-*No description provided*
-
-| Property | Value |
-|----------|-------|
-| **Scope** | Hub (requires hub context) |
-| **Permission** | Read (2) |
-| **Pre-check** | `pre_transact` (validation before execution) |
-
-**Endpoint:**
-```
-https://hostname/-/svc/media.relocate
-```
+*Alias for [`move_all`](#mediamove_all)*
 
 ---
 
@@ -1543,7 +1568,7 @@ https://hostname/-/svc/media.relocate
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -1559,7 +1584,7 @@ https://hostname/-/svc/media.server_export
 | Property | Value |
 |----------|-------|
 | **Scope** | Domain (requires authentication) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -1575,7 +1600,7 @@ https://hostname/-/svc/media.server_import
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -1591,7 +1616,7 @@ https://hostname/-/svc/media.set_homepage
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -1607,7 +1632,7 @@ https://hostname/-/svc/media.share
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Admin (6) |
+| **Permission** | Admin (16) |
 
 **Endpoint:**
 ```
@@ -1655,7 +1680,7 @@ https://hostname/-/svc/media.show_new
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -1671,7 +1696,7 @@ https://hostname/-/svc/media.show_slides
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -1687,7 +1712,7 @@ https://hostname/-/svc/media.slide
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -1709,7 +1734,7 @@ https://hostname/-/svc/media.slurp
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -1725,7 +1750,7 @@ https://hostname/-/svc/media.stylesheet
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -1741,7 +1766,7 @@ https://hostname/-/svc/media.thumb
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -1757,7 +1782,7 @@ https://hostname/-/svc/media.update_caption
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | delete |
+| **Permission** | Delete (8) |
 
 **Endpoint:**
 ```
@@ -1773,7 +1798,7 @@ https://hostname/-/svc/media.update_status
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 | **Pre-check** | `pre_upload` (validation before execution) |
 
 **Endpoint:**
@@ -1790,7 +1815,7 @@ https://hostname/-/svc/media.upload_base64
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -1806,7 +1831,7 @@ https://hostname/-/svc/media.video
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -1822,7 +1847,7 @@ https://hostname/-/svc/media.view
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -1838,7 +1863,7 @@ https://hostname/-/svc/media.vignette
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
@@ -1854,11 +1879,11 @@ https://hostname/-/svc/media.webp
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Anonymous (0) |
+| **Permission** | Anonymous (1) |
 
 **Endpoint:**
 ```
-https://hostname/-/svc/media.xl
+https://hostname/-/api/media.xl
 ```
 
 ---
@@ -1870,7 +1895,7 @@ https://hostname/-/svc/media.xl
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -1886,7 +1911,7 @@ https://hostname/-/svc/media.dmz_copy
 | Property | Value |
 |----------|-------|
 | **Scope** | Hub (requires hub context) |
-| **Permission** | Write (4) |
+| **Permission** | Write (8) |
 
 **Endpoint:**
 ```
@@ -1898,5 +1923,6 @@ https://hostname/-/svc/media.dmz_detail
 ## Related Documentation
 
 - [ACL System](../../technology/02-acl-system.md) - Permission model
-- Service Routing - URL patterns
-- Error Handling - Error codes
+- [ACL Specification](../acl-spec.md) - Scope, permission and routing reference
+- [Request Pipeline](../../technology/06-request-pipeline.md) - How requests are routed
+- [Error Handling](../../product-guides/05-error-handling.md) - Error codes

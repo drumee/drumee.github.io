@@ -40,7 +40,10 @@ sidebar_label: window
 - Switch Call
 - Team
 - Transfer Box
-- Trash
 - Upload Progress
 - Wallpaper Settings
 - Website
+- Media Details
+- Move
+- Secure Share
+- Tasks

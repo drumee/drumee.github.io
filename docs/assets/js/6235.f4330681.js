@@ -1,1 +1,0 @@
-"use strict";(globalThis.webpackChunkdrumee_docs=globalThis.webpackChunkdrumee_docs||[]).push([[6235],{56235(e,s,c){c.d(s,{createInfoServices:()=>a.v});var a=c(41009);c(6902)}}]);
