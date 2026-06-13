@@ -72,7 +72,7 @@ Turn Drumee from a fixed feature set into a platform where developers build, dis
 | Monetization | Jun–Aug 2027 | Payment gateway (Stripe, crypto), free/paid/subscription models, revenue sharing, enterprise licensing. |
 
 
-### M4 — AI Integration (Privacy-First, On-Premises)
+### M3 — AI Integration (Privacy-First, On-Premises)
 **Jan 2027 → Nov 2027**
 
 Intelligent automation, search, and assistance without compromising data sovereignty. All AI capabilities are opt-in, run locally by default, and never send user data to external models unless explicitly configured.
@@ -88,7 +88,7 @@ Intelligent automation, search, and assistance without compromising data soverei
 
 ---
 
-### M5 — Enterprise Integration & Collaboration Core
+### M4 — Enterprise Integration & Collaboration Core
 **Aug 2026 → May 2027**
 
 The essential productivity and identity features every organisation expects. Delivered as paid plugins — not available in open-source repositories.
