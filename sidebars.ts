@@ -273,6 +273,23 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: "category",
+      label: "Self-Hosting",
+      link: {
+        type: "generated-index",
+        title: "Self-Hosting Drumee",
+        description:
+          "Run your own Drumee server — install with the Docker Compose stack or native Debian/Ubuntu packages, then operate it (TLS, email, backups, upgrades).",
+        slug: "/self-hosting",
+      },
+      items: [
+        "self-hosting/01-overview",
+        "self-hosting/02-docker-compose",
+        "self-hosting/03-debian-native",
+        "self-hosting/04-operations",
+      ],
+    },
+    {
+      type: "category",
       label: "Package Building",
       link: {
         type: "generated-index",
