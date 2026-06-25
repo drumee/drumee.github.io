@@ -34,10 +34,9 @@ Five milestones take Drumee from a solid self-hosted platform to a federated, AI
 | Milestone | Start | Target | Duration |
 | :---- | :---- | :---- | :---- |
 | **M1** Migration & Admin Tools | Jun 2026 | Aug 2026 | 2 months |
-| **M3** Midnight Integration | Jun 2026 | Feb 2028 | 20 months |
 | **M2** Marketplace | Aug 2026 | Aug 2027 | 12 months |
-| **M4** AI Integration | Jan 2027 | Nov 2027 | 10 months |
-| **M5** Enterprise & Collaboration | Aug 2026 | May 2027 | 10 months |
+| **M3** AI Integration | Jan 2027 | Nov 2027 | 10 months |
+| **M4** Enterprise & Collaboration | Aug 2026 | May 2027 | 10 months |
 | **Full platform** | — | **Feb 2028** | ~20 months |
 
 ---
