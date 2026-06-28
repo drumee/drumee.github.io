@@ -286,6 +286,7 @@ const sidebars: SidebarsConfig = {
         "self-hosting/02-docker-compose",
         "self-hosting/03-debian-native",
         "self-hosting/04-operations",
+        "self-hosting/05-plugins",
       ],
     },
     {
