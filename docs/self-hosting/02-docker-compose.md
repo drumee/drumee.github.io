@@ -20,7 +20,7 @@ brings up the full stack, isolated from the rest of your machine.
 ## Install
 
 ```bash
-curl -fsSL https://get.drumee.io | bash
+curl -fsSL https://get.drumee.io/install | bash
 ```
 
 The installer asks a few questions:
@@ -41,7 +41,7 @@ is safe.
 > ```bash
 > ACCESS_MODE=domain DRUMEE_DOMAIN=cloud.example.com \
 >   ADMIN_EMAIL=you@example.com ASSUME_YES=1 \
->   curl -fsSL https://get.drumee.io | bash
+>   curl -fsSL https://get.drumee.io/install | bash
 > ```
 
 Open the URL it prints and sign in with your admin email + password.
