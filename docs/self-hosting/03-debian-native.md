@@ -28,7 +28,7 @@ Everything else (Node.js 20, MariaDB, nginx, Redis, pm2) is pulled in automatica
 ## Install
 
 ```bash
-curl -fsSL https://get.drumee.io/native | sudo bash
+curl -fsSL https://get.drumee.com/native | sudo bash
 ```
 
 This bootstrap:

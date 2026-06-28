@@ -40,14 +40,14 @@ pull prebuilt, signed artifacts.
 
 **Docker Compose:**
 ```bash
-curl -fsSL https://get.drumee.io/install | bash
+curl -fsSL https://get.drumee.com/install | bash
 ```
 Answer 3–4 questions (name, how people reach it, admin email/password). It renders
 the stack, starts it, waits until healthy, and prints your URL + admin login.
 
 **Debian / Ubuntu:**
 ```bash
-curl -fsSL https://get.drumee.io/native | sudo bash
+curl -fsSL https://get.drumee.com/native | sudo bash
 ```
 Installs Node 20, adds the signed Drumee APT repo, and `apt install drumee` on the host.
 
