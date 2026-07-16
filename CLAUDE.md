@@ -12,13 +12,7 @@ npm run typecheck  # TypeScript type checking (no test suite exists)
 npm run clear      # clear Docusaurus cache (fixes stale build issues)
 ```
 
-**Publishing** (requires a sibling `drumee.github.io` repo checked out):
-
-```bash
-npm run publish    # builds, rsyncs to ../drumee.github.io/docs/, commits and pushes
-```
-
-The CI pipeline (`deploy.yml`) runs `npm run build` on every push to `main` and deploys to GitHub Pages at `https://drumee.github.io`.
+The CI pipeline (`.github/workflows/deploy.yml`) runs on every push to `main` using Node 20: `npm ci` → `npm run build` → deploy to GitHub Pages. The site is served from the custom domain **`https://docs.drumee.com`** (`static/CNAME`), even though `docusaurus.config.ts` still sets `url: 'https://drumee.github.io'`. Requires Node >= 20 (`engines` in `package.json`).
 
 ## Architecture
 
@@ -32,12 +26,14 @@ All documentation lives under `docs/` and is wired into the sidebar via `sidebar
 |--------|---------|
 | `docs/introduction/` | What Drumee is, positioning, history |
 | `docs/technology/` | Architecture deep-dives (ACL, MFS, LETC engine, widgets) |
-| `docs/getting-started/` | Installation guides (Docker local/public, playground, plugins) |
+| `docs/technology/` → SDK Reference | Backend SDK, Frontend SDK, stored procedures, ACL spec |
+| `docs/getting-started/` | Installation guides (Docker, playground, plugins) |
+| `docs/self-hosting/` | Self-hosting: Docker Compose, Debian packages, operations |
+| `docs/package-building/` | Building and versioning Drumee Debian packages |
 | `docs/product-guides/` | Step-by-step task guides |
-| `docs/api-reference/` | Backend SDK, Frontend SDK, stored procedures, ACL spec |
 | `docs/resources/` | Glossary, FAQ, troubleshooting |
 
-`docs/__get-started/` and `docs/concepts/` are legacy/draft folders not wired into the sidebar — do not add new content there.
+`docs/concepts/` is a legacy/draft folder not wired into the sidebar — do not add new content there.
 
 ### Sidebar registration
 
@@ -67,15 +63,30 @@ node scripts/generate-api-docs.js mfs                 # single module
 node scripts/generate-api-docs.js --acl /path/to/acl  # custom ACL dir
 ```
 
-The script reads ACL JSON → produces Docusaurus-compatible Markdown with parameter tables, return types, error codes, and examples. Generated files should not be hand-edited.
+The script reads ACL JSON → produces Docusaurus-compatible Markdown with parameter tables, return types, error codes, and examples. Only `docs/api-reference/backend-sdk/` is generated — do not hand-edit those files. `docs/api-reference/frontend-sdk/` is hand-written and safe to edit.
+
+The generator defaults to a sibling `acl/` directory (`scripts/../acl`) and a `docs-templates/` directory — **neither exists in this repo**, so `--all` without `--acl /path/to/acl` will fail. Point `--acl` at the ACL JSON dir from a checked-out backend repo (e.g. `server-core`).
 
 ### Interactive component
 
 `src/components/PermissionBitmaskVisualizer.tsx` is a React component embedded in `docs/api-reference/acl-spec.md` via MDX import. It renders a live permission bitmask calculator.
 
-### Deployment source of truth
+### Mermaid diagrams
 
-`docker-hosted` repo (https://github.com/drumee/docker-hosted) is the canonical reference for Docker deployment instructions in `docs/getting-started/02-own-cloud.md`. When updating that page, verify against:
-- `local-domain.yaml` — local domain compose template
-- `template.yml` — public domain compose template
-- `install.local.sh` — local automated setup script
+Mermaid is enabled (`@docusaurus/theme-mermaid`). Use fenced code blocks with `mermaid` as the language in any `.md` file.
+
+### Docker Compose templates
+
+`templates/docker/devel-template.yaml` and `templates/docker/production-template.yml` are the Compose templates referenced in `docs/self-hosting/02-docker-compose.md`. When updating self-hosting Docker instructions, keep these templates in sync.
+
+### Syntax highlighting
+
+Prism is configured with `additionalLanguages: ['bash', 'json', 'sql']` in `docusaurus.config.ts`. Code fences in any other language (e.g. `js`, `yaml`, `typescript`) will render without highlighting until that language is added to the array.
+
+### Static assets
+
+Static files live in `static/` (served at the root) — `static/img/` holds logos, favicon, and images referenced as `img/...`. `static/CNAME` sets the custom domain and `static/.nojekyll` keeps GitHub Pages from stripping files. The root-level `Development-install.md`, `Production-install.md`, `README.md`, and `UI-SOURCE-BUGS.md` are **not** part of the Docusaurus site.
+
+### Broken links
+
+`onBrokenLinks: 'warn'` in `docusaurus.config.ts` — broken internal links produce a warning but do **not** fail the build. Fix them anyway before merging.
