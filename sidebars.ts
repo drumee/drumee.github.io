@@ -42,6 +42,7 @@ const sidebars: SidebarsConfig = {
         "technology/05-widget-concept",
         "technology/06-request-pipeline",
         "technology/07-database-sharding",
+        "technology/08-yellow-pages-schema",
         {
           type: "category",
           label: "SDK Reference",
@@ -283,6 +284,7 @@ const sidebars: SidebarsConfig = {
       },
       items: [
         "self-hosting/01-overview",
+        "self-hosting/architecture",
         "self-hosting/02-docker-compose",
         "self-hosting/03-debian-native",
         "self-hosting/04-operations",
