@@ -108,6 +108,112 @@ flowchart LR
     C -->|db_name / fs_host| I[Route to shard + MFS root]
 ```
 
+## Access-control hierarchy: node → domain → drumate → hub
+
+Drumee is built to be **self-hosted**, so access control is organized as four nested tiers.
+Each tier is governed by a **different table**, and each is physically *contained* by the one
+above it:
+
+```mermaid
+flowchart TB
+    subgraph NODE["① NODE — the deployed instance · governed by remit (drumate.remit)"]
+        direction TB
+        subgraph DOMD["② DOMAIN / ORGANISATION · default · domain_id = 1 · governed by yp.privilege"]
+            direction TB
+            subgraph USERSD["③ DRUMATES · share domain_id = 1"]
+                direction LR
+                OWN1["drumate<br/>privilege: dom_owner"]
+                MEM1["drumate<br/>privilege: dom_member"]
+            end
+            subgraph HUBD["④ HUBS · governed by per-DB permission"]
+                direction LR
+                HA["hub A<br/>owner ← drumate"]
+                HB["hub B<br/>owner ← drumate"]
+            end
+            USERSD --> HUBD
+        end
+        subgraph DOM2["② DOMAIN / ORGANISATION · domain_id > 1 · vhost.fqdn = subdomain.main.domain"]
+            direction TB
+            USERS2["③ drumates · share domain_id = N"] --> HUB2["④ hubs"]
+        end
+    end
+
+    classDef node fill:#1e293b,stroke:#0f172a,color:#fff;
+    classDef dom fill:#0e7490,stroke:#155e75,color:#fff;
+    classDef usr fill:#15803d,stroke:#166534,color:#fff;
+    classDef hub fill:#b45309,stroke:#92400e,color:#fff;
+    class NODE node;
+    class DOMD,DOM2 dom;
+    class USERSD,USERS2 usr;
+    class HUBD,HUB2 hub;
+```
+
+*Containment ⇒ governance:* the **node** holds one or more **domains/organisations**; each
+domain holds the **drumates** that share its `domain_id`; privileged drumates own the **hubs**
+inside that domain. The governing table changes at each boundary — `remit` → `privilege` →
+`privilege` (admin tier) → per-hub `permission`.
+
+The same relationship as a top-down tree, showing each tier's governing table:
+
+Default and additional domains behave **identically** — the only difference is `domain_id`
+(and, for additional ones, the subdomain FQDN). So both flow into the same drumate and hub tiers:
+
+```mermaid
+flowchart TD
+    N["① NODE — the deployed instance<br/>governed by <b>remit</b> (drumate.remit)"]
+    N --> D1["② DOMAIN / ORGANISATION (default, domain_id = 1)<br/>governed by <b>yp.privilege</b>"]
+    N --> D2["② DOMAIN / ORGANISATION (domain_id > 1)<br/>vhost.fqdn = subdomain.main.domain"]
+    D1 --> U["③ DRUMATES — share the same domain_id<br/>managed by users with admin privilege"]
+    D2 --> U
+    U --> H["④ HUB — created by a privileged drumate (its owner)<br/>governed by the <b>permission</b> table in the hub's own DB"]
+```
+
+### ① Node — the whole instance (`remit`)
+
+The top of the hierarchy is the **node**: the deployed Drumee instance itself. Node-wide rights
+(platform administration, casting/mimicking other users, cross-domain operations) are governed
+by **remit**. In practice the authoritative value lives in the **`drumate.remit`** column
+(`tinyint`), read at request time by the `get_remit(uid)` SQL function and tested bitwise in
+`server-core/lib/acl.js` (`check_remit`) for services declaring `scope: "plateform"`. The
+`remit` bit tiers are defined in `server-essentials/lib/lex/remit.js` (`root`, `dom_owner`,
+`dom_admin`, … down to `dom_member`).
+
+There is also a standalone **`yp.remit` table** (`method → level`, a `bit(3)` per service method)
+intended as a method-to-required-level map, but **no stored procedure or service currently
+queries it** — the live node check reads `drumate.remit`. Treat the table as legacy/aspirational
+(see [its entry below](#remit--node-level-access-map-legacy)).
+
+### ② Domain / organisation (`yp.privilege`)
+
+A node hosts **at least one organisation**, attached to the **default domain (`domain_id = 1`)**.
+Additional organisations get their own domain with **`domain_id > 1`**, addressed by a subdomain
+— `vhost.fqdn = subdomain.main.domain`. The acting domain is resolved either **from the request
+URL** (via [`vhost`](#vhost--hostname--entitydomain-routing) → `get_hub`) **or from a `domain_id`
+passed in the query**. Access within a domain is governed by
+[**`yp.privilege`**](#how-privilege-is-enforced) — the per-user, per-domain bitmask.
+
+### ③ Drumates within a domain
+
+All users of an organisation **share the same `domain_id`** (see
+[Hierarchical structure](#hierarchical-structure-how-drumates-belong-to-an-organisation) below).
+They are administered by the drumates who hold an **admin-tier `privilege`** in that domain, who
+can grant/revoke membership and rights via `domain_grant`.
+
+### ④ Hub (per-DB `permission`)
+
+A drumate with sufficient domain privilege can **create a hub**, becoming its **owner**. Access
+to a hub is *not* governed by `yp` — it is governed by the **`permission`** table inside the
+**hub's own sharded database** (see [Database Sharding](./07-database-sharding.md)), evaluated
+per MFS node by the shard-local `acl_check` procedure. This is the tier the default (no-`scope`)
+ACL path exercises.
+
+| Tier | Scope value in ACL | Governing table | Check path |
+|---|---|---|---|
+| ① Node | `plateform` | `drumate.remit` (+ legacy `yp.remit`) | `get_remit(uid) & mask` |
+| ② Domain | `domain` | `yp.privilege` | `domain_permission(uid, dom_id, mask)` |
+| ③ Drumate | — | `yp.privilege` (admin tier) | membership via `domain_grant` |
+| ④ Hub | *(none)* / `hub` | per-hub-DB `permission` | shard `acl_check` |
+
 ## Tables
 
 ### `vhost` — hostname → entity/domain routing
@@ -172,7 +278,7 @@ from it.
 | `id` | `varchar(16)` ascii, **UNIQUE** | = `entity.id` |
 | `username` | `varchar(80)` | Unique per domain via `(username, domain_id)` |
 | `domain_id` | `int unsigned` | → `domain.id` |
-| `remit` | `tinyint` | User-level role/permission flag |
+| `remit` | `tinyint` | **Node-level** access tier (see [`remit`](#remit--node-level-access-map-legacy)); read by `get_remit()` for `plateform`-scope services |
 | `profile` | `longtext` JSON (`json_valid` CHECK) | Source of truth — **writes go here** |
 | `firstname`, `lastname`, `fullname` | VIRTUAL | From `profile` (`fullname` falls back to email) |
 | `avatar`, `lang`, `email`, `dmail`, `quota` | VIRTUAL | Projections of `profile` |
@@ -227,6 +333,23 @@ Maps a user to a **bitwise privilege scoped to a domain**.
 | `domain_id` | `int unsigned` | → `domain.id` |
 | `privilege` | `int unsigned` | The permission bitmask (see [ACL system](./02-acl-system.md)) |
 | `is_authoritative` | `tinyint` | Whether this record is authoritative |
+
+### `remit` — node-level access map (legacy)
+
+The node-tier counterpart to `privilege`: a lookup of **service method → required level**.
+
+| Column | Type | Notes |
+|---|---|---|
+| `method` | `varchar(255)`, **UNIQUE** | Service method name |
+| `level` | `bit(3)` | Required node-level tier |
+
+:::warning Not wired up
+No stored procedure or service queries this table. The **live** node-level check reads the
+[`drumate.remit`](#drumate--a-user-entity-subtype) column via `get_remit(uid)` and tests it
+bitwise (`server-core/lib/acl.js` → `check_remit`) for `scope: "plateform"` services. Treat the
+`remit` table as legacy/aspirational; the authoritative node privilege is the `drumate.remit`
+column, with tiers from `server-essentials/lib/lex/remit.js`.
+:::
 
 ## Hierarchical structure: how drumates belong to an organisation
 
