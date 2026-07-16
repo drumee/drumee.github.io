@@ -228,6 +228,91 @@ Maps a user to a **bitwise privilege scoped to a domain**.
 | `privilege` | `int unsigned` | The permission bitmask (see [ACL system](./02-acl-system.md)) |
 | `is_authoritative` | `tinyint` | Whether this record is authoritative |
 
+## Hierarchical structure: how drumates belong to an organisation
+
+Drumee has no explicit "membership" join table between users and organisations. Instead the
+hierarchy is expressed entirely through a **single shared key — `domain_id`** — that threads
+through every table. The `domain` row is the pivot; the `organisation` sits 1:1 on top of it;
+and every user, entity, and hostname that shares that `domain_id` is, by definition, part of
+that organisation.
+
+```mermaid
+flowchart TD
+    subgraph tenant["One tenant"]
+        DOM["domain<br/>id = 42"]
+        ORG["organisation<br/>domain_id = 42 (UNIQUE → 1:1)"]
+        DOM --- ORG
+    end
+    DOM --> DR1["drumate (owner)<br/>domain_id = 42"]
+    DOM --> DR2["drumate (member)<br/>domain_id = 42"]
+    DR1 --> E1["entity.dom_id = 42"]
+    DR1 --> V1["vhost.dom_id = 42"]
+    DR1 --> P1["privilege<br/>domain_id = 42, privilege = dom_owner"]
+    DR2 --> E2["entity.dom_id = 42"]
+    DR2 --> V2["vhost.dom_id = 42"]
+    DR2 --> P2["privilege<br/>domain_id = 42, privilege = dom_member"]
+```
+
+The membership rule is simply:
+
+> A drumate belongs to an organisation **iff** `drumate.domain_id == organisation.domain_id`.
+
+Because `organisation.domain_id` is **UNIQUE**, a domain maps to exactly one organisation, so
+`domain_id` unambiguously identifies both the tenant *and* the org.
+
+### `domain_id` across the tables
+
+| Table | Column | Meaning within the hierarchy |
+|---|---|---|
+| `domain` | `id` (PK) | The pivot — the tenant boundary |
+| `organisation` | `domain_id` (**UNIQUE**) | The org config, 1:1 on the domain |
+| `drumate` | `domain_id` | Which org the user is a member of |
+| `entity` | `dom_id` | The user/hub/org's entity row, tagged with its tenant |
+| `vhost` | `dom_id` | Which tenant an inbound hostname resolves to |
+| `privilege` | `domain_id` | The user's rights **within that org** (`(uid, domain_id)`) |
+
+Every scoped query on a tenant is therefore a `WHERE domain_id = ?` (or `dom_id = ?`) filter —
+listing an org's members is `SELECT * FROM drumate WHERE domain_id = ?`, and the
+[cross-domain isolation check](#3-the-domain-check-in-the-core-acl-engine) is just an equality
+test on this key.
+
+### Binding a drumate: the `domain_grant` pivot
+
+Membership changes go through one procedure, `domain_grant`, which keeps every table's
+`domain_id`/`dom_id` in sync atomically. Creating an organisation
+(`server-team/service/private/organization.js#add`) shows the full sequence:
+
+```js
+let domain = await this.yp.await_proc('domain_create', ident);            // 1. create the pivot
+await this.yp.await_proc('domain_grant', domain.id, Remit.dom_owner, this.uid, 1); // 2. bind owner
+recds.domain_id = domain.id;
+org = await this.yp.await_proc('organisation_add', this.uid, name, domain.name, ident, domain.id, ...); // 3. 1:1 org
+```
+
+`domain_grant` (`yellow_page/procedures/domain/domain_grant.sql`) rebinds the user into the
+domain by touching **four tables** at once:
+
+```sql
+INSERT IGNORE INTO privilege (uid, privilege, domain_id) VALUES (_uid, _privilege, _domain_id)
+  ON DUPLICATE KEY UPDATE privilege = _privilege, domain_id = _domain_id;   -- rights in the org
+UPDATE drumate SET domain_id = _domain_id WHERE id = _uid;                  -- membership
+UPDATE vhost   SET dom_id    = _domain_id WHERE id = _uid;                  -- hostname routing
+UPDATE entity  SET dom_id    = _domain_id WHERE id = _uid;                  -- entity tenant tag
+```
+
+So a single `domain_grant(org_domain_id, privilege, uid)` call is what **moves a user into an
+organisation** — it simultaneously sets their membership (`drumate`), their rights
+(`privilege`), their entity's tenant tag (`entity`), and their hostname's tenant (`vhost`). The
+first call (with `Remit.dom_owner`) binds the founder; later calls with lower privilege tiers
+(e.g. `dom_member`) add ordinary members to the same `domain_id`.
+
+:::note Two privilege bases coexist
+Notice the founder is granted `Remit.dom_owner` — domain/org privileges use the **cumulative
+`remit` tiers** (`dom_owner`, `dom_admin`, `dom_admin_security`, `dom_member`), distinct from
+the per-node hub `permission` bits. See the
+[two-permission-maps warning](#how-privilege-is-enforced) above for why that distinction matters.
+:::
+
 ## Relationship summary
 
 | From | Column | To | Meaning |
