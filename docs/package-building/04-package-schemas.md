@@ -16,6 +16,30 @@ description: drumee-schemas package — MariaDB bootstrap, mariabackup seeds, po
 
 Bootstraps the Drumee database layer. The post-install script (`bin/install`) restores a MariaDB snapshot from seeds, creates system accounts (nobody, guest, system, admin), provisions the initial hubs and media filesystem, imports wallpapers and tutorials, generates the RSA key pair, and sends a welcome email with the admin password-reset link.
 
+## Flow at a glance
+
+`setup-schemas` is the **stateful** half of provisioning (its counterpart, `setup-infra`, generates config files). A thin bash orchestrator (`bin/install`) does the physical DB restore, then hands off to a Node domain layer (`populate.js` + `lib/`) that stands up the first organization:
+
+```
+bin/install (bash, root)
+  └─ mariabackup --copy-back  (restore seeds.tgz → live datadir)
+     └─ node populate.js (Node)
+          ├─ lib/organization.js  → sys_conf/domain/vhost/organisation/settings + nobody/guest/system/admin
+          ├─ lib/drumate.js       → create users & hubs (drumate_create / desk_create_hub procs)
+          ├─ lib/mfs.js           → import wallpapers + tutorials over HTTP into the media hub
+          └─ lib/schema.js        → low-level entity (hub/drumate DB) provisioner (entity_create + template SQL)
+     └─ bin/acknowledge.js  (welcome email) + apply pending patches
+```
+
+### Domain layer (`lib/`)
+
+| Module | Responsibility |
+|---|---|
+| `organization.js` | `populate()` seeds the `yp` system rows; `createNobody/Guest/SystemUser/Admin()` build the fixed accounts; `remove()` tears an org down. |
+| `drumate.js` | `create()` a user (via the `drumate_create` proc) and `createHub()` (via `desk_create_hub`). `updateEntries()` remaps a freshly-created entity's id to a pre-allocated `uid` across ~8 tables and moves its `home_dir` — the trickiest step. |
+| `mfs.js` | Imports remote content (`importContent`/`importFile`/`importTutorial`) into MFS by downloading over HTTP, then `mfs_create_node` + copy into `__storage__/`. |
+| `schema.js` | Low-level entity provisioner: `entity_create` → load per-type template SQL → create the MFS/media root, with rollback on failure (the pool/factory path). |
+
 ## Source Repos
 
 | Repo | Branch | Destination |
@@ -56,7 +80,7 @@ schemas/build.sh
 
 ```
 /var/lib/drumee/
-├── setup-schemas/       # bin/install, populate.js, lib/, templates/
+├── setup-schemas/       # bin/install, populate.js, lib/ (domain layer), asset/welcome.html
 └── schemas/             # schema source (preview branch)
 /var/tmp/drumee/
 └── seeds.tgz            # mariabackup snapshot archive
@@ -101,7 +125,8 @@ Runs as root. Two-phase execution:
    - `vhost` — virtual hosts (ns1, ns2, jit, www, smtp, `_acme-challenge`, `_domainkey`)
    - `organisation` — organisation record
    - `settings` — defaults (wallpaper, cache_control, default_privilege)
-   - `mailserver.domains` and `mailserver.aliases`
+   - `dmz_user` — guest DMZ record
+   - `mailserver.domains` and `mailserver.aliases` (+ the `butler` mailbox if `email.json` is present)
 5. **System accounts created:**
 
    | Account | UID source | Privilege | Notes |
@@ -120,7 +145,9 @@ Runs as root. Two-phase execution:
    | Admin internal sharebox | private | — |
    | Admin external sharebox (DMZ) | — | for guest sharing |
 
-7. **Media import** — downloads wallpapers from `content.drumee.com/Wallpapers` and tutorial content.
+7. **Media import** — downloads wallpapers from `content.drumee.com/Wallpapers` (into the media hub) and tutorials from `https://drumee.com/-/svc/yp.tutorials`.
+
+   > **Requires outbound internet.** These fetch from `content.drumee.com` / `drumee.com` at install time. On an air-gapped host these steps fail (non-fatal — the install continues without wallpapers/tutorials). The container channel avoids this via its offline factory.
 8. **RSA key pair** — generates and writes to `/etc/drumee/credential/crypto/public.pem` and `private.pem`.
 9. **Welcome page** — renders `asset/welcome.html` with the password-reset link to `<data_dir>/tmp/welcome.html`.
 
