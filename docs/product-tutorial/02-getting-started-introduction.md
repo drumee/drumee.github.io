@@ -1,6 +1,6 @@
 ---
 id: 02-getting-started-introduction
-title: How To Get Started with Drumee
+title: Create your Workspace
 slug: /introduction/tutorial/getting-started
 description: Create your first workspace and start collaborating with full control in Drumee.
 hide_title: true

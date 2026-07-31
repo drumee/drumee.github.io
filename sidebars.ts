@@ -27,7 +27,7 @@ const sidebars: SidebarsConfig = {
           label: "Drumee Tutorial",
           link: {
             type: "generated-index",
-            title: "Drumee Tutorial",
+            title: "Drumee Onboarding Guide",
             description:
               "A visual guide to Drumee's core components and getting started.",
             slug: "/introduction/tutorial",
