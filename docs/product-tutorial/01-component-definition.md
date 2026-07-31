@@ -1,13 +1,19 @@
 ---
 id: 01-component-definition
 title: Component Definition
-slug: /product-tutorial/component-definition
+slug: /introduction/tutorial/component-definition
 description: A product tutorial guide to the Drumee home manager, settings, admin console, files, and tasks.
+hide_title: true
 ---
 
-_Product Tutorial Guide_
+<div className="product-tutorial">
 
-_Your Sovereign Data Infrastructure_
+<header className="product-tutorial-hero">
+  <p className="product-tutorial-hero__eyebrow">Component Definition</p>
+  <h1>Component Definition</h1>
+  <p className="product-tutorial-hero__guide">Product Tutorial Guide</p>
+  <p className="product-tutorial-hero__tagline">Your Sovereign Data Infrastructure</p>
+</header>
 
 ## 1.1 Home Manager
 
@@ -176,3 +182,5 @@ Dashboard with metrics, charts, and summaries of project status and workload.
 ![1.5.5 Real-time overview of progress, status, priorities, workload, and activity](/img/product-tutorial/project-health.png)
 
 _1.5.5 Real-time overview of progress, status, priorities, workload, and activity_
+
+</div>

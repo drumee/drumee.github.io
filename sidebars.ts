@@ -22,6 +22,21 @@ const sidebars: SidebarsConfig = {
         "introduction/07-why-drumee",
         "introduction/08-the-stack",
         "introduction/09-roadmap",
+        {
+          type: "category",
+          label: "Tutorial. How to get started with Drumee",
+          link: {
+            type: "generated-index",
+            title: "Tutorial. How to get started with Drumee",
+            description:
+              "A visual guide to Drumee's core components and getting started.",
+            slug: "/introduction/tutorial",
+          },
+          items: [
+            "product-tutorial/01-component-definition",
+            "product-tutorial/02-getting-started-introduction",
+          ],
+        },
       ],
     },
     {
@@ -235,21 +250,6 @@ const sidebars: SidebarsConfig = {
         "getting-started/02-own-cloud",
         "getting-started/03-playground",
         "getting-started/04-plugins",
-      ],
-    },
-    {
-      type: "category",
-      label: "Product Tutorial",
-      link: {
-        type: "generated-index",
-        title: "Product Tutorial Guide",
-        description:
-          "A visual guide to Drumee's core components and getting started.",
-        slug: "/product-tutorial",
-      },
-      items: [
-        "product-tutorial/01-component-definition",
-        "product-tutorial/02-getting-started-introduction",
       ],
     },
     // {
