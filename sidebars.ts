@@ -24,7 +24,7 @@ const sidebars: SidebarsConfig = {
         "introduction/09-roadmap",
         {
           type: "category",
-          label: "Drumee Tutorial",
+          label: "Drumee Onboarding Guide",
           link: {
             type: "generated-index",
             title: "Drumee Onboarding Guide",
