@@ -2,13 +2,13 @@
 id: 02-getting-started-introduction
 title: How To Get Started with Drumee
 slug: /introduction/tutorial/getting-started
-description: Learn how to create your first workspace and start collaborating with full control in Drumee.
+description: Create your first workspace and start collaborating with full control in Drumee.
 hide_title: true
 ---
 
 <div className="product-tutorial">
 
-<p className="product-tutorial-intro">Learn how to create your first workspace and start collaborating with full control in Drumee</p>
+<p className="product-tutorial-intro">Create your first workspace and start collaborating with full control in Drumee</p>
 
 As with any team collaboration, you often end up switching between multiple tools just to manage files, chat, schedule meetings, and control permissions. This constant context-switching slows everyone down and creates fragmented data. The objective is to keep everything in one secure place and move forward efficiently while maintaining full sovereignty over your information.
 
