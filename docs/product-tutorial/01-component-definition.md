@@ -8,12 +8,6 @@ hide_title: true
 
 <div className="product-tutorial">
 
-<header className="product-tutorial-hero">
-  <h1>Component Definition</h1>
-  <p className="product-tutorial-hero__guide">Product Tutorial Guide</p>
-  <p className="product-tutorial-hero__tagline">Your Sovereign Data Infrastructure</p>
-</header>
-
 ## 1.1 Home Manager
 
 Your command center, what you see when you first log in.

@@ -101,6 +101,16 @@
   border-radius: 0.25rem;
 }
 
+/* Center tables in the content column. Infima renders tables as full-width
+   block elements, so shrink to the content width before auto margins apply.
+   Keeping display:block preserves horizontal scrolling on narrow screens. */
+.product-tutorial table {
+  width: fit-content;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .product-tutorial table th {
   color: #fff;
   background: var(--product-tutorial-navy);
