@@ -28,3 +28,125 @@
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+
+/* Product tutorial content imported from the source guide. */
+.product-tutorial {
+  --product-tutorial-navy: #0d1f33;
+  --product-tutorial-green: #1d9e75;
+  --product-tutorial-muted: #607080;
+}
+
+.product-tutorial-hero {
+  margin: 0 0 2.5rem;
+  padding: 2.75rem 1.5rem;
+  color: #fff;
+  text-align: center;
+  background: var(--product-tutorial-navy);
+  border-radius: 0.5rem;
+}
+
+.product-tutorial-hero h1 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.product-tutorial-hero__guide {
+  margin: 1rem 0 0;
+  color: #a0becc;
+  font-size: 1.25rem;
+}
+
+.product-tutorial-hero__tagline {
+  margin: 0.5rem 0 0;
+  color: #dce6ec;
+  font-style: italic;
+}
+
+.product-tutorial h2,
+.product-tutorial h3 {
+  color: var(--product-tutorial-green);
+  font-weight: 700;
+}
+
+.product-tutorial h2 {
+  margin-top: 2.75rem;
+  font-size: 1.35rem;
+}
+
+.product-tutorial h3 {
+  margin-top: 2rem;
+  font-size: 1.15rem;
+}
+
+.product-tutorial-intro {
+  margin: 0 0 1.75rem;
+  color: var(--ifm-font-color-base);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.product-tutorial-overview-title {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  padding: 0.45rem 0.75rem;
+  color: #fff !important;
+  font-size: 0.9rem !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--product-tutorial-navy);
+  border-radius: 0.25rem;
+}
+
+/* Center tables in the content column. Infima renders tables as full-width
+   block elements, so shrink to the content width before auto margins apply.
+   Keeping display:block preserves horizontal scrolling on narrow screens. */
+.product-tutorial table {
+  width: fit-content;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.product-tutorial table th {
+  color: #fff;
+  background: var(--product-tutorial-navy);
+}
+
+/* Keep screenshots and their source captions aligned and responsive. */
+.theme-doc-markdown .product-tutorial .product-tutorial-figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(100%, 760px);
+  max-width: none;
+  margin: 1.5rem auto;
+}
+
+.theme-doc-markdown .product-tutorial .product-tutorial-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 0.5rem;
+  box-shadow: var(--ifm-global-shadow-lw);
+}
+
+.theme-doc-markdown .product-tutorial .product-tutorial-figure figcaption {
+  display: block;
+  width: 100%;
+  margin-top: 0.5rem;
+  color: var(--product-tutorial-muted);
+  font-size: 0.9rem;
+  font-style: italic;
+  text-align: center !important;
+}
+
+[data-theme='dark'] .product-tutorial table th {
+  color: #fff;
+  background: #152d46;
+}

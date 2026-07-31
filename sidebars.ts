@@ -22,6 +22,21 @@ const sidebars: SidebarsConfig = {
         "introduction/07-why-drumee",
         "introduction/08-the-stack",
         "introduction/09-roadmap",
+        {
+          type: "category",
+          label: "Drumee Tutorial",
+          link: {
+            type: "generated-index",
+            title: "Drumee Tutorial",
+            description:
+              "A visual guide to Drumee's core components and getting started.",
+            slug: "/introduction/tutorial",
+          },
+          items: [
+            "product-tutorial/01-component-definition",
+            "product-tutorial/02-getting-started-introduction",
+          ],
+        },
       ],
     },
     {

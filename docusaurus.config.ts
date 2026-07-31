@@ -39,6 +39,9 @@ const config: Config = {
           routeBasePath: '/',  // Docs are at root of this deployment
           editUrl: 'https://github.com/drumee/documentation/tree/main/',
         },
+        theme: {
+          customCss: './src/css/custom.css',
+        },
       } satisfies Preset.Options,
     ],
   ],
