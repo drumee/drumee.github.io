@@ -9,7 +9,6 @@ hide_title: true
 <div className="product-tutorial">
 
 <header className="product-tutorial-hero">
-  <p className="product-tutorial-hero__eyebrow">How To Get Started with Drumee</p>
   <h1>How To Get Started with Drumee</h1>
   <p className="product-tutorial-hero__guide">Product Tutorial Guide</p>
   <p className="product-tutorial-hero__tagline">Your Sovereign Data Infrastructure</p>

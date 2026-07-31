@@ -9,7 +9,6 @@ hide_title: true
 <div className="product-tutorial">
 
 <header className="product-tutorial-hero">
-  <p className="product-tutorial-hero__eyebrow">Component Definition</p>
   <h1>Component Definition</h1>
   <p className="product-tutorial-hero__guide">Product Tutorial Guide</p>
   <p className="product-tutorial-hero__tagline">Your Sovereign Data Infrastructure</p>
