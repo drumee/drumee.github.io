@@ -24,10 +24,10 @@ const sidebars: SidebarsConfig = {
         "introduction/09-roadmap",
         {
           type: "category",
-          label: "Tutorial. How to get started with Drumee",
+          label: "How to get started with Drumee",
           link: {
             type: "generated-index",
-            title: "Tutorial. How to get started with Drumee",
+            title: "How to get started with Drumee",
             description:
               "A visual guide to Drumee's core components and getting started.",
             slug: "/introduction/tutorial",

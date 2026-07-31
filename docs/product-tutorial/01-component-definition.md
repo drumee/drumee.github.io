@@ -28,15 +28,17 @@ Your command center, what you see when you first log in.
 | Trash | Recently deleted files and folders, recoverable before permanent deletion. |
 | Workspace List | All folders and workspaces you are a member of. |
 
-![1.1 Home page](/img/product-tutorial/home-manager.jpg)
-
-_1.1 Home page_
+<figure className="product-tutorial-figure">
+  <img src="/img/product-tutorial/home-manager.jpg" alt="1.1 Home page" />
+  <figcaption>1.1 Home page</figcaption>
+</figure>
 
 ## 1.2 Settings
 
-![1.1 Personal account](/img/product-tutorial/personal-account.png)
-
-_1.1 Personal account_
+<figure className="product-tutorial-figure">
+  <img src="/img/product-tutorial/personal-account.png" alt="1.1 Personal account" />
+  <figcaption>1.1 Personal account</figcaption>
+</figure>
 
 1. Profile: Upload or change your avatar.
 2. Username: Edit your public profile information.
@@ -44,9 +46,10 @@ _1.1 Personal account_
 4. Display mode: Configure appearance, notifications and security settings.
 5. Connected app: Coming soon
 
-![1.2 Personal plan](/img/product-tutorial/personal-plan.png)
-
-_1.2 Personal plan_
+<figure className="product-tutorial-figure">
+  <img src="/img/product-tutorial/personal-plan.png" alt="1.2 Personal plan" />
+  <figcaption>1.2 Personal plan</figcaption>
+</figure>
 
 6. Current plan: View your current plan and upgrade or manage your subscription.
 7. Team: Check your active plan and renewal or expiration details.
@@ -55,9 +58,10 @@ _1.2 Personal plan_
 10. Export data: Download your files, chat history, and workspace data as a ZIP archive.
 11. Delete account: Permanently delete your Drumee account and all associated data. This action cannot be undone.
 
-![1.2 Referral & GG Drive migration](/img/product-tutorial/referral-and-migration.png)
-
-_1.2 Referral & GG Drive migration_
+<figure className="product-tutorial-figure">
+  <img src="/img/product-tutorial/referral-and-migration.png" alt="1.2 Referral and GG Drive migration" />
+  <figcaption>1.2 Referral &amp; GG Drive migration</figcaption>
+</figure>
 
 12. Referral code: Share your referral code with teammates so they can quickly join your Drumee workspace.
 13. Referral link: Copy and send your referral link to invite new members. Users can create an account and join your workspace directly through this link.
@@ -80,9 +84,10 @@ Admin Console gives workspace owners full control over team members, storage usa
 | Assign roles | Set permissions at the member level: Viewer, Editor, Admin. |
 | Transfer ownership | Only the current Owner can change roles or transfer ownership. |
 
-![1.3.1 Member Management panel (invite, roles, transfer owner)](/img/product-tutorial/member-management.png)
-
-_1.3.1 Member Management panel (invite, roles, transfer owner)_
+<figure className="product-tutorial-figure">
+  <img src="/img/product-tutorial/member-management.png" alt="1.3.1 Member Management panel" />
+  <figcaption>1.3.1 Member Management panel (invite, roles, transfer owner)</figcaption>
+</figure>
 
 ### 1.3.2 Audit Logs
 
@@ -95,9 +100,10 @@ Full history of every action taken in your workspace:
 - What was shared, and with whom
 - What was deleted
 
-![1.3.2 Audit log - who did what, when](/img/product-tutorial/audit-log.png)
-
-_1.3.2 Audit log - who did what, when_
+<figure className="product-tutorial-figure">
+  <img src="/img/product-tutorial/audit-log.png" alt="1.3.2 Audit log" />
+  <figcaption>1.3.2 Audit log - who did what, when</figcaption>
+</figure>
 
 ### 1.3.3 Storage
 
@@ -108,9 +114,10 @@ Monitor and manage storage across the organization:
 - Individual user usage
 - Ongoing storage monitoring and alerts
 
-![1.3.3 Storage dashboard - workspace, folder, and per-user breakdown](/img/product-tutorial/storage-dashboard.png)
-
-_1.3.3 Storage dashboard - workspace, folder, and per-user breakdown_
+<figure className="product-tutorial-figure">
+  <img src="/img/product-tutorial/storage-dashboard.png" alt="1.3.3 Storage dashboard" />
+  <figcaption>1.3.3 Storage dashboard - workspace, folder, and per-user breakdown</figcaption>
+</figure>
 
 ## 1.4 Files
 
@@ -120,17 +127,19 @@ Single source of truth to upload, organize, preview, and track version history, 
 
 Grid/thumbnail layout of files with previews and dates.
 
-![1.4.1 Files in landscape mode](/img/product-tutorial/files-landscape.png)
-
-_1.4.1 Files in landscape mode_
+<figure className="product-tutorial-figure">
+  <img src="/img/product-tutorial/files-landscape.png" alt="1.4.1 Files in landscape mode" />
+  <figcaption>1.4.1 Files in landscape mode</figcaption>
+</figure>
 
 ### 1.4.2 Portrait view
 
 List/table layout of files with columns for name, last change, size and type.
 
-![1.4.2 Files in portrait mode](/img/product-tutorial/files-portrait.png)
-
-_1.4.2 Files in portrait mode_
+<figure className="product-tutorial-figure">
+  <img src="/img/product-tutorial/files-portrait.png" alt="1.4.2 Files in portrait mode" />
+  <figcaption>1.4.2 Files in portrait mode</figcaption>
+</figure>
 
 ## 1.5 Task
 
@@ -147,40 +156,45 @@ Manage action items alongside your files and discussions, all in one place.
 
 Kanban columns showing tasks by status for easy drag-and-drop updates.
 
-![1.5.1 Check all to-do, in progress, to review & complete tasks](/img/product-tutorial/task-board.png)
-
-_1.5.1 Check all to-do, in progress, to review & complete tasks_
+<figure className="product-tutorial-figure">
+  <img src="/img/product-tutorial/task-board.png" alt="1.5.1 Task board" />
+  <figcaption>1.5.1 Check all to-do, in progress, to review &amp; complete tasks</figcaption>
+</figure>
 
 ### 1.5.2 Task in Calendar view
 
 Tasks displayed on a calendar by due dates for quick scheduling overview.
 
-![1.5.2 Shows all tasks on a monthly or weekly calendar.](/img/product-tutorial/task-calendar.png)
-
-_1.5.2 Shows all tasks on a monthly or weekly calendar._
+<figure className="product-tutorial-figure">
+  <img src="/img/product-tutorial/task-calendar.png" alt="1.5.2 Task calendar" />
+  <figcaption>1.5.2 Shows all tasks on a monthly or weekly calendar.</figcaption>
+</figure>
 
 ### 1.5.3 Task in Gantt view
 
 Horizontal timeline bars showing task durations and schedules.
 
-![1.5.3 Manage task timelines visually across days or weeks.](/img/product-tutorial/task-gantt.png)
-
-_1.5.3 Manage task timelines visually across days or weeks._
+<figure className="product-tutorial-figure">
+  <img src="/img/product-tutorial/task-gantt.png" alt="1.5.3 Task Gantt view" />
+  <figcaption>1.5.3 Manage task timelines visually across days or weeks.</figcaption>
+</figure>
 
 ### 1.5.4 Task in List view
 
 Simple linear list of all tasks with key details.
 
-![1.5.4 List all tasks in a clean table with key details for quick scanning](/img/product-tutorial/task-list.png)
-
-_1.5.4 List all tasks in a clean table with key details for quick scanning_
+<figure className="product-tutorial-figure">
+  <img src="/img/product-tutorial/task-list.png" alt="1.5.4 Task list view" />
+  <figcaption>1.5.4 List all tasks in a clean table with key details for quick scanning</figcaption>
+</figure>
 
 ### 1.5.5 Project health
 
 Dashboard with metrics, charts, and summaries of project status and workload.
 
-![1.5.5 Real-time overview of progress, status, priorities, workload, and activity](/img/product-tutorial/project-health.png)
-
-_1.5.5 Real-time overview of progress, status, priorities, workload, and activity_
+<figure className="product-tutorial-figure">
+  <img src="/img/product-tutorial/project-health.png" alt="1.5.5 Project health" />
+  <figcaption>1.5.5 Real-time overview of progress, status, priorities, workload, and activity</figcaption>
+</figure>
 
 </div>
