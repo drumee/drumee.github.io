@@ -72,8 +72,12 @@
 }
 
 .product-tutorial h2 {
-  margin-top: 2.75rem;
+  margin-top: .75rem;
   font-size: 1.35rem;
+}
+
+.product-tutorial ul {
+  margin-bottom: 0;
 }
 
 .product-tutorial h3 {
