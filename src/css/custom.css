@@ -28,3 +28,15 @@
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+
+/* Keep screenshots from the product tutorial legible and responsive. */
+.theme-doc-markdown img[src^='/img/product-tutorial/'] {
+  display: block;
+  width: 100%;
+  max-width: 860px;
+  height: auto;
+  margin: 1.5rem auto 0.5rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 0.5rem;
+  box-shadow: var(--ifm-global-shadow-lw);
+}

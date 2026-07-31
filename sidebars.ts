@@ -237,6 +237,21 @@ const sidebars: SidebarsConfig = {
         "getting-started/04-plugins",
       ],
     },
+    {
+      type: "category",
+      label: "Product Tutorial",
+      link: {
+        type: "generated-index",
+        title: "Product Tutorial Guide",
+        description:
+          "A visual guide to Drumee's core components and getting started.",
+        slug: "/product-tutorial",
+      },
+      items: [
+        "product-tutorial/01-component-definition",
+        "product-tutorial/02-getting-started-introduction",
+      ],
+    },
     // {
     //   type: "category",
     //   label: "Core Concepts",
