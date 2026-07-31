@@ -10,7 +10,7 @@ hide_title: true
 
 ## 1.1 Home Manager
 
-Your command center, what you see when you first log in.
+Learn Drumee board basics.
 
 | Feature | What it does |
 | --- | --- |
