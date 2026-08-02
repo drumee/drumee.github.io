@@ -5,14 +5,14 @@ import styles from './styles.module.css';
 
 type FeatureItem = {
   title: string;
-  Svg: React.ComponentType<React.ComponentProps<'svg'>>;
+  imageSrc: string;
   description: ReactNode;
 };
 
 const FeatureList: FeatureItem[] = [
   {
     title: 'Drumee is a sovereign data infrastructure',
-    Svg: require("@site/static/img/logo.svg").default,
+    imageSrc: require('@site/static/img/logo.png').default,
     description: (
       <>
         <p>It is not a cloud storage tool. It is not a SaaS collaboration app. It is an OS-like system that transforms a file system into a collaborative, extensible workspace - one that you fully own and control.</p>
@@ -42,11 +42,11 @@ const FeatureList: FeatureItem[] = [
   // },
 ];
 
-function Feature({title, Svg, description}: FeatureItem) {
+function Feature({title, imageSrc, description}: FeatureItem) {
   return (
     <div className={clsx('col')}>
       <div className="text--center">
-        <Svg className={styles.featureSvg} role="img" />
+        <img className={styles.featureImage} src={imageSrc} alt="Drumee logo" />
       </div>
       <div className="text--center padding-horiz--md">
         <Heading as="h3">{title}</Heading>
