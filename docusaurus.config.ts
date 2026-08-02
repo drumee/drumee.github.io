@@ -50,7 +50,7 @@ const config: Config = {
       title: 'Drumee Docs',
       logo: {
         alt: 'Drumee Logo',
-        src: 'img/logo.svg',
+        src: 'img/logo.png',
       },
       items: [
         {
