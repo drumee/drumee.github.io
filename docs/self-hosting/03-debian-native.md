@@ -30,7 +30,7 @@ Everything else (Node.js 22, MariaDB, nginx, Redis, pm2) is pulled in automatica
 ## Install
 
 ```bash
-curl -fsSL https://apt.drumee.net/baremetal.sh | sudo bash
+curl -fsSL https://apt.drumee.net/debian.sh | sudo bash
 ```
 
 This bootstrap:
@@ -77,7 +77,7 @@ Either preseed everything from a config file:
 # produce a debconf preseed from your config
 node config/render.mjs debconf --config drumee.yaml > install.conf
 
-sudo PRESEED=install.conf bash baremetal.sh
+sudo PRESEED=install.conf bash debian.sh
 ```
 
 …or answer with environment variables and disable prompting:
@@ -87,7 +87,7 @@ sudo DRUMEE_NONINTERACTIVE=1 \
      DRUMEE_DOMAIN=example.com \
      DRUMEE_ADMIN_EMAIL=admin@example.com \
      DRUMEE_TLS_METHOD=acme-dns-api \
-     bash baremetal.sh
+     bash debian.sh
 ```
 
 `DRUMEE_NONINTERACTIVE` unset or `0` means prompt; any other value means never
