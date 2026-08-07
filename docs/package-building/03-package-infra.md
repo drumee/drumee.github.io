@@ -9,7 +9,7 @@ description: drumee-infra package — infrastructure configurator, post-install 
 
 **Directory:** `infra/`
 **Debian package:** `drumee-infra`
-**Current version:** 1.2.11
+**Current version:** 1.2.27
 **Helper source:** `git@github.com:drumee/setup-infra` → `/var/lib/drumee/setup-infra/`
 
 ## Purpose
@@ -43,7 +43,16 @@ Three primitives drive every write:
 
 ### Idempotency / reinstall guard
 
-`templates/utils.js` → `hasExistingSettings()` reads `/etc/drumee/drumee.json`; if a `domain_name` is already configured it **aborts with a data-loss warning** unless `FORCE_INSTALL=1` (or `--force-install`) is set. On the package side, the `reconfigure` postinst action supplies this by re-running the infra configurator with `--force-install=1`.
+`templates/utils.js` → `hasExistingSettings()` reads `/etc/drumee/drumee.json`; if a `domain_name` is already configured it **aborts with a data-loss warning** — `infra.js` then calls `exit(0)`, so the caller sees success — unless re-rendering was explicitly agreed to, by either:
+
+- `--reconfigure=1` on the command line, or
+- `DRUMEE_RECONFIGURE=1` (or `true`) in the environment, which is what the `--reconfigure` argparse default reads, "so a package can drive it".
+
+On the package side, the `reconfigure` postinst action supplies `--reconfigure=1`.
+
+:::caution `--force-install` is an alias, and used to be a no-op
+`--force-install` is declared with the help text "Override existing configs", but for a long time **nothing read it** — passing it left the guard in force, and since `infra.js` exits 0 the caller saw success with nothing re-rendered. `drumee-infra`'s postinst passed exactly that on `dpkg-reconfigure`, which is why configuration fixes could not reach an already-installed host. Fixed on both sides: the postinst now passes `--reconfigure=1` (drumee-infra 1.2.27), and the guard accepts `--force-install` as an alias so an older postinst still works.
+:::
 
 ### public / private / main variants
 
@@ -93,7 +102,7 @@ libncurses6, g++, gyp, openssh-client, libcurl4
 
 ## Post-Install: bin/install
 
-The package `postinst` invokes it: on `configure` it runs `bin/install`; on `reconfigure` it re-runs the configurator with `--force-install=1` directly. Either way the `postinst` first bridges the debconf answers (`drumee-infra/*`) into the `DRUMEE_*` environment variables the configurator reads — without a domain it silently `exit(0)`s and nothing is configured.
+The package `postinst` invokes it: on `configure` it runs `bin/install`; on `reconfigure` it re-runs the configurator with `--reconfigure=1` directly (and then `bin/init-named` itself, since that arm bypasses `bin/install`). Either way the `postinst` first bridges the debconf answers (`drumee-infra/*`) into the `DRUMEE_*` environment variables the configurator reads — without a domain it silently `exit(0)`s and nothing is configured.
 
 `bin/install` runs as root and orchestrates the setup in this order:
 
@@ -103,11 +112,33 @@ The package `postinst` invokes it: on `configure` it runs `bin/install`; on `rec
 
 3. **Sources `/etc/drumee/drumee.sh`** and installs the crontab, then sets directory permissions via `protect_dir` for all Drumee runtime directories (owned by `www-data`, confidential dirs mode `go-rwx`).
 
-4. **DNS** — runs `bin/init-named` to configure BIND9 (generates zone files, TSIG key, starts `named`) unless `$ACME_ENV_FILE` is already present.
+4. **DNS** — runs `bin/init-named` (zone files, TSIG key, starts `named`) when the
+   instance is meant to serve its own zone. **`DRUMEE_DNS_SERVER` is the decider**,
+   and the postinst sets it from the chosen `tls_method`:
 
-5. **SSL certificates** — one or both of:
-   - **Private domain** (`$PRIVATE_DOMAIN` set): `bin/create-local-certs` generates self-signed certs via openssl.
-   - **Public domain** (`$PUBLIC_DOMAIN` set, no `$OWN_CERTS_DIR`): `bin/init-acme` registers with Let's Encrypt via acme.sh and issues wildcard certs using a DNS provider API.
+   | `DRUMEE_DNS_SERVER` | Behaviour |
+   |---|---|
+   | `0` | skipped — "Local DNS server not requested for this TLS method" |
+   | `1` | `bin/init-named` runs |
+   | unset | falls back to the old inference: runs unless `$ACME_ENV_FILE` is set **and** the file exists |
+
+   The fallback is about the *certificate challenge* only, which is why it also
+   switched DNS on for methods that want their zone hosted elsewhere. Prefer the
+   explicit variable.
+
+5. **SSL certificates** — driven by `DRUMEE_TLS_METHOD` (five methods:
+   `acme-dns-server`, `acme-dns-api`, `caddy`, `own`, `self-signed`), which the
+   postinst reduces to the two variables this script actually tests:
+
+   - **Self-signed** (`$PRIVATE_DOMAIN` set **or** `DRUMEE_TLS_METHOD=self-signed`):
+     `bin/create-local-certs` generates certs via openssl. The method is tested
+     explicitly, not just the private domain — on that path this is the only thing
+     certifying the *public* names, so gating on the private one would leave nginx
+     with no certificate at all.
+   - **ACME** (`$PUBLIC_DOMAIN` set, no `$OWN_CERTS_DIR`): `bin/init-acme` issues
+     **wildcard** certs via acme.sh. Always DNS-01 — a wildcard cannot be validated
+     over HTTP — either against the local BIND9 (`dns_nsupdate`) or your provider's
+     API, selected by `$ACME_ENV_FILE`.
    - **Own certs** (`$OWN_CERTS_DIR` set): cert generation is skipped.
 
 6. **Prosody XMPP** — runs `setup_prosody` to configure Jitsi Meet credentials (focus, jvb, app users), clean up vendor defaults, and restart prosody.
