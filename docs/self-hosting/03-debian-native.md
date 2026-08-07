@@ -145,10 +145,15 @@ both **https** and **http** (apt verifies its GPG signature either way):
 
 ```bash
 sudo install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://apt.drumee.net/drumee-archive-keyring.asc \
-  | sudo tee /etc/apt/keyrings/drumee.asc >/dev/null
-echo "deb [signed-by=/etc/apt/keyrings/drumee.asc] https://apt.drumee.net/ ./" \
-  | sudo tee /etc/apt/sources.list.d/drumee.list
+curl -fsSL https://apt.drumee.net/drumee-archive-keyring.gpg \
+  | sudo tee /etc/apt/keyrings/drumee-archive-keyring.gpg >/dev/null
+sudo tee /etc/apt/sources.list.d/drumee.sources >/dev/null <<'SOURCES'
+Types: deb
+URIs: https://apt.drumee.net
+Suites: trixie
+Components: main
+Signed-By: /etc/apt/keyrings/drumee-archive-keyring.gpg
+SOURCES
 
 # Node 22 from NodeSource — Trixie's own Node is 20, which cannot satisfy
 # drumee-node-runtime's `nodejs (>= 22)`
@@ -156,6 +161,17 @@ curl -fsSL https://deb.nodesource.com/setup_22.x | sudo bash -
 
 sudo apt update && sudo apt install drumee
 ```
+
+`Suites` is the release channel: `trixie` is stable, with `trixie-beta` and
+`trixie-edge` for pre-release trains. `Architectures` is deliberately left out so apt
+uses your machine's own — the repository publishes both `amd64` and `arm64`.
+
+:::note Upgrading from an older install
+Installs made before release 1.0.23 use a flat repository stanza in
+`/etc/apt/sources.list.d/drumee.list`. That repository is **frozen** — it keeps working
+but receives no new releases. Re-running the installer replaces the old stanza with the
+one above; nothing else is needed.
+:::
 
 ## Manual install (from local packages)
 
