@@ -6,7 +6,7 @@ The public documentation site for the **Drumee** platform, built with
 automatically from `main`.
 
 > For how this site relates to the platform's other repos, see
-> [`setup-infra/DOCUMENTATION.md`](../setup-infra/DOCUMENTATION.md).
+> [`setup-infra/DOCUMENTATION.md`](https://github.com/drumee/setup-infra/blob/main/DOCUMENTATION.md).
 
 ## Requirements
 
