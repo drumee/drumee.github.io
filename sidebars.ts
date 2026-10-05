@@ -41,6 +41,52 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: "category",
+      label: "Minimal Kernel",
+      link: {
+        type: "generated-index",
+        title: "Minimal Kernel",
+        description:
+          "Architecture, contracts, capabilities, and verified onboarding for the Drumee Minimal Kernel.",
+        slug: "/kernel",
+      },
+      items: [
+        "kernel/overview",
+        "kernel/who-is-it-for",
+        {
+          type: "category",
+          label: "Getting Started",
+          link: {
+            type: "generated-index",
+            title: "Minimal Kernel Getting Started",
+            description:
+              "Prerequisites, repository layout, the verified integration environment, and a first capability.",
+            slug: "/kernel/getting-started",
+          },
+          items: [
+            "kernel/getting-started/prerequisites",
+            "kernel/getting-started/repository-layout",
+            "kernel/getting-started/run-the-kernel",
+            "kernel/getting-started/first-capability",
+          ],
+        },
+        "kernel/faq",
+        "kernel/architecture",
+        "kernel/runtime-contracts",
+        "kernel/identity-authentication-security",
+        "kernel/server-runtime",
+        "kernel/ui-runtime",
+        "kernel/system-mfs",
+        "kernel/window-manager",
+        "kernel/finder",
+        "kernel/capability-model",
+        "kernel/bootstrap-provisioning",
+        "kernel/repositories-packages",
+        "kernel/invariants",
+        "kernel/refactor-history",
+      ],
+    },
+    {
+      type: "category",
       label: "Technology",
       link: {
         type: "generated-index",
