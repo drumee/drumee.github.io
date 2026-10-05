@@ -24,7 +24,9 @@ An independently owned unit of backend services, frontend behavior, ACL, data, a
 
 ### Why several repositories?
 
-To make dependency direction and release ownership executable. Backend runtime, UI runtime, MFS, and Window Manager can be installed and tested independently; integration remains in `transient` until further boundaries are extracted.
+To make dependency direction and release ownership executable. Backend runtime, UI runtime, MFS, Window Manager, and Finder can be installed and tested independently.
+
+`transient` remains the integration/evidence workspace for bootstrap, backend adapters, and cross-package validation rather than the owner of extracted production code.
 
 ## Using the Kernel
 
@@ -34,11 +36,11 @@ Use the [verified `transient` harness](/kernel/getting-started/run-the-kernel). 
 
 ### Which components are mandatory?
 
-No single feature set is mandatory beyond the runtime needed by that feature. A backend-only capability can use `server-runtime`; a browser-only capability can use `ui-runtime`. Window Manager, System MFS, and Finder are optional. Finder itself requires MFS-compatible services; its window adapter optionally requires Window Manager.
+No single feature set is mandatory beyond the runtime needed by that feature. A backend-only capability can use `server-runtime`; a browser-only capability can use `ui-runtime`. Window Manager, System MFS, and Finder are optional. Finder core requires `ui-runtime` and logical MFS-compatible services. `FinderWindow` is a separate adapter and Window Manager is an optional peer.
 
 ### Can I use MFS without Finder or build without Window Manager?
 
-Yes. Both combinations are tested. Finder core also works without the Window Manager adapter.
+Yes. MFS is usable without Finder, and Finder core works without the Window Manager adapter. Both are standalone package contracts, not only integration-harness arrangements.
 
 ### Do I have to use MFS?
 
@@ -80,7 +82,9 @@ The integration stack is self-run and uses Linux, Node, MariaDB, Redis, Nginx, a
 
 ### What licenses were found?
 
-`server-runtime`, `ui-runtime`, `system-mfs`, and `window-manager` each declare `AGPL-3.0-only` in `package.json` and include an AGPLv3 license file. The private `transient` repository and its Finder/bootstrap integration packages do not currently include a repository license or package license field; their redistribution terms are therefore not established by those artifacts.
+`server-runtime`, `ui-runtime`, `system-mfs`, `window-manager`, and `finder` each declare `AGPL-3.0-only` in `package.json` and include an AGPLv3 license file.
+
+Remaining `transient` integration artifacts must be evaluated from their own metadata; do not infer their terms from a different repository.
 
 ### Can I use it commercially, modify it, or redistribute it?
 
@@ -90,17 +94,17 @@ AGPLv3 does not prohibit commercial use, modification, or redistribution, but it
 
 The inspected repositories do not contain an exception or a separate commercial license answering that question. Whether a capability is a separate work or is subject to AGPL obligations depends on how it combines and communicates with covered code; do not infer permission from the package boundary alone.
 
-License sources: [server-runtime](https://github.com/drumee/server-runtime/blob/main/LICENSE), [ui-runtime](https://github.com/drumee/ui-runtime/blob/main/LICENSE), [system-mfs](https://github.com/drumee/system-mfs/blob/main/LICENSE), and [window-manager](https://github.com/drumee/window-manager/blob/main/LICENSE).
+License sources: [server-runtime](https://github.com/drumee/server-runtime/blob/main/LICENSE), [ui-runtime](https://github.com/drumee/ui-runtime/blob/main/LICENSE), [system-mfs](https://github.com/drumee/system-mfs/blob/main/LICENSE), [window-manager](https://github.com/drumee/window-manager/blob/main/LICENSE), and [finder](https://github.com/drumee/finder/blob/main/LICENSE).
 
 ## Stability and contribution
 
 ### Is it production-ready?
 
-The packages are alpha releases. Standalone package and integration contracts pass, but API stability, a public bootstrap package, standalone Finder extraction, and production installation are not complete. “Alpha” means consumers should expect contract changes and pin versions.
+The packages are alpha releases. Standalone package and integration contracts pass, including Finder extraction, but API stability, a public bootstrap package, and a supported production Minimal Kernel distribution/installer are not complete. “Alpha” means consumers should expect contract changes and pin versions.
 
 ### Which packages are published?
 
-At documentation time, npm exposes all four extracted packages. `server-runtime`, `system-mfs`, and Window Manager resolve at `0.1.0-alpha.1`, `0.1.0-alpha.1`, and `0.1.0-alpha.2`; `ui-runtime` has `latest` at alpha.1 and `next` at alpha.2. Check npm at install time rather than copying versions from architecture pages.
+Registry metadata verified on 2026-10-05 exposes all five extracted packages. `server-runtime` and `system-mfs` are `0.1.0-alpha.1`; Window Manager is `0.1.0-alpha.2`; `ui-runtime` has `latest` at alpha.1 and `next` at alpha.2. Finder is `0.1.0-alpha.1`: its intended prerelease tag is `next`, while npm-created `latest` currently points to the same only version. Check npm at install time because alpha tags can move.
 
 ### Where do bugs and contributions go?
 

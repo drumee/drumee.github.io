@@ -3,87 +3,158 @@ id: finder
 title: Finder
 slug: /kernel/finder
 sidebar_position: 12
-description: Current Finder composition, selection, synchronization, upload, and download architecture.
+description: Standalone Finder composition, navigation, synchronization, transfer, media, and lifecycle contracts.
 ---
 
-# Finder
+# `@drumee/finder`
 
-Finder is currently a private Phase 4.8 integration module in `transient`, not a published standalone package. Its architecture separates the filesystem browser from its optional window shell:
-
-```text
-FinderWindow = Window Manager adapter around a Finder widget
-Finder       = listing, navigation, selection, transfer, upload,
-               download, and synchronization behavior
-```
-
-`Finder` can be mounted directly on `ui-runtime`. `FinderWindow` constructs that Widget and feeds it into a managed window. Canonical item identities are `{hub_id, nid}`.
-
-Current components are `Finder`, `FinderWindow`, `ItemList`, `FinderSelection`, `SelectionMarquee`, `FinderDragController`, `FinderTransferPolicy`, `MfsClient`, `MfsTransferClient`, `MfsSync`, `UploadController`, `DownloadController`, and `TransferProgressView`. There are no current `FinderView`, `FinderItem`, or `ItemRenderer` classes; dense item tiles are deliberately rendered by `ItemList` through delegated HTML.
-
-## Selection
-
-A normal tile click replaces selection with that item. Its checkbox toggles that item without clearing others. A background pointer gesture starts marquee selection after a five-pixel threshold, normalizes forward or reverse geometry, compares against cached tile bounds, and incrementally selects intersecting items. Scrolling, resize, item changes, navigation, drag cleanup, and window interactions invalidate or cancel bounds/gestures as appropriate. Modifier-key additive selection is not implemented.
-
-## Drag and transfer
-
-Dragging starts after a five-pixel threshold and preserves an existing multi-selection. Dropping on another Finder delegates to this current policy:
+The public [`drumee/finder`](https://github.com/drumee/finder) repository publishes [`@drumee/finder`](https://www.npmjs.com/package/@drumee/finder), the standalone optional browser capability for browsing logical MFS resources. Finder core mounts on `@drumee/ui-runtime` without Window Manager. The optional `FinderWindow` entry adapts one Finder to `@drumee/window-manager`.
 
 ```text
-same hub      -> mfs.move
-different hub -> mfs.copy
+@drumee/ui-runtime
+        ▲
+        │
+ @drumee/finder core
+
+@drumee/window-manager
+        ▲
+        │
+FinderWindow adapter
+        │
+        ▼
+ @drumee/finder core
 ```
 
-Logical nodes and destination use `{hub_id, nid}`. Finder generates an `operation_id` for transfer correlation. Same-shard move is also enforced by System MFS; cross-shard copy is an explicit tree-copy operation.
+Locations and nodes use logical `{hub_id, nid}` identities. Finder never consumes database names or physical-storage identities.
 
-## Synchronization
+## Public surface and mounting
 
-```mermaid
-sequenceDiagram
-  participant S as MFS service
-  participant P as Event projector
-  participant W as Runtime push/WebSocket
-  participant Sync as MfsSync
-  participant F as Relevant Finders
-  S->>P: mutation + affected scopes + operation_id
-  P->>P: project for each authorized recipient
-  P->>W: mfs.event per recipient
-  W->>Sync: targeted event
-  Sync->>Sync: suppress duplicate operation/type
-  Sync->>F: apply event to matching location/item
-  W-->>Sync: reconnect
-  Sync->>F: full listing reconciliation
+The deliberate core exports are `Finder`, `FinderTransferPolicy`, `MediaClient`, `MfsClient`, `MfsSync`, `MfsTransferClient`, and `registerFinderKinds`. Internal rendering, selection, controller, and geometry classes are not stable public API merely because they exist in the package.
+
+```js
+const {
+  MfsClient,
+  MfsSync,
+  registerFinderKinds
+} = require("@drumee/finder");
+
+registerFinderKinds(runtime);
+const mfs_client = new MfsClient({ transport });
+const mfs_sync = new MfsSync({ websocket: runtime.Websocket });
+
+const finder = runtime.mount({
+  kind: "finder",
+  location: { hub_id, nid },
+  mfs_client,
+  mfs_sync
+}, host);
 ```
 
-The private MFS service owns semantic events and recipient projection; System MFS does not. `MfsSync` routes only events relevant to a Finder's source parent, destination, or visible node. It retains a bounded set of operation/type pairs for echo suppression. On WebSocket reconnect it refreshes every registered Finder. Tests verify that recipient B does not receive a private field visible to recipient A.
+Window-managed use is a separate entry:
 
-## Upload: control and data planes
+```js
+const {
+  FinderWindow
+} = require("@drumee/finder/window");
 
-```mermaid
-flowchart LR
-  subgraph Control[Bounded JSON control plane]
-    Start[upload_start]
-    Status[upload_status]
-    Complete[upload_complete]
-    Abort[upload_abort]
-  end
-  subgraph Binary[Binary data plane]
-    Blob[Blob slice] --> Octet[application/octet-stream]
-    Octet --> Preflight[ACL + ownership preflight]
-    Preflight --> Temp[bounded streamed tempfile]
-    Temp --> Stage[sparse transfer staging]
-    Stage --> Ref[opaque payload_ref]
-    Ref --> Commit[MFS commit]
-  end
+const finder_window = new FinderWindow({
+  manager,
+  runtime,
+  finder_options
+});
 ```
 
-Large data never becomes a JSON array of bytes. The browser scans mixed files/folders and recursive WebKit directory entries, creates folders (including empty folders), starts file sessions, honors server-selected chunk geometry, skips already-received indexes on resume, uploads chunks concurrently, retries each chunk up to three times, and completes or aborts. Current defaults use 8 MiB browser chunks; the server remains authoritative.
+`FinderWindow` owns window lifecycle and title projection only. It owns no navigation, selection, MFS, transfer, media, or synchronization semantics. `@drumee/ui-runtime >=0.1.0-alpha.2 <0.2.0` is a peer dependency; `@drumee/window-manager` has the same range and is optional.
 
-The transfer service owns temporary sparse staging, bounded maps/TTL, hash checks, and cleanup. System MFS sees only an opaque complete payload reference and adopts it into canonical content.
+## Behavior and ownership boundary
 
-## Download
+Finder owns browser-side location and instance-local back/forward history, up and breadcrumb navigation, bounded listing, normal/checkbox/marquee selection, drag/drop, MOVE/COPY policy, transfer orchestration and progress presentation, media representation requests, synchronization, and reconnect reconciliation. Multiple Finder instances keep independent navigation and selection state.
 
-Selected roots are sent to `download_prepare`. The transfer service obtains an authorized recursive manifest through MFS service, prepares a ZIP in a finite child process, and exposes requester-scoped status, cancellation, retrieval, and release. The artifact remains on the filesystem; the validated online path uses an internal redirect so Nginx streams it. Progress is scoped to the requesting principal.
+Finder does not own authentication, authorization, MFS SQL, database shards, physical paths, `payload_ref`, archive paths, media conversion, FileIo, Nginx delivery, or backend transfer ownership. The backend remains authoritative for permission, node identity, transfer state, canonical content, and ancestor-cycle validation.
 
-`DownloadController` also contains a Blob-based retrieval fallback for an injected transport, but the production integration proof validates offline archive preparation plus Nginx delivery. Historical `zipid` socket semantics are not a current Finder contract.
+Normal tile click replaces selection. A checkbox toggles one item without clearing the others. A background pointer gesture begins marquee selection after a five-pixel threshold, normalizes forward or reverse geometry, and selects intersecting cached tile bounds. Full keyboard file-manager navigation, modifier/range selection, alternative list modes, large context menus, rich conflict resolution, undo, trash/restore, sharing, Team/Chat integration, Hub administration, and Desk/global ownership are not current Finder features.
 
-Source: `transient/target/modules/finder/`, `mfs-service/`, `mfs-transfer/`, and `tests/integration/kernel/phase4.8-*`.
+## Drag, transfer, and synchronization
+
+Drag payloads come from the source Finder's selection. Dropping into a Finder or directly onto a folder tile uses one policy:
+
+```text
+same hub      -> MOVE
+different hub -> COPY
+```
+
+Same-hub MOVE is projected optimistically, then converges with the committed event by logical identity and `operation_id` without duplicate insertion. Cross-hub COPY waits for backend-assigned destination identities. Backend ACL and MFS semantics remain authoritative in both cases.
+
+`MfsSync` consumes recipient-filtered logical create, rename, remove, move, and copy events. It routes changes to affected source, destination, visible-item, and current-folder scopes; suppresses duplicate operation echoes; and coalesces refreshes for open scopes after reconnect. Remote rename/remove/move/copy changes update current state, including selection metadata and current-folder rename handling.
+
+## Upload: bounded control and binary data
+
+The structured control path remains bounded:
+
+```text
+upload_start
+upload_status
+upload_complete
+upload_abort
+```
+
+Chunk bytes use a separate path:
+
+```text
+Blob
+  -> application/octet-stream
+  -> ACL + transfer-owner preflight
+  -> bounded streamed tempfile
+  -> sparse staged upload.payload at the exact server-validated offset
+  -> internal payload_ref
+  -> mfs-service
+  -> system-mfs canonical-content adoption
+```
+
+Binary chunks are never JSON byte arrays. The server chooses and validates chunk geometry; generic structured requests retain their size bound. Physical staging paths and `payload_ref` stay private. Transfer maps, staging, incoming tempfiles, retries, aborts, expiry, shutdown, integrity failure, and commit failure all have bounded ownership and cleanup. The client may resume from received indexes, but only the backend can adopt completed content into canonical storage.
+
+## Download: preparation and delivery
+
+```text
+prepare
+  -> authorized manifest
+  -> finite offline worker
+  -> filesystem staging
+  -> external archive generation
+  -> filesystem ZIP
+
+retrieve
+  -> runtime ACL
+  -> transfer ownership/state validation
+  -> FileIo
+  -> X-Accel-Redirect
+  -> Nginx
+  -> client
+```
+
+Finder receives a logical retrieval URL and delegates it to the browser. It never receives or buffers archive bytes. A transfer ID is not an authorization credential: runtime ACL and trusted-session transfer ownership are complementary checks. Node is not the normal heavy-download data plane.
+
+## Media representations
+
+`media.orig` always means the original stored file. Derived outputs are requested explicitly, including preview, thumbnail, vignette, card, slide, document-derived, video, audio, and HLS master/stream/segment representations.
+
+```text
+public representation service
+  -> runtime ACL
+  -> logical MFS node
+  -> host-filesystem abstraction
+  -> representation generator when required
+  -> filesystem artifact
+  -> FileIo
+  -> Nginx
+```
+
+Finder requests allowlisted representations for near-viewport tiles through `MediaClient`; it cannot select a generator or physical path. Node may process and rewrite small HLS `.m3u8` control artifacts. Large media payloads and HLS segments use FileIo and Nginx.
+
+## Resource lifetime
+
+A Finder owns its location, history, listing, selection, DOM listeners, drag/marquee gestures, preview/resize observers, file input, and per-Finder sync registration. `destroy()` is idempotent and releases those resources. Locally created upload/download controllers are cancelled and destroyed with Finder; injected controllers remain host-owned unless ownership is explicitly transferred. A shared `MfsSync` remains host-owned and has its own destruction boundary.
+
+This component-specific cleanup is required even though the server runtime retains its generic `stop()` safeguard. The standalone [`finder` repository](https://github.com/drumee/finder) defines the package contract.
+
+End-to-end Kernel validation evidence remains in `transient`.

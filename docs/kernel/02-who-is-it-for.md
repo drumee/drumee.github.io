@@ -59,7 +59,7 @@ The architecture may fit document-oriented products, collaborative tools, intern
 - independently packaged backend and frontend behavior;
 - rich client-side composition rather than server-rendered pages.
 
-Self-hosting teams should note the present operational maturity. The verified integration environment uses Linux, Docker, MariaDB, Redis, Nginx, and unpublished modules from `transient`. It proves the architecture; it is not a supported production installer or an availability/SLA claim.
+Self-hosting teams should note the present operational maturity. The verified integration environment uses Linux, Docker, MariaDB, Redis, Nginx, and integration-owned backend adapters from `transient`. It proves the architecture; it is not a supported production installer or an availability/SLA claim.
 
 Open-source contributors should distinguish **building on** the Kernel from **changing** it. Product behavior belongs in capabilities. Runtime changes must preserve standalone packaging, fail-closed authorization, and the invariants listed in [Kernel Invariants](/kernel/invariants).
 
@@ -78,12 +78,12 @@ Open-source contributors should distinguish **building on** the Kernel from **ch
 |---|---|---|
 | Backend capability on `server-runtime` only | **Supported** | The Hello service tests dispatch without UI, MFS, Finder, or Window Manager. A host must inject stores and adapters. |
 | Frontend capability on `ui-runtime` only | **Supported** | The package and LETC tests run without a backend; remote plugin discovery and services require a compatible transport. |
-| Application without Finder | **Supported** | Finder is absent from all four standalone package dependencies. |
+| Application without Finder | **Supported** | Finder is an optional standalone capability and is absent from the other extracted package dependencies. |
 | Application without Window Manager | **Supported** | Finder core is independent; only `FinderWindow` needs Window Manager. |
 | MFS without Finder | **Supported** | `@drumee/system-mfs` has no npm runtime dependencies and exposes backend filesystem/provisioning APIs. |
 | Runtime services without System MFS | **Supported** | Hello, authentication, domain ACL, plugins, and push are validated without MFS. |
 | Finder without System MFS-compatible services | **Unsupported** | Finder requires `MfsClient`; upload/download additionally require `MfsTransferClient`. |
-| Browser Finder as a standalone published package | **Not currently validated** | Finder remains a private Phase 4.8 integration module pending standalone extraction. |
+| Browser Finder as a standalone published package | **Supported alpha contract** | `@drumee/finder` is public and independently packaged; core mounting and the optional Window Manager adapter are validated. |
 | Server-side rendering | **Unsupported by the current UI runtime** | `ui-runtime` is browser/CommonJS/Webpack-oriented and explicitly excludes SSR. |
 
 ## When it is the wrong abstraction

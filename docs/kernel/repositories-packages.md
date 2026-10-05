@@ -8,24 +8,27 @@ description: Repository-to-package map for the current Minimal Kernel.
 
 # Repositories and packages
 
-| Repository | Package / current version at documentation time | Role and dependency direction | Belongs here | Does not belong here |
+| Repository | Package and registry state verified 2026-10-05 | Role and dependency direction | Belongs here | Does not belong here |
 |---|---|---|---|---|
-| `drumee/server-runtime` | `@drumee/server-runtime` `0.1.0-alpha.1` | generic Node backend runtime | session, ACL, dispatch, push, intrinsic SQL | MFS/product behavior |
-| `drumee/ui-runtime` | source `0.1.0-alpha.2`; npm `next` alpha.2 | generic browser runtime | LETC, Kind, Skeleton, services, WebSocket client | Finder, Window Manager, SSR |
-| `drumee/system-mfs` | `@drumee/system-mfs` `0.1.0-alpha.1` | optional backend capability, no npm runtime dependencies | MFS SQL, namespace, tree, permission primitives | identity provisioning, transfer UI/jobs |
-| `drumee/window-manager` | `@drumee/window-manager` `0.1.0-alpha.2` | optional UI capability; peer-depends on `ui-runtime` | generic window lifecycle/interactions | Finder or Desk policy |
-| `drumee/transient` | private transitional packages | assembles and validates all layers | bootstrap, Hello, Finder, adapters, harness, evidence | final public package/repository boundary |
+| [`drumee/server-runtime`](https://github.com/drumee/server-runtime) | `@drumee/server-runtime` `0.1.0-alpha.1`; `next` and `latest` | generic Node backend runtime | session, ACL, dispatch, push, intrinsic SQL | MFS/product behavior |
+| [`drumee/ui-runtime`](https://github.com/drumee/ui-runtime) | `@drumee/ui-runtime`; `next` `0.1.0-alpha.2`, `latest` `0.1.0-alpha.1` | generic browser runtime | LETC, Kind, Skeleton, services, WebSocket client | Finder, Window Manager, SSR |
+| [`drumee/system-mfs`](https://github.com/drumee/system-mfs) | `@drumee/system-mfs` `0.1.0-alpha.1`; `next` and `latest` | optional backend capability, no npm runtime dependencies | MFS SQL, namespace, tree, permission primitives | identity provisioning, transfer UI/jobs |
+| [`drumee/window-manager`](https://github.com/drumee/window-manager) | `@drumee/window-manager` `0.1.0-alpha.2`; `next` and `latest` | optional UI capability; peer-depends on `ui-runtime` | generic window lifecycle/interactions | Finder or Desk policy |
+| [`drumee/finder`](https://github.com/drumee/finder) | `@drumee/finder` `0.1.0-alpha.1`; intended `next`, npm-created `latest` | optional UI/MFS browsing capability; peer-depends on `ui-runtime`, with an optional Window Manager peer | logical browsing, interaction, transfer orchestration, media requests, sync | authorization, SQL, physical storage, backend jobs |
+| `drumee/transient` | integration/evidence workspace; no public assembler package | integrates and validates the layers | bootstrap, Hello, MFS service/transfer/media adapters, kernel harness, cross-package evidence | production Finder source or final package boundary |
 
-All four extracted packages are currently visible on npm. Architecture documentation avoids embedding versions because alpha tags can move; the table records the state checked on 2026-10-05.
+All five extracted packages are public on npm. Tags are reported because these are alpha releases and may move; consumers should verify the registry at install time. Finder currently has only `0.1.0-alpha.1`, so npm also created `latest` at that version even though its intentional prerelease channel is `next`.
 
 ## Licensing found
 
-The four extracted repositories each declare `AGPL-3.0-only` in package metadata and contain an AGPLv3 `LICENSE`. `transient` has no root `LICENSE`, and its private bootstrap, Hello, Finder, MFS service, and MFS transfer package metadata contain no license field. Do not assume the extracted-package license automatically supplies absent metadata for transitional artifacts.
+The five extracted repositories each declare `AGPL-3.0-only` in package metadata and contain an AGPLv3 `LICENSE`, including `drumee/finder`.
+
+`transient` has no root `LICENSE`, and its remaining integration artifacts must be evaluated from their own metadata. Do not assume one repository's license automatically supplies absent metadata elsewhere. This is a source-metadata summary, not legal advice.
 
 ## Historical repositories
 
 `server-team` and `ui-team` are behavioral/provenance sources only. Current standalone packages explicitly test that they do not import them. See [Refactor History](/kernel/refactor-history) for traceability.
 
-## Integration-workspace drift
+## Integration evidence
 
-The standalone repositories are authoritative for extracted packages. At documentation time, System MFS passes the `transient` synchronization audit. The Window Manager audit does not: the standalone package contains the extracted `lib/skeleton.js`, while the transitional mirror has a different inventory. The `transient` server/UI runtime mirrors also differ from the newer standalone packages. Consequently, the verified harness demonstrates the integrated contracts but must not be described as an installation of the latest standalone package artifacts.
+The standalone repositories are authoritative for current package APIs. `transient` is authoritative only for integrated bootstrap, backend adapter, data-plane, and cross-package validation evidence. Its Finder validation resolves the sibling standalone repository through `KERNEL_FINDER_ROOT`; it does not carry a second production Finder implementation. The verified harness demonstrates integration contracts but is not a supported production npm-only Kernel distribution or installer.

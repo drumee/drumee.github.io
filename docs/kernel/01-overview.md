@@ -17,32 +17,28 @@ The result is therefore **not** a reduced installation of the full historical Dr
 ## Runtime and capability
 
 - A **runtime** provides application-neutral execution machinery. `@drumee/server-runtime` dispatches services; `@drumee/ui-runtime` composes client-side LETC widgets.
-- A **capability** owns one coherent behavior above those runtimes. System MFS and Window Manager are capabilities. Finder is currently an integrated capability under validation.
+- A **capability** owns one coherent behavior above those runtimes. System MFS, Window Manager, and Finder are independently packaged capabilities.
 - An **application** selects capabilities and adds its business rules, data model, interface, and operations.
 
 ```mermaid
 flowchart TB
-  App["Application / product capabilities"]
-  Finder["Finder integration"]
-  WM["Window Manager capability"]
-  MFS["System MFS capability"]
+  App["Application"]
+  Finder["@drumee/finder"]
+  WM["@drumee/window-manager"]
+  Adapters["MFS service / transfer / media adapters"]
   UI["@drumee/ui-runtime"]
   Server["@drumee/server-runtime"]
-  Data[("MariaDB shards")]
-  Redis[("Redis push bus")]
+  MFS["@drumee/system-mfs"]
 
   App --> UI
   App --> Server
-  Finder -. optional shell .-> WM
   Finder --> UI
-  Finder --> MFS
-  WM --> UI
-  MFS --> Data
-  Server --> Data
-  Server --> Redis
+  Finder -. optional .-> WM
+  Adapters --> Server
+  Adapters --> MFS
 ```
 
-Solid arrows are current runtime dependencies. The dotted Finder-to-Window-Manager edge is optional: the Finder core can render directly, while `FinderWindow` adapts it to a managed window.
+Solid arrows are current runtime or service-contract dependencies. The dotted Finder-to-Window-Manager edge is optional: Finder core mounts directly on `ui-runtime`, while `FinderWindow` adapts it to a managed window. Finder uses logical MFS-compatible services; it does not import a backend implementation.
 
 ## Separation of responsibilities
 
@@ -54,10 +50,12 @@ The backend, frontend, and data layers are separately packaged:
 | Frontend | LETC initialization, Skeleton/Widget/Kind contracts, service and WebSocket clients | product widgets, interactions, capability state |
 | Data | intrinsic runtime schema manifest and generic MFS primitives | operational schemas, procedures, migrations, content policy |
 
-The package boundary is executable: the four extracted packages can be installed, packed, and tested from standalone clones. The current end-to-end assembly, bootstrap controller, Finder, and MFS service/transfer adapters still live in the private `transient` integration repository.
+The package boundary is executable: the five extracted packages can be installed, packed, and tested from standalone clones. [`server-runtime`](https://github.com/drumee/server-runtime), [`ui-runtime`](https://github.com/drumee/ui-runtime), [`system-mfs`](https://github.com/drumee/system-mfs), [`window-manager`](https://github.com/drumee/window-manager), and [`finder`](https://github.com/drumee/finder) are public standalone repositories.
+
+`transient` remains the integration and evidence workspace for bootstrap, Hello, backend MFS adapters, and cross-package validation. It no longer owns the production filesystem-browser implementation.
 
 ## What the Kernel deliberately excludes
 
-The generic runtimes do not own business services, application routing, product navigation, Hub/Team policy, Finder, MFS storage, Webpack tooling, SSR, or deployment automation. System MFS does not own identity creation, transfer sessions, browser uploads, archives, trash, search, or quota policy. Keeping those boundaries explicit lets capabilities evolve without turning every product change into a runtime change.
+The generic runtimes do not own business services, application routing, product navigation, Hub/Team policy, Finder, MFS storage, Webpack tooling, SSR, or deployment automation. System MFS does not own identity creation, transfer sessions, browser uploads, archives, trash, search, or quota policy. Finder does not own authorization, SQL, physical storage, media conversion, or backend transfer jobs. Keeping those boundaries explicit lets capabilities evolve without turning every product change into a runtime change.
 
 Continue with [Who is it for?](/kernel/who-is-it-for) or run the [verified integration path](/kernel/getting-started/run-the-kernel).
