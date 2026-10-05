@@ -36,4 +36,3 @@ This is a focused runtime subset, not a copy of the full historical UI framework
 Browser bundles are the responsibility of the separate transitional `ui-build` tooling. `ui-runtime` ships sources, not a generated production bundle.
 
 Source: `ui-runtime/src/bootstrap.js`, `letc.js`, `widgets.js`, `skeletons.js`, `kind.js`, `behaviors.js`, `service.js`, and `websocket.js`.
-

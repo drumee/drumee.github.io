@@ -77,4 +77,3 @@ Dependencies point downward toward contracts. Generic runtimes must not import a
 The Kernel must not absorb product navigation, Team/Desk semantics, Hub business policy, Finder behavior, capability SQL, upload/archive workflow, or deployment-specific configuration. Historical code may be behavioral evidence, but is not an implicit dependency.
 
 Auditable sources include `server-runtime/lib/`, `ui-runtime/src/`, `system-mfs/lib/`, `window-manager/lib/`, and `transient/target/modules/`.
-

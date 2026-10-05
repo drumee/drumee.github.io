@@ -62,4 +62,3 @@ Runtimes use constructor-injected stores and adapters rather than a global appli
 Generic descriptor registration says a service exists; it does not prove an optional capability is provisioned. System MFS availability is a separate validated state derived from installation/provisioning records and actual shard objects—not from the mere presence of `entity.db_name`, `home_dir`, or `home_id`.
 
 Implementation references: `server-runtime/lib/descriptor-registry.js`, `dispatcher.js`, `session.js`, `permission.js`, `http.js`, `plugin-resolver.js`; `ui-runtime/src/bootstrap.js`, `kind.js`, `service.js`.
-

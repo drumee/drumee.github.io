@@ -58,4 +58,3 @@ Ship operational SQL with the backend capability, preferably through a determini
 - Preserve standalone pack/install/test behavior where the capability is an extracted package.
 
 The verified [First Capability](/kernel/getting-started/first-capability) demonstrates an anonymous service, domain-protected service, push event, and frontend Kind without SQL.
-

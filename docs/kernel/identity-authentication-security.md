@@ -64,4 +64,3 @@ The socket URL contains the OTAK, never `regsid`. The WebSocket cookie is not au
 Redis carries targeted downstream envelopes. A capability chooses semantic recipients and must project recipient-safe event data; the router only delivers to resolved socket IDs.
 
 Implementation references: `server-runtime/lib/session.js`, `input.js`, `domain-authorizer.js`, `permission.js`, `websocket-router.js`, `yellow-page-store.js`, and `service/bootstrap.js`.
-

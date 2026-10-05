@@ -37,4 +37,3 @@ flowchart LR
 The current Finder package is named `@drumee/finder-integration-phase48`, is private, and declares `ui-runtime` plus optional `window-manager` peers. Do not treat that transitional name as a public package contract.
 
 See [Repositories & Packages](/kernel/repositories-packages) for ownership details.
-

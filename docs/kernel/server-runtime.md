@@ -41,4 +41,3 @@ The package's `schemas/SCHEMA_MANIFEST.json` is its executable inventory. Runtim
 The package does not own platform provisioning, System MFS, Finder, Window Manager, browser builds, Team/Hub policy, product services, archives, canonical content, or deployment. It has one runtime dependency, `websocket`; other integration services are injected.
 
 Source: `server-runtime/lib/`, `server-runtime/service/`, `server-runtime/acl/`, and `server-runtime/schemas/`.
-

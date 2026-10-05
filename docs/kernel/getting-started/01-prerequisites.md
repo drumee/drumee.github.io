@@ -42,4 +42,3 @@ scripts/test-env/kernel/check.sh
 ```
 
 This command was verified against the current checkout. It validates the tools, disk space, required pinned source inputs, and runtime schema manifests without starting the environment.
-

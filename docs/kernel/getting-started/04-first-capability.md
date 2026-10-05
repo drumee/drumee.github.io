@@ -52,4 +52,3 @@ node --test target/modules/hello/test/hello.test.js
 ```
 
 Then use [Run the Kernel](/kernel/getting-started/run-the-kernel) to exercise the real HTTP and browser/plugin path. For the complete ownership checklist, see [Capability Model](/kernel/capability-model).
-

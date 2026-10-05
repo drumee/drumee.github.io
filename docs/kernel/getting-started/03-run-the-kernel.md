@@ -67,4 +67,3 @@ This exact command was verified for this documentation. It checks service and pl
 ## What this path proves—and does not
 
 It proves the integrated runtime can start, bootstrap identity/session state, dispatch a capability, serve its frontend bundle, route push traffic, and keep large binary delivery outside bounded JSON control requests. It does not prove production hardening, a supported upgrade policy, a public Finder package, or a standalone npm-only assembly.
-

@@ -112,4 +112,3 @@ You probably do not need it if the application is essentially static, is a small
 3. A backend-only multi-user service can use server runtime contracts without adopting the UI runtime or MFS.
 4. A company landing page is a poor fit; identity, ACL, persistence, and realtime infrastructure would be unnecessary.
 5. A server-rendered commerce storefront is a poor current fit because the UI runtime has no SSR contract.
-

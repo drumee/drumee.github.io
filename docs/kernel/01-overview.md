@@ -61,4 +61,3 @@ The package boundary is executable: the four extracted packages can be installed
 The generic runtimes do not own business services, application routing, product navigation, Hub/Team policy, Finder, MFS storage, Webpack tooling, SSR, or deployment automation. System MFS does not own identity creation, transfer sessions, browser uploads, archives, trash, search, or quota policy. Keeping those boundaries explicit lets capabilities evolve without turning every product change into a runtime change.
 
 Continue with [Who is it for?](/kernel/who-is-it-for) or run the [verified integration path](/kernel/getting-started/run-the-kernel).
-

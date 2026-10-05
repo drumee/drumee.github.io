@@ -47,4 +47,3 @@ System MFS first inspects/installs its Yellow Page lifecycle tables. Provisionin
 A fully provisioned context is idempotent. Partial or conflicting shards are not automatically rebuilt. `capabilityAvailable()` reflects validated state and objects rather than entity locator fields.
 
 Source: `transient/target/control-plane/bootstrap/lib/`, `system-mfs/lib/index.js`, `system-mfs/lib/store.js`, and both packages' tests.
-
