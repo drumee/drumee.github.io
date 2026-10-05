@@ -22,14 +22,14 @@ The result is therefore **not** a reduced installation of the full historical Dr
 
 ```mermaid
 flowchart TB
-  App[Application / product capabilities]
-  Finder[Finder integration]
-  WM[Window Manager capability]
-  MFS[System MFS capability]
-  UI[@drumee/ui-runtime]
-  Server[@drumee/server-runtime]
-  Data[(MariaDB shards)]
-  Redis[(Redis push bus)]
+  App["Application / product capabilities"]
+  Finder["Finder integration"]
+  WM["Window Manager capability"]
+  MFS["System MFS capability"]
+  UI["@drumee/ui-runtime"]
+  Server["@drumee/server-runtime"]
+  Data[("MariaDB shards")]
+  Redis[("Redis push bus")]
 
   App --> UI
   App --> Server
