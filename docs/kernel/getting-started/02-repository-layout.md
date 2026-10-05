@@ -16,7 +16,8 @@ The Minimal Kernel is not a monorepo product. Its stable extraction boundaries a
 | `drumee/ui-runtime` | `@drumee/ui-runtime` | browser runtime |
 | `drumee/system-mfs` | `@drumee/system-mfs` | optional system capability |
 | `drumee/window-manager` | `@drumee/window-manager` | optional UI capability |
-| `drumee/transient` | private bootstrap, Hello, Finder, MFS service/transfer, build and integration harness | temporary integration repository |
+| `drumee/finder` | `@drumee/finder` | optional UI/MFS browsing capability |
+| `drumee/transient` | bootstrap, Hello, MFS service/transfer/media adapters, build and integration harness | integration/evidence workspace |
 
 ```mermaid
 flowchart LR
@@ -24,16 +25,22 @@ flowchart LR
   UR[ui-runtime]
   SM[system-mfs]
   WM[window-manager]
+  F[finder]
   T[transient integration]
   WM --> UR
+  F --> UR
+  F -. optional adapter .-> WM
   T --> SR
   T --> UR
   T --> SM
   T --> WM
+  T --> F
 ```
 
-`server-runtime`, `ui-runtime`, and `system-mfs` do not depend on one another at npm package level. Window Manager declares `ui-runtime` as a peer. Integration code connects these packages through injected stores, transports, and service adapters.
+`server-runtime`, `ui-runtime`, and `system-mfs` do not depend on one another at npm package level. Window Manager declares `ui-runtime` as a peer. Finder declares `ui-runtime` as a peer and Window Manager as an optional peer. Integration code connects the browser capability to backend MFS-compatible services through injected transports and logical contracts.
 
-The current Finder package is named `@drumee/finder-integration-phase48`, is private, and declares `ui-runtime` plus optional `window-manager` peers. Do not treat that transitional name as a public package contract.
+Finder production code belongs to the public standalone [`drumee/finder`](https://github.com/drumee/finder) repository.
+
+`transient` points validation at that checkout; it no longer owns a production filesystem-browser implementation.
 
 See [Repositories & Packages](/kernel/repositories-packages) for ownership details.

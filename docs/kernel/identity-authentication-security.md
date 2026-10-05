@@ -27,16 +27,20 @@ The runtime consumes these platform invariants but does not provision them. The 
 
 ```mermaid
 flowchart LR
-  HTTP[HTTP transport] --> Session[Session identity]
-  Session --> Service[Service descriptor]
-  Service --> ACL[ACL evaluation]
-  ACL --> Capability[Capability worker]
-  Capability --> DB[(Capability/runtime database)]
+  Descriptor[Service descriptor] --> ACL[Runtime ACL]
+  Session[Trusted Session.uid] --> ACL
+  ACL --> Backend[MFS effective-permission backend]
+  Backend --> SQL[system-mfs user_permission]
+  SQL --> Compare[Runtime compares required vs effective]
+  Compare --> Decision{GRANTED / DENIED}
+  Decision -->|GRANTED| Worker[Capability worker]
 ```
 
 Session identity comes only from a validated cookie or the current `x-param` bridge. Conflicting cookie/header sessions are rejected. Client-supplied `uid`, principal, shard database name, and filesystem locator are not authority.
 
-Domain ACL requires signed-in state, an identity ID, an explicit domain ID, and a source privilege. MFS ACL requires logical source/destination resources and a trusted session UID. Both fail closed when their backing adapter is absent.
+Domain ACL requires signed-in state, an identity ID, an explicit domain ID, and a source privilege. MFS ACL requires logical source/destination resources and a trusted session UID. System MFS calculates effective MFS privilege through `user_permission()`; it does not make the final service-authorization decision. The runtime compares required and effective privileges and invokes the worker only after GRANTED. Both scopes fail closed when their backing adapter is absent.
+
+Finder never makes authorization decisions. Client-supplied `uid`, `principal_id`, `owner_id`, or `user_id` is not authoritative. For upload and download operations, runtime ACL and server-side transfer ownership are complementary: ACL authorizes the logical resource operation, while ownership binds temporary transfer state to the trusted session principal. A transfer ID alone grants neither access nor authority.
 
 ## WebSocket association
 

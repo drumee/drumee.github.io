@@ -20,11 +20,15 @@ description: Architectural invariants future Minimal Kernel changes must preserv
 | Capabilities own operational SQL. | Code and data contracts ship/release together. | Central migration directory changing a capability schema out of band. |
 | Capabilities communicate through explicit contracts. | Standalone packages remain auditable and installable. | Hidden imports from siblings, `target/**`, parent modules, or historical Team code. |
 | UI capabilities do not depend on historical Desk globals. | `Kind.registerAddons`, LETC parts, and State remain the composition seam. | Restoring global `KIND`/Desk ownership. |
+| Finder core is Window-Manager-independent. | Core Finder mounts on `ui-runtime`; window chrome is a separate optional adapter. | Importing Window Manager from the core entry or requiring it for navigation. |
+| UI capabilities use logical MFS identities only. | `{hub_id,nid}` remains the browser/backend resource boundary. | Exposing shard names, host paths, or storage references to Finder. |
 | Session authorization remains private transport state. | Widgets cannot read or wrap raw `regsid`. | Publishing it on runtime options/model/DOM. |
 | WebSocket connection uses a fresh OTAK and atomic claim. | A short-lived credential binds the server-selected session without exposing `regsid` in the URL. | Accepting a socket cookie as authority or pre-reading then deleting the token. |
 | Recipient-specific permissions survive synchronization. | Each pushed MFS event is projected for its recipient. | Broadcasting one privileged node projection to all sockets. |
-| Large binary data avoids bounded JSON control requests. | Memory use and authorization stay bounded. | Serializing file bytes into arrays in `upload_chunk`. |
+| Control metadata and large binary data use separate planes. | Structured requests remain bounded while authorized payload bytes stream through purpose-specific paths. | Serializing file bytes into arrays in `upload_chunk`. |
+| Heavy response bytes bypass Node as the normal data plane. | Filesystem artifacts flow through FileIo and Nginx; Node handles bounded control artifacts. | Buffering a ZIP or HLS segment in a service worker. |
 | Physical storage references stay internal. | Clients use logical resource identities and cannot select host paths. | Returning `payload_ref`, tempfile, `storage_ref`, or shard locators. |
+| Resource ownership and destruction are explicit and bounded. | Maps, tempfiles, workers, observers, listeners, and registrations have an owner and finite cleanup boundary. | Treating generic `stop()` as sufficient cleanup for every component. |
 | Availability is explicit lifecycle state. | Optional capabilities are used only after validated installation/provisioning. | Inferring MFS readiness from `entity.home_dir`. |
 | Extracted packages remain independently testable. | Package boundaries are real rather than repository-layout assumptions. | A package that only works with `NODE_PATH` or sibling sources. |
 

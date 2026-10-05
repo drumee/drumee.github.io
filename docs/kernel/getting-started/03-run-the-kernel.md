@@ -8,7 +8,7 @@ description: The smallest verified end-to-end Minimal Kernel launch path.
 
 # Run the Kernel
 
-The smallest verified end-to-end path currently uses the `transient` integration harness. There is no released standalone installer that assembles only npm packages. The harness also uses private integration modules and its default runtime copies under `target/foundation`; use it as developer validation, not as a production deployment recipe.
+The smallest verified end-to-end path currently uses the `transient` integration harness. There is no released standalone installer that assembles only npm packages. The harness uses integration-owned backend adapters and its default runtime copies under `target/foundation`; use it as developer validation, not as a production deployment recipe.
 
 ## 1. Obtain the integration repository
 
@@ -64,6 +64,33 @@ scripts/test-env/kernel/test.sh
 
 This exact command was verified for this documentation. It checks service and plugin routes, Yellow Page domain ACL, Redis, streamed binary upload, and Nginx delivery, then removes the three disposable containers and network.
 
+## Complete Finder and data-plane validation
+
+The complete validation path additionally requires standalone Finder and System MFS checkouts. The default sibling layout is:
+
+```text
+workspace/
+├── transient/
+├── finder/
+└── system-mfs/
+```
+
+From `transient`, the verified command is:
+
+```bash
+scripts/test-env/kernel/phase4.8-validation.sh
+```
+
+The historical script name is retained, but the current suite includes the completed Finder stabilization and standalone-repository boundary. It runs Finder core and browser scenarios, backend dispatch, multi-client synchronization, transfer/data-plane checks, the disposable Kernel environment, and standalone System MFS tests. Alternative checkout locations are explicit:
+
+```bash
+KERNEL_FINDER_ROOT=/path/to/finder \
+KERNEL_SYSTEM_MFS_ROOT=/path/to/system-mfs \
+scripts/test-env/kernel/phase4.8-validation.sh
+```
+
+`KERNEL_FINDER_ROOT` must point to the standalone `drumee/finder` source checkout. The basic `scripts/test-env/kernel/test.sh` path remains the smaller Hello/Kernel integration proof and does not replace the complete Finder suite.
+
 ## What this path proves—and does not
 
-It proves the integrated runtime can start, bootstrap identity/session state, dispatch a capability, serve its frontend bundle, route push traffic, and keep large binary delivery outside bounded JSON control requests. It does not prove production hardening, a supported upgrade policy, a public Finder package, or a standalone npm-only assembly.
+The basic path proves the integrated runtime can start, bootstrap identity/session state, dispatch a capability, serve its frontend bundle, route push traffic, and keep large binary delivery outside bounded JSON control requests. The complete path separately validates the public standalone Finder source boundary and its integration. Neither path proves production hardening, a supported upgrade policy, or a supported production npm-only Minimal Kernel distribution or installer.

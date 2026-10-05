@@ -61,4 +61,10 @@ Runtimes use constructor-injected stores and adapters rather than a global appli
 
 Generic descriptor registration says a service exists; it does not prove an optional capability is provisioned. System MFS availability is a separate validated state derived from installation/provisioning records and actual shard objects—not from the mere presence of `entity.db_name`, `home_dir`, or `home_id`.
 
+## Resource lifetime and data planes
+
+Security checks happen before capability work. Structured control input stays bounded, while large upload, archive, and media payloads use streaming tempfiles or filesystem artifacts. Transfer maps and artifacts have capacity/TTL limits and explicit abort, expiry, failure, release, and shutdown cleanup. Offline archive and HLS generation use finite workers; FileIo and Nginx carry heavy response bytes.
+
+Browser capabilities similarly own and release their observers, listeners, registrations, and locally created controllers. The dispatcher's generic `stop()` call remains a defensive runtime hook, not a substitute for resource-specific ownership and cleanup. Performance is best effort within these correctness limits: work is granular where contracts permit it, but authorization and bounded lifetime take precedence.
+
 Implementation references: `server-runtime/lib/descriptor-registry.js`, `dispatcher.js`, `session.js`, `permission.js`, `http.js`, `plugin-resolver.js`; `ui-runtime/src/bootstrap.js`, `kind.js`, `service.js`.

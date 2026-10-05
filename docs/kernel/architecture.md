@@ -13,8 +13,8 @@ The Kernel separates generic execution from system capabilities and applications
 ```mermaid
 flowchart TB
   Product[Application capabilities]
-  Finder[Finder - private integration]
-  Transfer[MFS service and transfer adapters]
+  Finder[Standalone Finder]
+  Transfer[MFS service / transfer / media adapters]
   WM[Window Manager]
   MFS[System MFS]
   UI[UI runtime]
@@ -43,9 +43,11 @@ flowchart TB
 
 **Window Manager** is an optional UI capability above `ui-runtime`. It owns window policy and jQuery UI interactions without owning application content.
 
-**Finder** is currently a private integration capability. Its core is Window-Manager-independent; its optional adapter presents Finder inside a managed window. MFS service and transfer adapters connect it to System MFS and the runtime.
+**Finder** is a standalone optional browser capability. Finder core depends on `ui-runtime` and logical MFS-compatible service contracts. It owns browser-side navigation, listing, selection, drag/drop, transfer orchestration, media-preview requests, and synchronization. The separately exported `FinderWindow` adapter presents one Finder inside Window Manager; core Finder does not require Window Manager.
 
-**`transient`** is the current integration and evidence environment. It is not the final Kernel repository or a public package boundary.
+**MFS service, transfer, and media adapters** are backend capability code. They connect runtime ACL and trusted session context to System MFS, bounded transfer state, host-filesystem abstractions, representation generation, and FileIo/Nginx delivery. Finder sees logical nodes, events, progress, and retrieval URLs—not SQL, shards, physical paths, `payload_ref`, archive bytes, or media generators.
+
+**`transient`** is the integration and evidence environment. It carries bootstrap, Hello, backend MFS adapters, the kernel test environment, and cross-package validation. It is not a production Finder source repository or a public package boundary.
 
 ## Kernel versus capability
 
@@ -76,4 +78,8 @@ Dependencies point downward toward contracts. Generic runtimes must not import a
 
 The Kernel must not absorb product navigation, Team/Desk semantics, Hub business policy, Finder behavior, capability SQL, upload/archive workflow, or deployment-specific configuration. Historical code may be behavioral evidence, but is not an implicit dependency.
 
-Auditable sources include `server-runtime/lib/`, `ui-runtime/src/`, `system-mfs/lib/`, `window-manager/lib/`, and `transient/target/modules/`.
+The engineering priorities follow from these boundaries: authorize before executing capability work; give transfer maps, workers, tempfiles, listeners, and observers explicit bounded lifetimes; keep large payloads filesystem-backed and out of structured control requests; and split capabilities and SQL into independently owned units when the contract permits it. The runtime's generic `stop()` safeguard remains useful, but it does not replace component-specific cleanup.
+
+Auditable current sources are the public [`server-runtime`](https://github.com/drumee/server-runtime), [`ui-runtime`](https://github.com/drumee/ui-runtime), [`system-mfs`](https://github.com/drumee/system-mfs), [`window-manager`](https://github.com/drumee/window-manager), and [`finder`](https://github.com/drumee/finder) repositories.
+
+`transient` supplies integration evidence and canonical refactoring records.
