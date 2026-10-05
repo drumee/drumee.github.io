@@ -12,6 +12,42 @@ Terms used throughout the Drumee backend documentation and codebase.
 
 ---
 
+## Minimal Kernel terminology
+
+The definitions in this section describe the current Minimal Kernel. Entries later in this glossary may describe the historical/full Drumee application.
+
+### Kernel
+The application-neutral runtime boundary: generic backend dispatch/session/security contracts, the browser LETC runtime, and explicitly optional system capabilities. It is not a reduced deployment of the historical product. See [Minimal Kernel Overview](/kernel/overview).
+
+### Runtime
+Generic execution machinery used by capabilities. The current extracted runtimes are `@drumee/server-runtime` and `@drumee/ui-runtime`.
+
+### Capability
+An independently owned behavior above the runtimes, potentially containing backend services, frontend Widgets, ACL, operational SQL, configuration, and tests. “Module” is the backend ACL/dispatch namespace; it is not a synonym for the complete capability.
+
+### Principal, `uid`, and entity
+A **principal** is the identity attached to a runtime session. `uid` is its opaque 16-character Drumee identifier; the canonical nobody UID is `ffffffffffffffff`. An **entity** is a Yellow Pages record that may also identify an existing `hub` or `drumate` shard. Client input is never authoritative for the session UID or physical entity locators.
+
+### `regsid`
+The historical HTTP session identifier/selector. The Minimal Kernel transports it in an HttpOnly cookie and a private compatibility header bridge. It is not a WebSocket credential and is deliberately unavailable to capability Widgets.
+
+### Domain and organisation
+The explicit identity/authorization scope recorded in Yellow Pages. Current bootstrap establishes default organisation/domain ID `1`; this does not imply a complete tenant-management product.
+
+### LETC, Skeleton, and State
+**LETC** is the retained Backbone/Marionette Widget lifecycle and composition substrate. A **Skeleton** is a normalized descriptor tree resolved through registered Kinds. **State** is Widget/model state projected through canonical DOM attributes and radio/toggle behaviors.
+
+### Finder and Window Manager
+**Finder** is the filesystem listing, navigation, selection, transfer, upload, download, and synchronization capability. **Window Manager** is an independent generic UI capability; `FinderWindow` is only an adapter between them.
+
+### `operation_id`
+A capability-generated identifier used to correlate mutations/progress and suppress duplicate synchronization events. It is not a resource identity.
+
+### `payload_ref`
+An opaque backend reference to a complete staged upload. It crosses the transfer-to-MFS backend boundary but must never be returned as a client-visible physical path.
+
+---
+
 ## A
 
 ### ACL (Access Control List)
