@@ -104,7 +104,12 @@ The packages are alpha releases. Standalone package and integration contracts pa
 
 ### Which packages are published?
 
-Registry metadata verified on 2026-10-05 exposes all five extracted packages. `server-runtime` and `system-mfs` are `0.1.0-alpha.1`; Window Manager is `0.1.0-alpha.2`; `ui-runtime` has `latest` at alpha.1 and `next` at alpha.2. Finder is `0.1.0-alpha.1`: its intended prerelease tag is `next`, while npm-created `latest` currently points to the same only version. Check npm at install time because alpha tags can move.
+Registry metadata verified on 2026-10-10 exposes all five extracted packages.
+The `next` tag selects server-runtime `0.1.0-alpha.3`, ui-runtime
+`0.1.0-alpha.2`, system-mfs `0.1.0-alpha.1`, Window Manager
+`0.1.0-alpha.2`, and Finder `0.1.0-alpha.4`. npm retains `latest` at alpha.1
+for server-runtime, ui-runtime, system-mfs, and Finder; Window Manager's
+`latest` is alpha.2. Check npm at install time because alpha tags can move.
 
 ### Where do bugs and contributions go?
 
