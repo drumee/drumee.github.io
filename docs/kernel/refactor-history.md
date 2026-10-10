@@ -20,6 +20,13 @@ This page provides traceability only. Current behavior is defined by the standal
 - **ACL and data-plane stabilization:** upload chunks moved from structured JSON to authorized bounded octet streams; archives, originals, and heavy representations moved to filesystem references and FileIo/Nginx delivery.
 - **Real-use stabilization and contract freeze:** independent navigation/selection, direct folder drops, optimistic MOVE convergence, remote reconciliation, reconnect coalescing, URL-only download retrieval, and bounded destruction were validated before the public API was frozen.
 - **Standalone extraction and reintegration:** Finder was extracted, the integration workspace was changed to consume the standalone source boundary, and no second production implementation remained in `transient`.
-- **Publication:** the public [`drumee/finder`](https://github.com/drumee/finder) repository and `@drumee/finder@0.1.0-alpha.1` package completed the extraction; its intended prerelease channel is `next`.
+- **Initial Finder publication:** the public [`drumee/finder`](https://github.com/drumee/finder) repository and `@drumee/finder@0.1.0-alpha.1` package completed the extraction; its intended prerelease channel is `next`.
+- **Authorized Hub/Finder stabilization:** the official Hub lifecycle, fail-closed WebSocket delivery, capability readiness, per-node access projection, safe reconciliation, and browser-to-real-backend path were validated. The corrected standalone artifacts were then published as `@drumee/server-runtime@0.1.0-alpha.3` and `@drumee/finder@0.1.0-alpha.4`, both on `next`.
 
-The progression was therefore: Finder integration → ACL/data-plane stabilization → real-use stabilization → contract freeze → standalone extraction → Kernel reintegration → public repository → alpha publication. The historical `server-team` and `ui-team` repositories remain provenance and compatibility references, not current Kernel dependencies. `transient` remains integration evidence, not the production Finder source.
+The progression was therefore: Finder integration → ACL/data-plane
+stabilization → real-use stabilization → contract freeze → standalone
+extraction → Kernel reintegration → public repository → initial alpha
+publication → authorized Hub/Finder stabilization → corrected alpha
+publication. The historical `server-team` and `ui-team` repositories remain
+provenance and compatibility references, not current Kernel dependencies.
+`transient` remains integration evidence, not the production Finder source.
