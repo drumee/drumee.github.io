@@ -306,6 +306,7 @@ const sidebars: SidebarsConfig = {
         "getting-started/02-own-cloud",
         "getting-started/03-playground",
         "getting-started/04-plugins",
+        "getting-started/05-infra-layer",
       ],
     },
     // {
