@@ -16,7 +16,7 @@ The server runtime is a CommonJS, Node.js 18+ package for generic backend execut
 - parse logical `module.method` services and lazily load workers;
 - normalize HTTP query/JSON input and standard response envelopes;
 - resolve/ensure `regsid` session context and sign-in transitions;
-- evaluate public, domain, and injected MFS authorization paths;
+- evaluate public, platform (KB-01A in alpha.4), domain, and injected MFS authorization paths;
 - resolve frontend plugin bundle paths;
 - issue OTAKs, bind WebSockets, route Redis push, and maintain socket liveness;
 - install/upgrade only intrinsic runtime Yellow Page SQL;
@@ -29,6 +29,15 @@ The host supplies database, Redis, permission conversion, plugin roots, origins,
 The HTTP adapter knows how to receive requests, including the configured binary stream path. It does not define upload sessions or commit files. `PushBus` targets sockets; it does not decide the meaning or visibility of an application event. The descriptor system dispatches a service; the worker remains capability-owned.
 
 Large output is also separated: `RuntimeOutput.write()` is limited to 1 MiB control artifacts. The validated download path returns an internal redirect so Nginx delivers archives and originals outside the Node response buffer.
+
+## Qualified distribution dependency
+
+The [IL-4 distribution](/kernel/distribution/install) pins published
+`@drumee/server-runtime@0.1.0-alpha.4` and verifies its source/SRI. Its platform
+authorization contract is consumed by canonical KB-01B enrollment and explicit
+administrative Hub operations. Runtime still owns authentication/dispatch, not
+enrollment, platform bootstrap or Hub provisioning. See
+[identity and authorization](/kernel/identity-authentication-security).
 
 ## SQL ownership
 

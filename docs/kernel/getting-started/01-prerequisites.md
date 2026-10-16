@@ -8,12 +8,23 @@ description: Verified requirements for developing and running the current Minima
 
 # Prerequisites
 
-There are two distinct environments:
+There are separate package, developer-harness and distribution environments:
 
-- The extracted npm packages require **Node.js 18 or newer**. Their lockfiles and tests use npm, but no minimum npm version is declared.
-- The only verified end-to-end environment is the Linux/Docker harness in `drumee/transient`. Its image uses Node 22 and its prerequisite check accepts Node 18 or newer on the host.
+- The IL-4 Debian minimal-kernel distribution uses **Node.js 22**, Linux/amd64,
+  Docker/Compose, npm and Git access. A clean checkout acquires pinned inputs
+  without siblings. Every installation supplies its physical interface/LAN
+  address, resource owner, persistent root and backup policy explicitly. Python
+  3 supports image export; Chromium and `dig` support complete acceptance.
+  See [installation requirements](/kernel/distribution/install).
 
-## Verified integration requirements
+For the older package/developer-harness path:
+
+- The five standalone runtime/capability packages declare **Node.js 18 or newer**.
+  This does not lower the distribution or Infra Layer baseline of Node 22.
+  Their lockfiles and tests use npm, but no minimum npm version is declared.
+- The historical developer end-to-end environment is the Linux/Docker harness in `drumee/transient`. Its image uses Node 22 and its prerequisite check accepts Node 18 or newer on the host.
+
+## Historical developer-harness requirements
 
 - Linux;
 - Node.js 18+ and npm;
@@ -25,7 +36,10 @@ There are two distinct environments:
 
 The harness starts disposable MariaDB 11.4 and Redis 7.4 containers, an Nginx/Node Kernel container, and a private Docker network. MariaDB and Redis are not exposed on host ports. The HTTP endpoint defaults to `127.0.0.1:28642`.
 
-No local DNS edit is required for the default status and Hello checks. The generated integration configuration uses `kernel.test`; browser cross-origin tests introduce controlled test hostnames internally. Production DNS, TLS, email, backup, and upgrade procedures are outside this onboarding path.
+No local DNS edit is required for the default status and Hello checks. The generated integration configuration uses `kernel.test`; browser cross-origin tests introduce controlled test hostnames internally. DNS/TLS and recovery procedures are outside this developer-harness path; the
+separate [IL-4 distribution](/kernel/distribution/install) qualifies local DNS,
+persistent local-CA HTTPS and [coordinated recovery](/kernel/distribution/operations).
+SMTP recovery remains excluded.
 
 ## Configuration inputs
 

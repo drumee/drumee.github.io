@@ -44,6 +44,7 @@ JSON request bodies are structured objects bounded to 64 KiB. Configured `applic
 Current public contracts are:
 
 - explicit `public-api` fast path;
+- `scope: platform`, evaluated by the named platform authorizer against the fully authenticated personal principal and persisted remit;
 - `scope: domain`, evaluated by `domain_permission` against the trusted session identity;
 - `scope: mfs`, where a capability maps inputs to logical `{hub_id, nid}` resources and supplies effective permissions while the runtime performs the final bitmask comparison.
 

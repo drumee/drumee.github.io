@@ -14,6 +14,9 @@ description: Architectural invariants future Minimal Kernel changes must preserv
 | Nobody is stable and distinct. | `ffffffffffffffff` represents anonymous identity; guest/system are separate provisioned principals. | Aliasing guest to nobody or generating a new nobody ID. |
 | Principal presence is not authentication. | OTP, guest, nobody, and signed-in state remain distinguishable. | Treating every non-null UID as authenticated. |
 | Authentication, authorization, and transport association are separate. | A socket or session does not grant a business privilege. | Requiring domain privilege for `bootstrap.authn`, or treating OTAK binding as ACL grant. |
+| Platform authority is independent of Hub/MFS grants. | Named remit 15 authorizes platform operations without overriding resource ACLs. | Using platform administration as an MFS permission bypass. |
+| Enrollment and replay are canonical. | KB-01B preserves human UID, credentials and operation ID; initial enrollment creates no Hub. | Direct-SQL owner fixtures or password regeneration on restart. |
+| Distribution mutations are owner-bound. | Infra Layer owns lifecycle/resources; ordinary runtime has no global SQL privilege. | Adopting unknown roots, deleting unrelated networks or sharing the provisioner account. |
 | Domain/entity scope remains explicit. | Authorization and storage operate against declared domains and logical `{hub_id,nid}` resources. | Trusting client UID or physical `db_name`. |
 | Authorization fails closed. | Missing adapters, resources, scopes, or required bits deny access. | Dispatching when an MFS permission backend is absent. |
 | Server runtime owns only intrinsic runtime SQL. | Optional capabilities remain optional and independently versioned. | Adding MFS tree tables to the runtime manifest. |

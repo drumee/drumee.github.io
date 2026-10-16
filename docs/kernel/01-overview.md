@@ -58,4 +58,16 @@ The package boundary is executable: the five extracted packages can be installed
 
 The generic runtimes do not own business services, application routing, product navigation, Hub/Team policy, Finder, MFS storage, Webpack tooling, SSR, or deployment automation. System MFS does not own identity creation, transfer sessions, browser uploads, archives, trash, search, or quota policy. Finder does not own authorization, SQL, physical storage, media conversion, or backend transfer jobs. Keeping those boundaries explicit lets capabilities evolve without turning every product change into a runtime change.
 
+## Qualified distribution path
+
+The explicitly selected Debian `minimal-kernel` container profile now assembles
+these contracts with the canonical Infra Layer lifecycle. IL-4 validates clean
+installation, canonical first-human enrollment, SQL separation, LAN DNS/HTTPS,
+real browser behavior, restart and isolated recovery. It uses `drumee.lan`, local
+DNS and a persistent local CA; Team remains the default distribution profile.
+
+Start with [Install the Minimal Kernel](/kernel/distribution/install), then read
+[qualification and limits](/kernel/distribution/qualification). The existing
+`transient` harness remains useful for capability development and regression.
+
 Continue with [Who is it for?](/kernel/who-is-it-for) or run the [verified integration path](/kernel/getting-started/run-the-kernel).
