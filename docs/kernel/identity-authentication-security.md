@@ -19,9 +19,31 @@ Combining these concepts is a security regression. In particular, an OTP-pending
 
 ## Identity invariants
 
-An established session has a non-null UID. Anonymous sessions resolve to the canonical nobody principal `ffffffffffffffff`; `uid()` falls back to that stable representation. The default organisation is ID `1`. Guest and privileged system identities are separately generated and must not alias nobody or each other.
+An established session has a non-null UID. Anonymous sessions resolve to the canonical nobody principal `ffffffffffffffff`; `uid()` falls back to that stable representation. The default organisation has numeric `sys_id = 1` and `domain_id = 1`;
+its opaque organisation ID is generated. Guest and privileged system identities are separately generated and must not alias nobody or each other.
 
 The runtime consumes these platform invariants but does not provision them. The transitional bootstrap controller creates and validates them. `session_ensure` is also the targeted compatibility repair for historical cookie rows whose UID is null; it must not reset an OTP principal.
+
+## Platform authority and the first human administrator
+
+Runtime alpha.4 adds KB-01A's explicit platform authorization path.
+`PLATFORM_ADMINISTRATOR` is remit **15**, separate from domain membership and
+Hub/MFS grants. The canonical KB-01B control plane enrolls the first real human
+drumate in organisation 1 with an active personal principal. Reserved nobody,
+guest and system principals never become the human administrator.
+
+The [distribution initialization job](/kernel/distribution/install) uses that
+canonical schema, enrollment API and credential provider. Interactive mode uses
+non-echoing TTY/protected descriptor input; automatic mode persists generated
+credentials before the transaction. Successful replay preserves the UID,
+operation ID and credentials. Normal sign-in uses email or UID. No password
+argument, logged password, direct-SQL owner fixture or automatic reset is used.
+
+Platform authority does not bypass Hub or MFS ACLs. The profile's
+`kernel.create_hub` operation requires a fully authenticated administrator,
+then the private provisioner repeats canonical policy and invokes Hub lifecycle.
+Enrollment alone creates no Hub. See [SQL separation](/kernel/distribution/sql-security)
+and [qualification](/kernel/distribution/qualification).
 
 ## HTTP and ACL boundary
 
@@ -38,7 +60,7 @@ flowchart LR
 
 Session identity comes only from a validated cookie or the current `x-param` bridge. Conflicting cookie/header sessions are rejected. Client-supplied `uid`, principal, shard database name, and filesystem locator are not authority.
 
-Domain ACL requires signed-in state, an identity ID, an explicit domain ID, and a source privilege. MFS ACL requires logical source/destination resources and a trusted session UID. System MFS calculates effective MFS privilege through `user_permission()`; it does not make the final service-authorization decision. The runtime compares required and effective privileges and invokes the worker only after GRANTED. Both scopes fail closed when their backing adapter is absent.
+Domain ACL requires signed-in state, an identity ID, an explicit domain ID, and a source privilege. MFS ACL requires logical source/destination resources and a trusted session UID. System MFS calculates effective MFS privilege through `user_permission()`; it does not make the final service-authorization decision. The runtime compares required and effective privileges and invokes the worker only after GRANTED. Platform, domain and MFS paths fail closed when their backing adapter is absent.
 
 Finder never makes authorization decisions. Client-supplied `uid`, `principal_id`, `owner_id`, or `user_id` is not authoritative. For upload and download operations, runtime ACL and server-side transfer ownership are complementary: ACL authorizes the logical resource operation, while ownership binds temporary transfer state to the trusted session principal. A transfer ID alone grants neither access nor authority.
 

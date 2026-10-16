@@ -23,6 +23,10 @@ This page provides traceability only. Current behavior is defined by the standal
 - **Initial Finder publication:** the public [`drumee/finder`](https://github.com/drumee/finder) repository and `@drumee/finder@0.1.0-alpha.1` package completed the extraction; its intended prerelease channel is `next`.
 - **Authorized Hub/Finder stabilization:** the official Hub lifecycle, fail-closed WebSocket delivery, capability readiness, per-node access projection, safe reconciliation, and browser-to-real-backend path were validated. The corrected standalone artifacts were then published as `@drumee/server-runtime@0.1.0-alpha.3` and `@drumee/finder@0.1.0-alpha.4`, both on `next`.
 
+- **KB-01A and KB-01B:** runtime alpha.4 introduced named platform authority; canonical control-plane enrollment established the first real human administrator with durable credentials and no implicit Hub.
+- **IL-4 distribution and recovery:** the explicit Debian profile consumes canonical Infra lifecycle, immutable source/npm inputs, separate SQL accounts and initialization jobs. Automatic/PTY enrollment, real Hub/MFS/FileIo/browser behavior, restart and isolated restore passed locally and on an isolated LAN testbox. See [qualification](/kernel/distribution/qualification).
+- **Infra alpha.2 publication:** npm now serves the byte-identical qualified candidate on `next`; Debian keeps its immutable qualified source pin. The historical alpha.1 release must not be substituted for the lifecycle implementation.
+
 The progression was therefore: Finder integration → ACL/data-plane
 stabilization → real-use stabilization → contract freeze → standalone
 extraction → Kernel reintegration → public repository → initial alpha

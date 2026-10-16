@@ -8,7 +8,8 @@ description: Platform bootstrap and System MFS installation/provisioning lifecyc
 
 # Bootstrap and provisioning
 
-Four different operations are involved. Installing runtime schemas does not
+Schema installation, platform bootstrap, first-human enrollment, Hub lifecycle
+and module provisioning are separate operations. Installing runtime schemas does not
 bootstrap platform identities. Platform bootstrap does not create a Hub or an
 MFS namespace. Creating a Hub does not move module SQL into the runtime.
 
@@ -17,6 +18,7 @@ sequenceDiagram
   participant Host as Integration host
   participant Runtime as server-runtime
   participant Platform as Platform bootstrap
+  participant Operator as Canonical human enrollment
   participant Hub as Hub lifecycle control plane
   participant YP as Yellow Pages
   participant MFS as system-mfs provisioner
@@ -27,7 +29,13 @@ sequenceDiagram
   Platform->>YP: create missing platform invariants
   Platform->>Platform: validate and fail on conflicts
 
-  Host->>Hub: createPrivateHub(trusted session, module, request)
+  Host->>Runtime: apply and validate KB-01A authority schema
+  Host->>Operator: apply and validate KB-01B schema
+  Host->>Operator: acquire and persist credentials, enroll human
+  Operator->>YP: bind UID, remit and durable operation marker
+  Host->>Runtime: authenticate human administrator
+
+  Host->>Hub: explicit authorized createPrivateHub request
   Hub->>YP: reserve idempotent request and Hub
   Hub->>YP: assign shard, owner ACL, immutable plan
   Hub->>MFS: run trusted idempotent module handler
@@ -74,7 +82,28 @@ state, DMZ policy, or Team-only `public_id` alias. Repeated execution is
 idempotent and preserves generated IDs. Ambiguous or incompatible identities
 fail closed instead of being silently rewritten.
 
-## 3. Hub lifecycle control plane
+## 3. Canonical first-human enrollment
+
+KB-01B lives in `transient/target/control-plane/operator-bootstrap`, pinned by
+the distribution to `59985d4a78e142b64f5976cc7460a723cca29a79`. It owns its schema,
+durable enrollment transaction and credential provider. Debian supplies an
+explicit initialization job rather than identity SQL or another password system.
+
+The initial human is an active personal drumate in canonical organisation 1,
+with `PLATFORM_ADMINISTRATOR` remit 15. Runtime alpha.4 handles actual sign-in;
+the platform grant does not confer access to unrelated Hubs/MFS resources.
+Enrollment does not create a Hub. Replays preserve UID, operation ID, credentials
+and grants; missing committed credential resources fail without regeneration.
+
+The distribution's order is: validate Infra prerequisites, initialize resources,
+install intrinsic runtime schema, bootstrap platform invariants, apply/validate
+KB-01A, apply/validate KB-01B, install capability-owned kernel schemas, acquire
+credentials, enroll/validate, authenticate with the real runtime, then activate
+the composition host and gateway and check application/protocol readiness.
+See [installation](/kernel/distribution/install) and
+[interrupted recovery](/kernel/distribution/operations#interrupted-initialization).
+
+## 4. Hub lifecycle control plane
 
 The current generic Hub lifecycle is transitional private code in
 `transient/target/control-plane/hub-lifecycle`. It owns:
@@ -87,7 +116,9 @@ The current generic Hub lifecycle is transitional private code in
 - ordered, resumable execution of trusted module provisioners;
 - capability readiness and bounded upgrade scans.
 
-Only a fully authenticated Drumate may create a private Hub. Anonymous,
+A fully authenticated Drumate is a necessary condition for private-Hub creation;
+the host must also supply its provisioning policy. The IL-4 distribution requires
+named platform-administrator authority for `kernel.create_hub`. Anonymous,
 nobody, guest, system, and intermediate OTP sessions are rejected. Public
 input is limited to logical request data such as `idempotency_key` and `name`;
 database names, hosts, credentials, filesystem paths, inheritance policy, and
@@ -97,7 +128,7 @@ The public creation result is only `{hub_id, status}`. Physical shard details
 remain in the internal authorized Hub context and are never accepted from or
 returned to the browser.
 
-## 4. Module-owned provisioning
+## 5. Module-owned provisioning
 
 Each backend capability owns its schema, migrations, version, checksums, and
 trusted idempotent provisioning handler. The sole canonical module manifest is
@@ -128,6 +159,7 @@ requiring the failed or pending capability fail closed.
 |---|---|---|
 | `server-runtime` | intrinsic runtime schemas and execution | platform bootstrap, Hub or MFS provisioning |
 | platform bootstrap | Domain 1, default organisation references, nobody, guest, system | Hubs, shards, filesystems |
+| first-human enrollment | human administrator, canonical credential resource and durable enrollment marker | reserved platform bootstrap, implicit Hubs, runtime sessions |
 | Hub lifecycle | Hub request, shard assignment, Hub ACL, plans and orchestration | module SQL or application behavior |
 | `system-mfs` | MFS manifest, SQL and namespace initialization | identities, Hub creation or orchestration policy |
 | application module | its own manifest, Hub SQL and provisioner | physical shard selection or Kernel lifecycle |

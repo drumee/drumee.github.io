@@ -32,7 +32,10 @@ To make dependency direction and release ownership executable. Backend runtime, 
 
 ### How do I start?
 
-Use the [verified `transient` harness](/kernel/getting-started/run-the-kernel). There is not yet a supported npm-only starter.
+Choose the [explicit Debian minimal profile](/kernel/distribution/install) for
+canonical enrollment, persistent local-CA HTTPS and qualified recovery. Use the
+[`transient` developer harness](/kernel/getting-started/run-the-kernel) for the
+smaller capability-validation path. There is no general npm-only starter.
 
 ### Which components are mandatory?
 
@@ -64,7 +67,9 @@ Only reusable, application-neutral execution contracts. Product workflows, seman
 
 ### How are identity and permissions handled?
 
-A `KernelSession` always resolves a principal for an established session. Nobody has the stable UID `ffffffffffffffff`; authenticated state remains separate from principal presence. Public fast paths, domain permissions, and MFS permissions are distinct authorization branches.
+A `KernelSession` always resolves a principal for an established session. Nobody has the stable UID `ffffffffffffffff`; authenticated state remains separate from principal presence. Public fast paths, named platform authority, domain permissions and MFS
+permissions are distinct authorization branches. Canonical first-human enrollment
+grants remit 15 without bypassing Hub/MFS ACLs.
 
 ### How are WebSockets associated?
 
@@ -76,7 +81,12 @@ The runtime makes domain/organisation and entity scope explicit, and MFS support
 
 ### Can it be self-hosted, and what infrastructure is required?
 
-The integration stack is self-run and uses Linux, Node, MariaDB, Redis, Nginx, and filesystem content/staging. A supported production Minimal Kernel distribution is not yet documented or released.
+The [IL-4 container profile](/kernel/distribution/install) uses Linux, Node 22,
+MariaDB, Redis, Nginx, BIND9 and owned filesystem storage. Installation, real
+administrator enrollment, LAN DNS/local-CA HTTPS, restart and isolated recovery
+are qualified within its documented scope. It remains an explicit source-built
+review profile with [operational limits](/kernel/distribution/qualification),
+not a general production-support commitment or native minimal package.
 
 ## Licensing and commercial use
 
@@ -100,16 +110,24 @@ License sources: [server-runtime](https://github.com/drumee/server-runtime/blob/
 
 ### Is it production-ready?
 
-The packages are alpha releases. Standalone package and integration contracts pass, including Finder extraction, but API stability, a public bootstrap package, and a supported production Minimal Kernel distribution/installer are not complete. “Alpha” means consumers should expect contract changes and pin versions.
+The packages remain alpha releases and should be pinned exactly. IL-4 passed
+integrated distribution qualification and is ready for release review, including
+canonical enrollment and recovery. That scoped evidence does not establish API
+stability or unrestricted production support. SMTP recovery, broader engine/schema
+upgrades, source-notice review and other limits are listed in the
+[qualification report](/kernel/distribution/qualification).
 
 ### Which packages are published?
 
-Registry metadata verified on 2026-10-10 exposes all five extracted packages.
-The `next` tag selects server-runtime `0.1.0-alpha.3`, ui-runtime
+Registry metadata verified on 2026-10-16 exposes all five extracted packages.
+The `next` tag selects server-runtime `0.1.0-alpha.4`, ui-runtime
 `0.1.0-alpha.2`, system-mfs `0.1.0-alpha.1`, Window Manager
 `0.1.0-alpha.2`, and Finder `0.1.0-alpha.4`. npm retains `latest` at alpha.1
 for server-runtime, ui-runtime, system-mfs, and Finder; Window Manager's
-`latest` is alpha.2. Check npm at install time because alpha tags can move.
+`latest` is alpha.2. Infra Layer `next` is now `0.1.0-alpha.2`, byte-identical
+to the qualified candidate; its `latest` remains alpha.1. Debian uses the pinned
+source revision recorded in [qualification](/kernel/distribution/qualification).
+Check npm at install time because alpha tags can move.
 
 ### Where do bugs and contributions go?
 

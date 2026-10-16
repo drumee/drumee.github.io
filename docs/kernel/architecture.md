@@ -49,6 +49,20 @@ flowchart TB
 
 **`transient`** is the integration and evidence environment. It carries bootstrap, Hello, backend MFS adapters, the kernel test environment, and cross-package validation. It is not a production Finder source repository or a public package boundary.
 
+## Distribution and infrastructure ownership
+
+[Debian's minimal profile](/kernel/distribution/install) owns operator workflow,
+configuration, immutable dependency/image selection and supplied initialization
+jobs. Infra Layer owns planning, Docker composition/activation, infrastructure
+secrets and TLS/DNS/MariaDB/Redis/SMTP capabilities, observation and recovery.
+The control plane owns platform bootstrap, human enrollment, administrator
+policy and Hub provisioning authorization. Runtime owns sessions and dispatch.
+
+The profile composes these boundaries; it adds no parallel planner, credential
+hashing, session system or ACL engine. A separate private provisioner holds the
+scoped shard account so ordinary runtime never receives schema/enrollment/DBA
+credentials. See [SQL separation](/kernel/distribution/sql-security).
+
 ## Kernel versus capability
 
 ```mermaid

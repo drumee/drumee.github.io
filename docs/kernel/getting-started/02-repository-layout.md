@@ -17,7 +17,9 @@ The Minimal Kernel is not a monorepo product. Its stable extraction boundaries a
 | `drumee/system-mfs` | `@drumee/system-mfs` | optional system capability |
 | `drumee/window-manager` | `@drumee/window-manager` | optional UI capability |
 | `drumee/finder` | `@drumee/finder` | optional UI/MFS browsing capability |
-| `drumee/transient` | bootstrap, Hello, MFS service/transfer/media adapters, build and integration harness | integration/evidence workspace |
+| `drumee/infra-layer` | `@drumee/infra-layer` | infrastructure planning, lifecycle, secrets, TLS/DNS/SQL/Redis and recovery |
+| `drumee/debian` | explicitly selected `profiles/minimal-kernel` | distribution configuration, images, supplied jobs and operator dispatch |
+| `drumee/transient` | platform bootstrap, first-human enrollment, Hub lifecycle, Hello, MFS service/transfer/media adapters, build and integration harness | integration/evidence workspace |
 
 ```mermaid
 flowchart LR
@@ -42,5 +44,10 @@ flowchart LR
 Finder production code belongs to the public standalone [`drumee/finder`](https://github.com/drumee/finder) repository.
 
 `transient` points validation at that checkout; it no longer owns a production filesystem-browser implementation.
+
+The [IL-4 distribution path](/kernel/distribution/install) resolves immutable
+source and npm inputs from a clean Debian checkout. It requires no sibling
+layout. Debian orchestrates the existing control-plane jobs and Infra Layer
+lifecycle; it does not own a second planner, identity database or ACL engine.
 
 See [Repositories & Packages](/kernel/repositories-packages) for ownership details.

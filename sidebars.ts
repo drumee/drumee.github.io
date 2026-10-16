@@ -69,6 +69,16 @@ const sidebars: SidebarsConfig = {
             "kernel/getting-started/first-capability",
           ],
         },
+        {
+          type: "category",
+          label: "Distribution & Operations",
+          items: [
+            "kernel/distribution/install",
+            "kernel/distribution/operations",
+            "kernel/distribution/sql-security",
+            "kernel/distribution/qualification",
+          ],
+        },
         "kernel/faq",
         "kernel/architecture",
         "kernel/runtime-contracts",

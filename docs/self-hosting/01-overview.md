@@ -7,6 +7,16 @@ description: Self-host Drumee on your own server — choose between the Docker C
 
 # Self-Hosting Drumee
 
+:::note Minimal Kernel uses a separate explicit profile
+This page describes the historical Team distribution. For the IL-4 Minimal
+Kernel, use [its installation guide](/kernel/distribution/install) and
+[operations/recovery guide](/kernel/distribution/operations). Its local CA,
+canonical credential resource, coordinated backups and compatibility guards are
+profile-specific; the Team commands and account-recovery guidance below do not
+apply to it.
+:::
+
+
 Run your own Drumee — auth, storage, backend, and frontend — on a server you
 control. There are **two ways to install**, both generated from a single config
 file (`drumee.yaml`), so you can pick whichever fits your environment.

@@ -8,7 +8,13 @@ description: The smallest verified end-to-end Minimal Kernel launch path.
 
 # Run the Kernel
 
-The smallest verified end-to-end path currently uses the `transient` integration harness. There is no released standalone installer that assembles only npm packages. The harness uses integration-owned backend adapters and its default runtime copies under `target/foundation`; use it as developer validation, not as a production deployment recipe.
+For an owner-bound installation with canonical administrator enrollment,
+persistent local-CA HTTPS and qualified recovery, use
+[Install the Minimal Kernel](/kernel/distribution/install). That explicit Debian
+profile is independent of sibling checkouts. This page retains the smaller
+developer-validation path and its historical commands.
+
+The smaller developer end-to-end path uses the `transient` integration harness. There is no released standalone installer that assembles only npm packages. The harness uses integration-owned backend adapters and its default runtime copies under `target/foundation`; use it as developer validation, not as a production deployment recipe.
 
 ## 1. Obtain the integration repository
 

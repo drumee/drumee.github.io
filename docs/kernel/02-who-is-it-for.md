@@ -59,7 +59,13 @@ The architecture may fit document-oriented products, collaborative tools, intern
 - independently packaged backend and frontend behavior;
 - rich client-side composition rather than server-rendered pages.
 
-Self-hosting teams should note the present operational maturity. The verified integration environment uses Linux, Docker, MariaDB, Redis, Nginx, and integration-owned backend adapters from `transient`. It proves the architecture; it is not a supported production installer or an availability/SLA claim.
+Self-hosting teams can use the explicit [IL-4 Debian profile](/kernel/distribution/install),
+which qualifies canonical administrator enrollment, SQL isolation, local-CA HTTPS,
+LAN DNS, real browser behavior, restart and isolated restoration. It consumes
+Infra Layer lifecycle and pinned runtime/control-plane capabilities. This remains
+a source-built alpha review profile with [documented limits](/kernel/distribution/qualification),
+not an availability/SLA commitment. The smaller `transient` harness remains a
+developer-validation option.
 
 Open-source contributors should distinguish **building on** the Kernel from **changing** it. Product behavior belongs in capabilities. Runtime changes must preserve standalone packaging, fail-closed authorization, and the invariants listed in [Kernel Invariants](/kernel/invariants).
 
@@ -70,7 +76,7 @@ Open-source contributors should distinguish **building on** the Kernel from **ch
 - **Collaborative applications:** WebSocket routing and recipient-specific event projection support synchronized clients; applications still define collaboration semantics.
 - **Modular products:** ACL descriptors and frontend plugin indices let backend and frontend capabilities load through explicit runtime contracts.
 - **Desktop-like web applications:** LETC widgets and the optional Window Manager provide dynamic client-side composition.
-- **Self-hosted software:** current components expose database, Redis, content, and reverse-proxy boundaries, but production packaging remains outside the Minimal Kernel deliverable.
+- **Self-hosted software:** the explicit Debian minimal profile supplies owner-bound assembly and recovery above the component contracts; historical Team packaging remains a separate path.
 
 ## Composability status
 

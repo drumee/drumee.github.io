@@ -7,6 +7,16 @@ description: Run Drumee for real — domain & TLS, email, backups, upgrades, and
 
 # Production & day-2 operations
 
+:::note Minimal Kernel uses a separate explicit profile
+This page describes the historical Team distribution. For the IL-4 Minimal
+Kernel, use [its installation guide](/kernel/distribution/install) and
+[operations/recovery guide](/kernel/distribution/operations). Its local CA,
+canonical credential resource, coordinated backups and compatibility guards are
+profile-specific; the Team commands and account-recovery guidance below do not
+apply to it.
+:::
+
+
 Once Drumee is installed, here's how to run it for real — domains and TLS, email,
 backups, and upgrades. Most of this applies to **both** channels; differences are
 called out.
