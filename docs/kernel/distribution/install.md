@@ -15,6 +15,11 @@ installer or a published native minimal-kernel package. Installation uses the
 canonical Infra Layer lifecycle and KB-01B jobs. See [qualification and release
 status](/kernel/distribution/qualification) for exact versions and limits.
 
+For native application RPC behind an existing host Nginx, without implicit
+Hub/MFS/Finder/database/Redis/DNS, use the separately selected
+[minimal-application profile](/getting-started/minimal-application). Its IL-5
+source lock and acceptance are distinct from this minimal-kernel installation.
+
 ## Acquire and build
 
 Use Node 22, Git/network access, Docker/Compose, and a normal Docker-authorized

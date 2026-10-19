@@ -16,7 +16,7 @@ description: Repository-to-package map for the current Minimal Kernel.
 | [`drumee/window-manager`](https://github.com/drumee/window-manager) | `@drumee/window-manager` `0.1.0-alpha.2`; `next` and `latest` | optional UI capability; peer-depends on `ui-runtime` | generic window lifecycle/interactions | Finder or Desk policy |
 | [`drumee/finder`](https://github.com/drumee/finder) | `@drumee/finder`; `next` `0.1.0-alpha.4`, `latest` `0.1.0-alpha.1` | optional UI/MFS browsing capability; peer-depends on `ui-runtime`, with an optional Window Manager peer | logical browsing, interaction, transfer orchestration, media requests, sync | authorization, SQL, physical storage, backend jobs |
 | [`drumee/infra-layer`](https://github.com/drumee/infra-layer) | `@drumee/infra-layer`; `next` `0.1.0-alpha.2`, `latest` `0.1.0-alpha.1` | canonical infrastructure/lifecycle | plan, compose, secrets, activation, observation, backup/restore | identities, sessions, Hub/MFS policy |
-| [`drumee/debian`](https://github.com/drumee/debian) | explicit `profiles/minimal-kernel` on `feat/container-distribution` | distribution integration | operator workflow, config, images/dependencies, supplied jobs | second planner, identity SQL, sessions, ACL engine |
+| [`drumee/debian`](https://github.com/drumee/debian) | explicit `profiles/minimal-kernel` and `profiles/minimal-application` on `feat/container-distribution` | distribution integration | operator workflow, config, images/dependencies, supplied jobs | second planner, identity SQL, sessions, ACL engine |
 | `drumee/transient` | canonical control plane and integration/evidence workspace; no public assembler package | integrates and validates the layers | platform bootstrap, human enrollment, Hub lifecycle, Hello, MFS service/transfer/media adapters and cross-package evidence | production Finder source or distribution lifecycle |
 
 All five extracted packages are public on npm. Tags are reported because these
@@ -43,3 +43,19 @@ The standalone repositories are authoritative for current package APIs. `transie
 [Debian profile](/kernel/distribution/install) is the owner-bound distribution
 path; [IL-4 qualification](/kernel/distribution/qualification) records installation,
 recovery, package provenance and current support limits.
+
+
+## IL-5 application distribution (2026-10-19)
+
+The registry table above retains its dated 2026-10-16 snapshot.
+`minimal-application` now consumes Infra Layer source
+`aa9057f224f4ae5cf80d777e3cb2fad092193fb1`, not the published alpha.2 package.
+Its locally qualified alpha.3 npm candidate has a different SRI from the GitHub
+source archive and is not selected as a registry dependency. Runtime remains
+alpha.4. Debian delivery `490c4b0a28ffb35da6ff248402139b5f600c793f` is integrated
+into feat/container-distribution via PR #7; Infra PR #2 remains open. No Debian
+main convergence or publication is inferred from those states.
+
+See the [application operator guide](/getting-started/minimal-application) and
+[IL-5.9-B source/qualification ledger](/kernel/distribution/application-qualification).
+The minimal-kernel source pin and its IL-4 qualification remain unchanged.
