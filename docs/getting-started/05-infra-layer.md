@@ -17,6 +17,20 @@ without absorbing application identity, authorization or storage policy. To
 install the already integrated Minimal Kernel, follow the
 [Debian minimal-kernel guide](/kernel/distribution/install).
 
+## Choose the distribution you need
+
+| Need | Qualified path |
+|---|---|
+| Pure infrastructure planning/lifecycle with the published alpha.2 API | Follow this guide; its Redis example remains pinned to alpha.2 |
+| Platform enrollment, Hub/MFS/Finder and integrated kernel services | [Minimal Kernel](/kernel/distribution/install) |
+| Native application RPC behind an existing host HTTPS proxy | [Minimal Application](/getting-started/minimal-application), qualified IL-5 source |
+
+IL-5 adds `Distribution.profile: application` with explicit private host ingress.
+It is available in the immutable source selected by Debian, not the published
+alpha.2 used by this guide's planning example. The alpha.3 npm candidate is not
+assumed published. See [IL-5.9-B provenance and results](/kernel/distribution/application-qualification)
+for the current source pin, separate archive/package SRIs and review limits.
+
 ## Responsibilities
 
 | Owner | Responsibilities |
@@ -257,7 +271,8 @@ and explicit activation decision are required; there is no implicit `applyPlan`.
 For a ready-made real-kernel descriptor and operator orchestration, use the
 [minimal-kernel profile](/kernel/distribution/install).
 
-A `Distribution` supplies its logical ID, `infrastructure` or `kernel` profile,
+In the published alpha.2 API, a `Distribution` supplies its logical ID,
+`infrastructure` or `kernel` profile,
 immutable helper image, initialization jobs, persistent resources, schema
 versions, provenance and explicit `external_writers: 'none'`. Kernel profiles
 also supply the kernel host and its health/listener contract. Initialization
@@ -271,6 +286,14 @@ writes candidate/journal state. It does not start daemons. Activation checks
 ownership and bindings, brings up infrastructure in order, executes and validates
 jobs, then checks the supplied host/gateway. Initialization SQL and human
 enrollment still execute through their canonical owners.
+
+The qualified IL-5 source adds the `application` profile: an immutable supplied
+runtime with explicit listeners, plugins, dependencies, health, mounts and an
+`external_gateway` contract. It requires exact `127.0.0.1` host publication,
+distinguishes host/container ports, and delegates TLS to the external reverse
+proxy. It adds no implicit gateway, Hub/MFS/Finder, database, Redis or local DNS.
+The [application operator guide](/getting-started/minimal-application) uses that
+source through Debian's immutable lock; alpha.2 is not a substitute.
 
 ## 5. Observe what is actually ready
 
@@ -323,10 +346,14 @@ separate steps. Unsupported engine downgrade, schema change, kernel-image change
 or secret-generation mismatch must fail closed; switching an image does not
 reverse a SQL migration. Additional SQL-account secret rotation has no qualified
 consumer transition. SMTP queue recovery remains outside the fully qualified
-minimal-kernel recovery scope.
+minimal-kernel recovery scope. Application-profile backup/restore with SMTP is
+explicitly refused with `SMTP_RECOVERY_UNQUALIFIED`; observed queue persistence
+does not establish spool recovery.
 
 ## Continue
 
+- [Build a minimal application behind host Nginx](/getting-started/minimal-application).
+- [IL-5 application qualification and CI reservations](/kernel/distribution/application-qualification).
 - [Install the integrated Minimal Kernel](/kernel/distribution/install).
 - [Operator commands and complete recovery](/kernel/distribution/operations).
 - [SQL privilege separation](/kernel/distribution/sql-security).

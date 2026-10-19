@@ -77,6 +77,7 @@ const sidebars: SidebarsConfig = {
             "kernel/distribution/operations",
             "kernel/distribution/sql-security",
             "kernel/distribution/qualification",
+            "kernel/distribution/application-qualification",
           ],
         },
         "kernel/faq",
@@ -307,6 +308,7 @@ const sidebars: SidebarsConfig = {
         "getting-started/03-playground",
         "getting-started/04-plugins",
         "getting-started/05-infra-layer",
+        "getting-started/06-minimal-application",
       ],
     },
     // {

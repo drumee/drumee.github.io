@@ -13,6 +13,11 @@ explicit Debian minimal-kernel container profile. It establishes integrated
 installation and recovery evidence within the scope below; it does not declare
 the historical Team profile replaced or promise general production support.
 
+The separate [IL-5 application qualification](/kernel/distribution/application-qualification)
+records the minimal-application profile, its newer Infra source lock, actual
+private-ingress/SMTP/lifecycle acceptance and historical CI debt. Those results
+do not replace or extend the IL-4 counts and artifacts recorded on this page.
+
 ## Exact source and artifact identities
 
 | Component | Qualified identity |
