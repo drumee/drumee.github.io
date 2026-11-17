@@ -38,7 +38,7 @@ jobs:
         run: npm run build
         env:
           # Origin and path of the Pages site (custom domain, or <org>.github.io/<repo>).
-          SITE_URL: ${{ steps.pages.outputs.origin }}
+          SITE_URL: https://${{ steps.pages.outputs.host }}
           BASE_URL: ${{ steps.pages.outputs.base_path }}
       
       - name: Upload artifact
