@@ -7,17 +7,37 @@ import legacyRedirects from './legacy-redirects.json';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
+// Where the site is served. Defaults to the custom domain at the root; the Pages workflow passes
+// SITE_URL / BASE_URL so the same build also works under https://<org>.github.io/<repo>/.
+const siteUrl = process.env.SITE_URL || 'https://docs.drumee.com';
+const baseUrl = `/${(process.env.BASE_URL || '').replace(/^\/+|\/+$/g, '')}/`.replace('//', '/');
+
+// Raw <img src="/img/..."> tags in Markdown are not prefixed with baseUrl by Docusaurus.
+// Prefix them here so screenshots load when the site is served from a sub-path.
+function prefixRawImages() {
+  const visit = (node: any) => {
+    if ((node.type === 'mdxJsxFlowElement' || node.type === 'mdxJsxTextElement') && node.name === 'img') {
+      for (const attr of node.attributes ?? []) {
+        if (attr.name === 'src' && typeof attr.value === 'string' && attr.value.startsWith('/')) {
+          attr.value = baseUrl + attr.value.slice(1);
+        }
+      }
+    }
+    (node.children ?? []).forEach(visit);
+  };
+  return visit;
+}
+
 const config: Config = {
   title: 'Welcome to Drumee Documentation',
   tagline: 'Built to be yours, designed to be shared.',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://docs.drumee.com',
+  url: siteUrl,
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  //baseUrl: '/documentation/',
-  baseUrl: '/',
+  baseUrl,
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -40,6 +60,7 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           routeBasePath: '/',  // Docs are at root of this deployment
+          beforeDefaultRemarkPlugins: baseUrl === '/' ? [] : [prefixRawImages],
           editUrl: 'https://github.com/drumee/drumee.github.io/tree/main/',
         },
         theme: {
