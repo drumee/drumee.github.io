@@ -5,9 +5,6 @@ The public documentation site for the **Drumee** platform, built with
 **https://drumee.github.io** (custom domain `docs.drumee.com`) and deployed
 automatically from `main`.
 
-> For how this site relates to the platform's other repos, see
-> [`setup-infra/DOCUMENTATION.md`](https://github.com/drumee/setup-infra/blob/main/DOCUMENTATION.md).
-
 ## Requirements
 
 - Node.js **≥ 20**
@@ -46,23 +43,27 @@ disables Jekyll.
 
 ```
 docs/                 All documentation content (Markdown / MDX)
-  introduction/       What Drumee is, problem/solution, roadmap
-  technology/         Architecture: ACL, MFS, LETC, request pipeline, sharding + SDK reference
-  getting-started/    Starter Kit, Own Cloud, Playground, Plugins
-  product-guides/     Task guides: widgets, services, permission management
-  package-building/   How the Debian packages are built
-  resources/          Glossary, FAQ, troubleshooting
-  api-reference/      Generated SDK reference + stored procedures
+  introduction/       What Drumee is, problem/solution, the stack, roadmap
+  product-tutorial/   Drumee Onboarding Guide (shown under Introduction)
+  technology/         Overview, RBAC, file storage, request pipeline, data storage & encryption,
+                      directory schema, SDK reference (coming soon)
+  getting-started/    Coming soon (one placeholder page)
+  product-guides/     Coming soon (one placeholder page)
+  self-hosting/       Coming soon (one placeholder page)
+  package-building/   Coming soon (one placeholder page)
+  resources/          Glossary, FAQ
 src/
   pages/index.tsx     Custom homepage
-  components/         React components (e.g. PermissionBitmaskVisualizer)
+  components/         React components
   css/                Global styles
 static/               Images, CNAME, favicon, .nojekyll
-scripts/
-  generate-api-docs.js  Generates Markdown API docs from ACL JSON
-docusaurus.config.ts  Site config (url, navbar, theme, Mermaid)
+docusaurus.config.ts  Site config (url, navbar, theme, Mermaid, redirects)
+legacy-redirects.json Every URL of the previous site that no longer exists → the page it redirects to
 sidebars.ts           Navigation structure (manually maintained)
 ```
+
+The site documents the current Drumee platform only. Old URLs that no longer exist are redirected
+(`docusaurus.config.ts`, `legacy-redirects.json`).
 
 ## Authoring docs
 
@@ -81,16 +82,12 @@ description: One-line summary for SEO/previews
 - Use `NN-` filename prefixes (`01-`, `02-`, …) to control ordering.
 - A doc only appears in navigation once it's added to `sidebars.ts`.
 - Mermaid diagrams are enabled; fenced ```mermaid blocks render directly.
-- React components can be imported into `.mdx` pages (see
-  `PermissionBitmaskVisualizer`).
-
-## Generated API reference
-
-`scripts/generate-api-docs.js` reads ACL JSON from a sibling `../acl/` directory and
-writes Markdown into `docs/api-reference/backend-sdk/`:
-
-```bash
-node scripts/generate-api-docs.js --all          # regenerate every module
-node scripts/generate-api-docs.js <module>       # one module
-node scripts/generate-api-docs.js --acl <dir> --output <dir>
-```
+- React components can be imported into `.mdx` pages.
+- A section that is not published yet is a single placeholder page with a `:::info[Coming soon]`
+  admonition; its sidebar item carries `className: "coming-soon"`, which renders the "Soon" pill.
+- When a page is renamed or removed, add a redirect from its old URL (`docusaurus.config.ts`, or
+  `legacy-redirects.json` for bulk lists).
+- Screenshots in `static/img/product-tutorial/` are taken from the running application at
+  1280×800 (2× pixel density) with fictional data only: the sample organization "Northwind Studio",
+  its client "Harbor Coffee", and `.example` email addresses. Never publish a screenshot that shows
+  real people, real addresses or a development URL.

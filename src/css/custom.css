@@ -154,3 +154,18 @@
   color: #fff;
   background: #152d46;
 }
+
+/* "Soon" pill after sidebar items whose section is not published yet (className in sidebars.ts). */
+.coming-soon > .menu__link::after,
+.coming-soon > .menu__list-item-collapsible > .menu__link::after {
+  content: 'Soon';
+  margin-left: auto;
+  padding: 0.05rem 0.45rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: var(--ifm-color-emphasis-700);
+  background: var(--ifm-color-emphasis-200);
+  border-radius: 999px;
+}

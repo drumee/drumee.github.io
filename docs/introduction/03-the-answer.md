@@ -8,14 +8,16 @@ slug: /introduction/03-the-answer
 
 Drumee eliminates that dependency.
 
-When you deploy Drumee:
+With Drumee:
 
-- Your data lives on **your infrastructure**
+- Your files, conversations, tasks and meetings live in **one workspace**, not in four separate tools
 
-- Your permissions are enforced by **ACL procedures** that check user privileges against node access controls in the database
+- Your permissions are enforced by **one role-based model**: the server checks every request against your role before any data is touched
 
 - Your conversations are **native to the files** they discuss
 
-- Your system can be **extended** with plugins and a developer SDK
+- Your data remains **yours** — export it or delete it whenever you choose
 
-- Your vendor risk is **zero** — because Drumee is not your vendor. It is your infrastructure.
+- Your system can run on **your own infrastructure**: self-hosting and a developer SDK are coming soon
+
+The goal has not changed: Drumee should not be your vendor. It should be your infrastructure.

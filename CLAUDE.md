@@ -20,20 +20,29 @@ This is a **Docusaurus 3** documentation site for the Drumee platform. Docs are 
 
 ### Content layout
 
-All documentation lives under `docs/` and is wired into the sidebar via `sidebars.ts`. The active sections are:
+All documentation lives under `docs/` and is wired into the sidebar via `sidebars.ts`. The site documents the current Drumee platform only (Go monolith, MongoDB, S3 object storage, Redis). Do not document, compare with, or refer to earlier technology.
 
 | Folder | Purpose |
 |--------|---------|
-| `docs/introduction/` | What Drumee is, positioning, history |
-| `docs/technology/` | Architecture deep-dives (ACL, MFS, LETC engine, widgets) |
-| `docs/technology/` → SDK Reference | Backend SDK, Frontend SDK, stored procedures, ACL spec |
-| `docs/getting-started/` | Installation guides (Docker, playground, plugins) |
-| `docs/self-hosting/` | Self-hosting: Docker Compose, Debian packages, operations |
-| `docs/package-building/` | Building and versioning Drumee Debian packages |
-| `docs/product-guides/` | Step-by-step task guides |
-| `docs/resources/` | Glossary, FAQ, troubleshooting |
+| `docs/introduction/` | What Drumee is, positioning, history, the stack, roadmap |
+| `docs/product-tutorial/` | Drumee Onboarding Guide (listed under Introduction) |
+| `docs/technology/` | Overview, RBAC system, file storage, request pipeline, data storage & encryption, directory schema; `07-sdk-reference.md` is a Coming Soon placeholder |
+| `docs/getting-started/`, `docs/product-guides/`, `docs/self-hosting/`, `docs/package-building/` | Coming Soon placeholders (one `index.md` each) |
+| `docs/resources/` | Glossary, FAQ |
 
-`docs/concepts/` is a legacy/draft folder not wired into the sidebar — do not add new content there.
+Technology pages must describe what the platform's code does. Do not state a capability (for example end-to-end encryption) as available before it has shipped; mark it Coming Soon instead.
+
+### Coming Soon sections
+
+A section that is not published yet is one page with a `:::info[Coming soon]` admonition. Its sidebar entry is a `doc` item with `className: "coming-soon"` (the "Soon" pill is styled in `src/css/custom.css`). To publish a section, replace the placeholder with real pages and turn the sidebar entry back into a category.
+
+### Redirects
+
+`@docusaurus/plugin-client-redirects` in `docusaurus.config.ts` keeps the old URLs of replaced pages working; `legacy-redirects.json` lists every URL of the previous site that no longer exists, grouped by the page it redirects to. When renaming or removing a page, add a redirect.
+
+### Screenshots
+
+Images in `static/img/product-tutorial/` come from the running application (1280×800 viewport, 2× density) with fictional data only: organization "Northwind Studio", client "Harbor Coffee", `.example` email addresses. Do not publish screenshots that show real people, real addresses, or a development URL.
 
 ### Sidebar registration
 
@@ -53,39 +62,17 @@ description: One-line description
 ---
 ```
 
-### API reference generation
-
-`scripts/generate-api-docs.js` generates Markdown files under `docs/api-reference/backend-sdk/` from ACL JSON files in a sibling `acl/` directory:
-
-```bash
-node scripts/generate-api-docs.js --all               # all modules
-node scripts/generate-api-docs.js mfs                 # single module
-node scripts/generate-api-docs.js --acl /path/to/acl  # custom ACL dir
-```
-
-The script reads ACL JSON → produces Docusaurus-compatible Markdown with parameter tables, return types, error codes, and examples. Only `docs/api-reference/backend-sdk/` is generated — do not hand-edit those files. `docs/api-reference/frontend-sdk/` is hand-written and safe to edit.
-
-The generator defaults to a sibling `acl/` directory (`scripts/../acl`) and a `docs-templates/` directory — **neither exists in this repo**, so `--all` without `--acl /path/to/acl` will fail. Point `--acl` at the ACL JSON dir from a checked-out backend repo (e.g. `server-core`).
-
-### Interactive component
-
-`src/components/PermissionBitmaskVisualizer.tsx` is a React component embedded in `docs/api-reference/acl-spec.md` via MDX import. It renders a live permission bitmask calculator.
-
 ### Mermaid diagrams
 
 Mermaid is enabled (`@docusaurus/theme-mermaid`). Use fenced code blocks with `mermaid` as the language in any `.md` file.
 
-### Docker Compose templates
-
-`templates/docker/devel-template.yaml` and `templates/docker/production-template.yml` are the Compose templates referenced in `docs/self-hosting/02-docker-compose.md`. When updating self-hosting Docker instructions, keep these templates in sync.
-
 ### Syntax highlighting
 
-Prism is configured with `additionalLanguages: ['bash', 'json', 'sql']` in `docusaurus.config.ts`. Code fences in any other language (e.g. `js`, `yaml`, `typescript`) will render without highlighting until that language is added to the array.
+Prism is configured with `additionalLanguages: ['bash', 'json', 'http']` in `docusaurus.config.ts`. Code fences in any other language (e.g. `js`, `yaml`, `typescript`) will render without highlighting until that language is added to the array.
 
 ### Static assets
 
-Static files live in `static/` (served at the root) — `static/img/` holds logos, favicon, and images referenced as `img/...`. `static/CNAME` sets the custom domain and `static/.nojekyll` keeps GitHub Pages from stripping files. The root-level `Development-install.md`, `Production-install.md`, `README.md`, and `UI-SOURCE-BUGS.md` are **not** part of the Docusaurus site.
+Static files live in `static/` (served at the root) — `static/img/` holds logos, favicon, and images referenced as `img/...`. `static/CNAME` sets the custom domain and `static/.nojekyll` keeps GitHub Pages from stripping files. The root-level `README.md` is **not** part of the Docusaurus site.
 
 ### Broken links
 

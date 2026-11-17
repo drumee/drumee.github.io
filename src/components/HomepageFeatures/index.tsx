@@ -20,26 +20,6 @@ const FeatureList: FeatureItem[] = [
       </>
     ),
   },
-  // {
-  //   title: 'Ready to use Docker Image, deployable in minutes',
-  //   Svg: require('@site/static/img/docker.svg').default,
-  //   description: (
-  //     <>
-  //       A few lines of settings and you Drumee OS is ready to use. Also available on 
-  //       bare metal with Debian.
-  //     </>
-  //   ),
-  // },
-  // {
-  //   title: 'Add tailored plugins to meet your own requirements',
-  //   Svg: require('@site/static/img/plugin.svg').default,
-  //   description: (
-  //     <>
-  //       No need to develop boilerplates like Identities managements or
-  //       be extended while reusing the same header and footer.
-  //     </>
-  //   ),
-  // },
 ];
 
 function Feature({title, imageSrc, description}: FeatureItem) {
@@ -50,7 +30,7 @@ function Feature({title, imageSrc, description}: FeatureItem) {
       </div>
       <div className="text--center padding-horiz--md">
         <Heading as="h3">{title}</Heading>
-        <p>{description}</p>
+        <div>{description}</div>
       </div>
     </div>
   );

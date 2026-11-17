@@ -6,23 +6,9 @@ slug: /introduction/08-the-stack
 
 # The Drumee Stack
 
-Drumee is a **Meta Operating System** — an OS-like full-stack framework that provides every layer of a web application in a single, coherent architecture. Unlike typical web applications that stitch together separate tools for auth, storage, backend, and frontend, Drumee ships everything as one integrated system.
+Drumee brings the layers a team normally assembles from separate products — storage, permissions, chat, tasks, meetings — into one platform with one data model and one permission system.
 
-## The Drumee Debian Packages
-
-Drumee is distributed as Debian packages, all built from the `drumee/debian` repository. Every deployment — Docker or bare metal — installs the same set:
-
-| Package | Build dir | Contents |
-| :---- | :---- | :---- |
-| `drumee-infra` | `infra/` | Infrastructure & environment setup — nginx, `/etc/drumee`, the `drumee/setup` tooling |
-| `drumee-schemas` | `schemas/` | MariaDB stored procedures and table definitions (from `drumee/schemas`) |
-| `drumee-server-pod` | `server/` | Backend Node.js services and ACL configuration (from `drumee/server-team`) |
-| `drumee-ui-pod` | `ui/` | Frontend LETC rendering engine (from `drumee/ui-team`, `@drumee/ui-core`) |
-| `drumee-static` | `static/` | Fonts, icons, locale files, stylesheets (from `drumee/static`) |
-
-The core build script (`build-all.sh`) compiles four of these — `infra`, `schemas`, `ui`, and `server` — while `drumee-static` is built and published separately.
-
-This packaging model is the foundation of Drumee's portability: the same packages run identically on a developer's laptop (Starter Kit), a single VPS (Own Cloud), or an enterprise data centre.
+This page describes what the platform is made of.
 
 ## The Three-Layer Product Architecture
 
@@ -30,103 +16,95 @@ Drumee's product is structured in three distinct layers, each serving a differen
 
 | Layer | Role | What It Includes |
 | :---- | :---- | :---- |
-| **File System Core** | Foundation — *this is what we sell* | Sovereign, self-hosted storage with structured organisation and fine-grained permission control |
-| **Collaboration Layer** | Adoption driver — *this is why teams adopt* | File sharing, folder-native chat, document editing (via plugins such as Euro Office) |
-| **System / OS Layer** | Differentiator — *this is the long-term moat* | SDK, plugins, and workflow extensions — available today for technical teams |
-
+| **File System Core** | Foundation — *this is what we sell* | Structured storage in workspaces, with versions, trash, quota and fine-grained role-based permissions |
+| **Collaboration Layer** | Adoption driver — *this is why teams adopt* | File sharing, folder-native chat, tasks and calendar, meetings, Office documents edited together in the browser |
+| **System Layer** | Differentiator — *this is the long-term moat* | An app marketplace on the hosted service today; a public API reference and an SDK coming soon |
 
 > Key insight: Layer 1 IS the product. Layer 2 makes it adoptable. Layer 3 makes it extensible.
 
+## What Is in a Workspace
+
+| Capability | In short |
+| :---- | :---- |
+| **Files** | Folders and files, direct-to-storage uploads with resume, previews, video streaming, versions, 30-day trash |
+| **Office documents** | Word, Excel and PowerPoint files open and are co-edited in the browser, with history |
+| **Chat** | A conversation per workspace, topics, threads on a file, direct messages, mentions |
+| **Tasks** | Boards with columns, sprints, labels, comments and history; a calendar |
+| **Meetings** | Audio and video rooms, 1:1 calls, screen sharing, guest links with a lobby |
+| **Sharing** | Invitations with a role; links with expiry, password and email restrictions |
+| **Organization** | Members, teams, policies, an audit log, plans and billing |
+
 ## The Four Technical Pillars
 
-### 1. Identity & Access Control (ACL)
+### 1. Identity & Access Control
 
-A bitwise, Linux-inspired permission model enforced at the microservice level — before any service code executes.
+A role-based model decided entirely on the server.
 
-* Automatic user-ID tagging for all requests  
-* Single-bit permission values: anonymous (1), read (2), write (8), admin (16), owner (32) — combined into cumulative privilege levels: anonymous (1), read (3), write (15), admin (31), owner (63)  
-* Permission check happens before service dispatch — no application-layer bypass possible  
-* ACL declared in JSON files — no route registration, no middleware wiring  
-  → [ACL System](../technology/02-acl-system.md)
+* One role per person per workspace: Viewer, Chatter, Editor, Admin, Owner  
+* A separate ladder for administering an organization  
+* Share links for people outside, with their own permissions and protections  
+* Server-side sessions that can be revoked instantly; two-factor authentication  
+  → [RBAC System](../technology/02-rbac-system.md)
 
-### 2. Meta File System (MFS)
+### 2. File Storage
 
-An abstraction layer over the host filesystem that stores file metadata in a database and physical content at content-addressed paths.
+Metadata in a database, content in object storage.
 
-- Everything is a **node** (UUID) in the media database table
+- Every folder and file is a **node** in a workspace tree
 
-- Physical path: `{mfs_dir}/{VFS_ROOT_NODE}/{node_id}/` — never exposed to users
+- Content is stored in S3-compatible object storage under a random identifier — never under the file's name or path
 
-- All operations via stored procedures — no raw SQL against MFS tables in service code
+- Browsers upload directly to storage; the server authorizes, verifies and records
 
-- Soft-delete via trash_media table with configurable expiry
+- Soft delete with a 30-day trash; versions on every change of content
 
-- Permission enforcement at the node level, not just the hub level
+- → [File Storage](../technology/03-file-storage.md)
 
-- → [MFS Architecture](../technology/03-mfs-architecture.md)
+### 3. Realtime Collaboration
 
-### 3. LETC Engine (JSON-Based UI)
+Every change is an event.
 
-A declarative UI rendering engine where interfaces are defined as JSON trees, not HTML templates or compiled bundles.
+- Changes are published to the people in the same workspace over WebSocket
 
-- Full name: **Limitlessly Extensible Traversal Collection**
+- A short replay window makes reconnection seamless
 
-- Built on Backbone + Backbone.Marionette
+- Subscriptions are checked with the same permission rules as the API
 
-- Server returns pure JSON data — zero HTML processing server-side
+- → [Request Pipeline](../technology/04-request-pipeline.md)
 
-- Client resolves kind strings to widget components via a registry
+### 4. Tenancy & Data Protection
 
-- UI is permission-filtered at source: the server omits nodes the user cannot see
+Every organization's data is separated by construction.
 
-- → [LETC Engine](../technology/04-letc-engine.md)
+- Each document carries the ID of the tenant that owns it, and every query filters by it
 
-### 4. Plugin Architecture
+- Passwords, sessions and codes are stored only as hashes; stored secrets are encrypted
 
-A hot-reloadable extension system that lets developers add new backend services and frontend widgets without modifying the core codebase.
+- End-to-end encryption is in development
 
-- Plugins follow the same ACL + Entity pattern as built-in modules
-
-- Scoped to a specific endpoint: /-/*endpoint*/svc/module.method
-
-- Hot-reload via Acl.loadPlugins(true) — no server restart required
-
-- Full API reference: https://drumee.github.io/api-reference/frontend-sdk/
-
-- → [Plugins](../getting-started/04-plugins.md)
+- → [Data Storage & Encryption](../technology/05-data-storage-encryption.md)
 
 ## Runtime Architecture
 
-Once deployed, a Drumee instance runs **two Node.js processes per endpoint**, managed by PM2:
+Drumee runs as **one application binary** in two roles, next to three stores:
 
-| Process | Endpoint | Responsibility |
-| :---- | :---- | :---- |
-| index.js | / | HTTP pages, WebSocket connections, user sessions, LETC Router |
-| service.js | /-/svc/ | All REST service calls, ACL enforcement, plugin management |
+| Component | Responsibility |
+| :---- | :---- |
+| **Server** | The REST API, the realtime hub, and the web application |
+| **Worker** | Previews and video renditions, imports, notifications, scheduled clean-up |
+| **Document database** | The source of truth for everything except file content |
+| **Object storage** | File content and everything derived from it |
+| **Cache and queues** | Short-lived state, the event bus, job queues |
 
+Servers and workers keep no state of their own, so any number of them can run side by side.
 
-This separation means a crashed REST handler cannot bring down the WebSocket/session server. Each process is independently restartable.
+→ [Technology Overview](../technology/01-overview.md)
 
-## Drumee vs a Standard Operating System
+## Deployment
 
-| Capability | Standard OS | Drumee |
-| :---- | :---- | :---- |
-| Full hardware control | Yes | No |
-| Identity management (ACL) | Yes | Yes |
-| File system management (MFS) | Yes | Yes |
-| Input/output system | Yes | Yes |
-| Rendering engine | Optional | Yes (LETC) |
+| Edition | Status |
+| :---- | :---- |
+| **SaaS** | Live at [app.drumee.com](https://app.drumee.com) |
+| **Self-hosted** | [Coming soon](/self-hosting) |
 
-
-Drumee provides the same foundational services an OS provides for native applications — but for web applications, running on any Linux server you own.
-
-## Open Source
-
-Drumee is open source under the **AGPL licence**. The full codebase is on GitHub:
-
-- [https://github.com/drumee/starter-kit](https://github.com/drumee/starter-kit)
-
-- [https://github.com/drumee/server-team](https://github.com/drumee/server-team)
-
-- [https://github.com/drumee/ui-team](https://github.com/drumee/ui-team)
-
+The same platform serves both: the self-hosted edition is the hosted one packaged for your own infrastructure, without plan limits.

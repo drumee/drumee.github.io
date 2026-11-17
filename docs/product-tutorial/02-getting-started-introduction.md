@@ -19,13 +19,13 @@ Drumee eliminates the need to jump between apps. Now that we have the basics dow
 In this section you will learn:
 
 - How to start with Drumee
-- Create workspace
-- Upload real work + Search for files/ folder
+- Create a workspace
+- Upload real work + search for files and folders
 - Invite members
 - Chat with your team
-- Schedule meeting with your team
+- Schedule a meeting with your team
 - Grant permissions
-- Try out AHA features
+- Try out the AHA features
 
 ## 1. How to start with Drumee
 
@@ -33,100 +33,105 @@ Step 1: Go to [app.drumee.com](https://app.drumee.com)
 
 Step 2: If you don’t have an account yet:
 
-=> Click **Start free** (bottom of the page) to create your account.
+=> Click **Create one**, fill in your name, email and a password, then click **Create account**.
 
-=> Or click **Continue with Google** / **Continue with AppleID**.
+=> Confirm your email address with the message Drumee sends you.
+
+<figure className="product-tutorial-figure">
+  <img src="/img/product-tutorial/sign-up.png" alt="Create your Drumee account" />
+  <figcaption>1.1 Create your account</figcaption>
+</figure>
 
 Step 3: If you already have an account:
 
 => Enter your email + password.
 
-=> Then click **Log In to Workspace**.
-
-Once you’re inside, you’ll land on the Home page - ready to create your first workspace.
+=> Then click **Sign in**.
 
 <figure className="product-tutorial-figure">
-  <img src="/img/product-tutorial/getting-started/sign-in.png" alt="Sign in to Drumee" />
+  <img src="/img/product-tutorial/sign-in.png" alt="Sign in to Drumee" />
+  <figcaption>1.2 Sign in</figcaption>
 </figure>
+
+Once you’re inside, you land in your personal workspace — ready to create your first shared one.
 
 ## 2. Create Your First Workspace
 
-Step 1: Go to “Home page” => Click **+ Add New**.
+Step 1: In the sidebar, click **+** next to **Workspaces**.
 
-<figure className="product-tutorial-figure">
-  <img src="/img/product-tutorial/getting-started/add-workspace.png" alt="Add a new workspace" />
-</figure>
-
-Step 2: Choose your type of Workspace.
-
-<figure className="product-tutorial-figure">
-  <img src="/img/product-tutorial/getting-started/workspace-type-selector.png" alt="Choose a workspace type" />
-</figure>
+Step 2: Give the workspace a name and choose its type.
 
 There are 3 types of workspace in Drumee:
 
-- **Personal / Private folder:** Use this workspace to manage your personal work, including drafts, private research, notes, temporary files, and personal knowledge.
+- **Personal — My files:** You already have this one. Use it to manage your personal work, including drafts, private research, notes, temporary files, and personal knowledge. Only you can see it.
+
+- **Internal:** Use this workspace to collaborate securely with your internal teams on ongoing projects: Marketing, Sales, Product, Finance, and other organizational workstreams. Choose who joins: everyone in the organization, selected teams, or only the people you add.
 
 <figure className="product-tutorial-figure">
-  <img src="/img/product-tutorial/getting-started/personal-workspace.png" alt="Personal workspace" />
-  <figcaption>2.1 Personal Workspace</figcaption>
+  <img src="/img/product-tutorial/new-workspace-internal.png" alt="New internal workspace" />
+  <figcaption>2.1 Internal workspace</figcaption>
 </figure>
 
-- **Team / Internal folder:** Use this workspace to collaborate securely with your internal teams on ongoing projects: Marketing, Sales, Product, Finance, and other organizational workstreams.
+- **External:** Use this workspace to collaborate with clients and partners while securely sharing proposals, deliverables, review materials, and other external resources. People from outside your organization can be invited here.
 
 <figure className="product-tutorial-figure">
-  <img src="/img/product-tutorial/getting-started/internal-workspace.png" alt="Internal workspace" />
-  <figcaption>2.2 Internal Workspace</figcaption>
+  <img src="/img/product-tutorial/new-workspace-external.png" alt="New external workspace" />
+  <figcaption>2.2 External workspace</figcaption>
 </figure>
 
-- **Shared / External folder:** Use this workspace to collaborate with clients and partners while securely sharing proposals, deliverables, review materials, and other external resources.
-
-<figure className="product-tutorial-figure">
-  <img src="/img/product-tutorial/getting-started/external-workspace.png" alt="External workspace" />
-  <figcaption>2.3 External Workspace</figcaption>
-</figure>
-
-Step 3: Click “Create” => Create your workspace instantly.
+Step 3: Click **Create** => your workspace is ready instantly, and appears in the sidebar.
 
 ## 3. Upload + Search for files
 
 ### 3.1 Upload New Files
 
-Step 1: Go to “Home page” => Click **Upload**.
-
-Step 2: Choose files from your device.
-
-Step 3: Upload in Drumee workspace.
+Step 1: Open the workspace => Click **Upload**. The arrow next to it lets you choose between **Upload files** and **Upload folder**. You can also drag files and folders from your computer into the window.
 
 <figure className="product-tutorial-figure">
-  <img src="/img/product-tutorial/getting-started/upload-files.png" alt="Upload files" />
-  <figcaption>3.1 Upload your files</figcaption>
+  <img src="/img/product-tutorial/upload-menu.png" alt="Upload files or a folder" />
+  <figcaption>3.1.1 Upload your files</figcaption>
+</figure>
+
+Step 2: Choose files from your device. Large files are sent in parts, and an interrupted upload picks up where it stopped.
+
+Step 3: Need a new document instead? Click **New** to create a folder, a document, a spreadsheet, a Markdown note or a text file directly in the workspace.
+
+<figure className="product-tutorial-figure">
+  <img src="/img/product-tutorial/new-menu.png" alt="Create a folder or a document" />
+  <figcaption>3.1.2 Create folders and documents</figcaption>
 </figure>
 
 ### 3.2 Search Your Files
 
-Step 1: Go to “Home page” => Type in the Search bar.
+Step 1: Type in the **Search in this workspace** bar.
 
-Step 2: Quickly find any workspace, file or conversation across everything.
+Step 2: Results appear as you type, with the folder each one is in.
 
-Step 3: Choose the file/folder you’re looking for.
+Step 3: Choose the file or folder you’re looking for.
 
 <figure className="product-tutorial-figure">
-  <img src="/img/product-tutorial/getting-started/search-files.png" alt="Search workspaces, folders, and files" />
-  <figcaption>3.2 Find your workspace, folders, files</figcaption>
+  <img src="/img/product-tutorial/search-files.png" alt="Search folders and files" />
+  <figcaption>3.2 Find your folders and files</figcaption>
 </figure>
 
 ## 4. Invite Members
 
-Step 1: Go to “Home page” => Click “Invite”.
+Step 1: Open the workspace => Click the **Invite** button at the top right.
 
-Step 2: Enter email, choose workspace &amp; role.
+Step 2: Enter the email address, choose the role, and add a personal note if you like.
 
-Step 3: Click “Send Invitation”.
+Step 3: Click **Send Invitation**.
 
 <figure className="product-tutorial-figure">
-  <img src="/img/product-tutorial/getting-started/invite-members.png" alt="Invite friends by email" />
-  <figcaption>4. Invite friends via emails</figcaption>
+  <img src="/img/product-tutorial/invite-dialog.png" alt="Invite a member by email" />
+  <figcaption>4.1 Invite members by email</figcaption>
+</figure>
+
+Invitations that have not been answered yet are listed under **Pending invites**, where you can resend or cancel them.
+
+<figure className="product-tutorial-figure">
+  <img src="/img/product-tutorial/pending-invites.png" alt="Pending invitations" />
+  <figcaption>4.2 Pending invitations</figcaption>
 </figure>
 
 ## 5. Chat with your team
@@ -135,147 +140,181 @@ Keep conversations attached to the work, no context lost between apps.
 
 | Feature | What it does |
 | --- | --- |
-| @mentions | Mention team members directly in the chat thread. |
-| File tagging | Tag a file with /filename to start file-based discussions. |
-| Export history | Download the full chat history of the folder when needed. |
+| Folder chat | Every folder has its own conversation, next to its files. |
+| Topics | Split a conversation into subjects with **#** topics. |
+| File threads | Discuss one file in a thread of its own. |
+| Reply, react, forward | Answer a message, react to it, or forward it. |
+| Create task | Turn a message into a task in one click. |
+| Calls | Start a voice or video call from the conversation. |
+| Export history | Download the chat history when needed. |
 
 ### 5.1 Chat in folders
 
-Step 1: Click “Chat” in the folder.
+Step 1: Open the workspace => Select **Chat**. The conversation opens beside the files of the folder you are in. Drag the divider between the two to give the conversation more room, or collapse the sidebar.
 
-Step 2: Drop files: /filenames in the chat box.
-
-Step 3: Click “#” to open chat threads.
-
-Step 4: Discuss in the chat box on the right sidebar.
+Step 2: Write in **# General**, or click **+** next to **Topics** to open a topic for a subject of its own.
 
 <figure className="product-tutorial-figure">
-  <img src="/img/product-tutorial/getting-started/folder-chat.png" alt="Drop files and open folder chat threads" />
-  <figcaption>5.1.1 Drop files &amp; open folder chat threads</figcaption>
+  <img src="/img/product-tutorial/chat-folder.png" alt="The conversation of a folder, next to its files" />
+  <figcaption>5.1.1 Folder chat</figcaption>
 </figure>
 
+Step 3: Click a topic to follow that discussion only.
+
 <figure className="product-tutorial-figure">
-  <img src="/img/product-tutorial/getting-started/file-chat.png" alt="Chatting box in a file" />
-  <figcaption>5.1.2 Chatting box in file</figcaption>
+  <img src="/img/product-tutorial/chat-topic.png" alt="A topic in the folder chat" />
+  <figcaption>5.1.2 Topics</figcaption>
 </figure>
 
 ### 5.2 Chat in files
 
-Step 1: Click on the file → Select “Chat threads” to start the conversation.
+Step 1: Open the folder that contains the file. Its discussions are listed under **File threads**.
 
-Step 2: Select **View chat threads** to see the whole chat history &amp; continue the conversation.
+Step 2: Click a thread to read the whole discussion about that file and continue it.
 
 <figure className="product-tutorial-figure">
-  <img src="/img/product-tutorial/getting-started/view-chat-threads.png" alt="View chat threads" />
-  <figcaption>5.2.1 View chat threads</figcaption>
+  <img src="/img/product-tutorial/chat-file-thread.png" alt="A discussion thread on a file" />
+  <figcaption>5.2 File thread</figcaption>
 </figure>
 
-Step 3: Select **Download chat threads** to download the whole chat history.
+### 5.3 Chat details
+
+Step 1: Click **⋮** at the top of the conversation to open **Chat details**.
+
+Step 2: From there, mute the conversation, browse the photos, videos, files and links shared in it, see who is in it — or select **Export chat history** to download it.
 
 <figure className="product-tutorial-figure">
-  <img src="/img/product-tutorial/getting-started/download-chat-threads.png" alt="Download chat threads" />
-  <figcaption>5.2.2 Download chat threads</figcaption>
-</figure>
-
-<figure className="product-tutorial-figure">
-  <img src="/img/product-tutorial/getting-started/download-chat-history.png" alt="Downloaded chat history" />
+  <img src="/img/product-tutorial/chat-details.png" alt="Chat details with export" />
+  <figcaption>5.3 Chat details and export</figcaption>
 </figure>
 
 ## 6. Meeting with your team
 
-Use “Meeting” to schedule and join meetings without leaving the folder, keeping every discussion within the same project context.
+Use **Meeting** to schedule and join meetings without leaving the workspace, keeping every discussion within the same project context.
 
-Step 1: Open folder => Select “Meeting”.
-
-Step 2: Click “Schedule” on tab bar => Set up meeting details.
+Step 1: Open the workspace => Select **Meeting**.
 
 <figure className="product-tutorial-figure">
-  <img src="/img/product-tutorial/getting-started/meeting-calendar.png" alt="Meeting calendar board" />
-  <figcaption>6.1 Meeting calendar board</figcaption>
+  <img src="/img/product-tutorial/meeting-calendar.png" alt="Meeting calendar" />
+  <figcaption>6.1 Meeting calendar</figcaption>
 </figure>
 
-Step 3: Click “Schedule” to complete.
+Step 2: Click **Schedule** => set the title, agenda, date and time, invitees, repetition and reminder. Attach the files the meeting is about.
+
+Step 3: Click **Schedule** to complete. Invitees are notified, and the meeting appears in their calendar.
 
 <figure className="product-tutorial-figure">
-  <img src="/img/product-tutorial/getting-started/schedule-meeting.png" alt="Schedule a meeting in details" />
-  <figcaption>6.2 Schedule a meeting in details</figcaption>
+  <img src="/img/product-tutorial/schedule-meeting.png" alt="Schedule a meeting" />
+  <figcaption>6.2 Schedule a meeting</figcaption>
 </figure>
+
+Step 4: Click a meeting to see its details. **Start now** opens the room; **Guest link** lets someone without an account join.
+
+<figure className="product-tutorial-figure">
+  <img src="/img/product-tutorial/meeting-detail.png" alt="Meeting information" />
+  <figcaption>6.3 Meeting information</figcaption>
+</figure>
+
+Need to talk right away? **Start a Meeting** opens the workspace’s room immediately.
 
 ## 7. Grant permissions
 
-Use “Permissions” to control folder-level access by defining who can view, edit, and share files while tracking their actions in one place.
+Each member has one role in a workspace, and the role decides what they can do there.
 
-Step 1: Open folder → Go to “Setting”.
+| Role | What it allows |
+| --- | --- |
+| View | Can browse and open files. |
+| Chat | Can view, download and chat. |
+| Edit | Can upload, organize and share. |
+| Admin | Can manage members and settings. |
+| Owner | The one person who can transfer or delete the workspace. |
 
-Step 2: Enter member’s email address.
-
-Step 3: Choose the permission status that need to send.
+Step 1: Open the workspace => Click **Who has access** at the top right.
 
 <figure className="product-tutorial-figure">
-  <img src="/img/product-tutorial/getting-started/permission-options.png" alt="Permission options" />
-  <figcaption>7. Choose the permission options</figcaption>
+  <img src="/img/product-tutorial/who-has-access.png" alt="Who has access to the workspace" />
+  <figcaption>7.1 Who has access</figcaption>
 </figure>
+
+Step 2: Click the role next to a member.
+
+Step 3: Choose the new role. It applies at once.
+
+<figure className="product-tutorial-figure">
+  <img src="/img/product-tutorial/member-roles.png" alt="Choose a role" />
+  <figcaption>7.2 Choose the role</figcaption>
+</figure>
+
+People from outside your organization join as guests, with the View or Chat role.
+
+→ The full model is described in [RBAC System](/technology/02-rbac-system).
 
 ## 8. AHA Moments
 
 ### 8.1 Secure Share
 
-Use “Secure Share” to send confidential files to clients outside your workspace while controlling access with:
+Use **Secure Share** to send confidential files to clients outside your workspace while controlling access with:
 
 | Feature | What it does |
 | --- | --- |
 | Password protection | Require a password before recipients can open the link. |
-| Expiration date | Set a date after which the link automatically stops working. |
-| Email verification | Require the recipient to verify their email before accessing. |
-| Granular permissions | Choose between View, Chat, Edit, Download access. |
-| Activity log | See exactly when the file was opened and by whom. |
+| Expiration | Set a time after which the link automatically stops working. |
+| Email requirement | Require recipients to enter their email, and restrict the link to chosen addresses or domains. |
+| Granular permissions | View by default; add Download, Chat or Edit. |
+| Access log | See when the link was opened and by whom. |
 
-Step 1: Click on folder → Select “Share”.
+Step 1: Click **⋮** on a folder or file → Select **Share**.
 
-Step 2: Select Secure share.
+Step 2: Choose what recipients may do, then select **Secure Share**.
+
+Step 3: Tick **Require email to view** and **Add password protection**, pick an expiration, then click **Get link**.
 
 <figure className="product-tutorial-figure">
-  <img src="/img/product-tutorial/getting-started/share-options.png" alt="Public and secure share options" />
-  <figcaption>8.1 Link sharing options: Public share &amp; Secure share</figcaption>
+  <img src="/img/product-tutorial/share-secure.png" alt="Secure share options" />
+  <figcaption>8.1.1 Secure share options</figcaption>
 </figure>
 
-Step 3: Choose Require email review/ Add password for protection.
+Step 4: Your recipient opens the link, enters their email and the password…
 
 <figure className="product-tutorial-figure">
-  <img src="/img/product-tutorial/getting-started/secure-share.png" alt="Secure share option" />
-  <figcaption>8.1 Secure share option</figcaption>
+  <img src="/img/product-tutorial/guest-gate.png" alt="What the recipient sees before opening the link" />
+  <figcaption>8.1.2 The recipient’s gate</figcaption>
 </figure>
 
-Step 4: View access log to your files in the access list.
+…and sees the shared folder — nothing else from your workspace.
 
 <figure className="product-tutorial-figure">
-  <img src="/img/product-tutorial/getting-started/access-log.jpg" alt="View access log to your file" />
-  <figcaption>8.1 View access log to your file</figcaption>
+  <img src="/img/product-tutorial/guest-view.png" alt="The shared folder as the recipient sees it" />
+  <figcaption>8.1.3 The shared folder, as the recipient sees it</figcaption>
+</figure>
+
+Step 5: Back in **Share → Shared links**, copy the link again, show its QR code, extend it, or revoke it.
+
+<figure className="product-tutorial-figure">
+  <img src="/img/product-tutorial/shared-links.png" alt="Manage a shared link" />
+  <figcaption>8.1.4 Manage the link</figcaption>
+</figure>
+
+Step 6: Click **Access log** to see who opened it, and when.
+
+<figure className="product-tutorial-figure">
+  <img src="/img/product-tutorial/access-log.png" alt="Access log of a shared link" />
+  <figcaption>8.1.5 Access log</figcaption>
 </figure>
 
 ### 8.2 Google Drive Migration
 
-Move entire projects or departments into Drumee with a single click, original folder hierarchy preserved, no rebuilding from scratch.
+Move entire projects or departments into Drumee, original folder hierarchy preserved, no rebuilding from scratch.
 
-Step 1: Go to “Setting” => Click “Import”.
-
-<figure className="product-tutorial-figure">
-  <img src="/img/product-tutorial/getting-started/start-migration.png" alt="Start migration process" />
-  <figcaption>8.2.1 Start migration process</figcaption>
-</figure>
-
-Step 2: Process the “Verify &amp; Import” actions.
+Step 1: Open the account menu => **Account** => scroll to **Import**.
 
 <figure className="product-tutorial-figure">
-  <img src="/img/product-tutorial/getting-started/verify-import.png" alt="Verify and import files to migrate" />
-  <figcaption>8.2.2 Verify &amp; import file to migrate</figcaption>
+  <img src="/img/product-tutorial/import-card.png" alt="Migrate from Google Drive" />
+  <figcaption>8.2 Start the migration</figcaption>
 </figure>
 
-Step 3: Migration completed.
+Step 2: Click **Start migration**, connect your Google account, and choose the files and folders to bring in.
 
-<figure className="product-tutorial-figure">
-  <img src="/img/product-tutorial/getting-started/migration-complete.png" alt="Migration complete" />
-  <figcaption>8.2.3 Migration complete</figcaption>
-</figure>
+Step 3: The import runs in the background and reports its progress. Google Docs, Sheets and Slides arrive as Word, Excel and PowerPoint files that you can edit in Drumee. A file whose name already exists in the destination is skipped, so nothing is overwritten.
 
 </div>

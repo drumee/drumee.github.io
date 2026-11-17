@@ -2,173 +2,135 @@
 id: 01-overview
 title: Technology Overview
 slug: /technology/01-overview
+description: How the Drumee platform is structured - one application binary, a document database, object storage, a realtime layer, and a single permission model across all of them.
 ---
 
 # Technology Overview
 
-Drumee is built as an **OS-like full-stack framework** — not a web app that happens to run on a server, but a unified system that provides every layer of a web application in a single, coherent architecture.
+Drumee puts files, conversations, tasks and meetings in one workspace, under one permission model. This page is the map: what the platform is made of, and where to read about each part.
 
-This page explains how the system is structured and how the components relate to each other.
+## Architecture at a glance
 
-## The Core Problem Drumee's Architecture Solves
-
-Modern web application teams repeatedly rebuild the same foundation:
-
-* Authentication and user identity  
-* File storage and access control  
-* Backend API framework  
-* Frontend rendering layer  
-* Database and permission system  
-* Deployment and infrastructure configuration
-
-Every project starts from zero. Every rebuild introduces inconsistency and new attack surfaces.
-
-**Drumee is the unified system that replaces that fragmentation.**
-
-## System Architecture at a Glance
-
-```text
-REQUEST
-│
-▼
-┌──────────────────────────────────────────┐
-│  ACL SYSTEM                              │
-│  User identity tagged · Role validated   │
-│  Permission checked before data touched  │
-└──────────────────┬───────────────────────┘
-                   │ Authorized
-                   ▼
-┌──────────────────────────────────────────┐
-│  MFS (META FILE SYSTEM)                  │
-│  Isolated volumes · Atomic operations    │
-│  POSIX-style · Full audit logging        │
-└──────────────────┬───────────────────────┘
-                   │ Data returned
-                   ▼
-┌──────────────────────────────────────────┐
-│  LETC ENGINE                             │
-│  Data → JSON UI tree → Widget render     │
-│  No HTML on server · No CSS conflicts    │
-└──────────────────┬───────────────────────┘
-                   │ JSON response
-                   ▼
-             CLIENT (Browser)
-            Renders widget tree
+```mermaid
+flowchart TB
+  C["Web app · mobile app"]
+  subgraph Platform["Drumee platform"]
+    direction TB
+    API["REST API  /api/v1"]
+    RT["Realtime hub  (WebSocket)"]
+    SVC["Domain services<br/>auth · organizations · workspaces · files · chat · tasks · calendar · meetings · sharing · billing"]
+    AZ["Access control (RBAC)<br/>role and tenant resolved for every call"]
+    WK["Workers<br/>previews · video · imports · notifications · scheduled tasks"]
+  end
+  DB[("Document database")]
+  OBJ[("Object storage")]
+  RD[("Cache · events · queues")]
+  LK["Media server<br/>audio / video"]
+  C --> API --> SVC
+  C <--> RT
+  SVC --> AZ --> DB
+  SVC --> OBJ
+  SVC -- events --> RD
+  RD --> RT
+  RD --> WK
+  WK --> DB
+  WK --> OBJ
+  C <-. media .-> LK
 ```
 
+A request enters through the API, reaches the service of its domain, and **every** service resolves the caller's role and tenant before it reads or writes anything. Changes are published as events, which the realtime hub delivers to the people who should see them and which workers turn into notifications and background work.
 
-Every request passes through all three layers in sequence. There is no shortcut that bypasses the ACL system.
+## The core components
 
-## The Four Core Components
+### 1. Access control
 
-### 1\. ACL System
+One role per person per workspace, on a ladder from Viewer to Owner; a separate ladder for administering an organization; and share links for people outside. All decisions are made on the server, next to the code that performs the action.
 
-The identity and access control layer. Every request is tagged with a user identity. Permissions are enforced at the microservice level — before any data operation occurs.
+→ [RBAC System](./02-rbac-system.md)
 
-→ [ACL System](02-acl-system.md)
+### 2. File storage
 
-### 2\. MFS — Media File System
+A file is a record in the database and an object in S3-compatible storage. Browsers upload directly to storage; the server authorizes, verifies and records. Previews, video renditions, versions, trash and quota are built on that split.
 
-The storage layer. A Linux-inspired filesystem with isolated volumes, POSIX-style permission scoping, and atomic file operations. The security properties of the system are architectural, not configurational.
+→ [File Storage](./03-file-storage.md)
 
-→ [MFS Architecture](03-mfs-architecture.md)
+### 3. The request pipeline and realtime
 
-### 3\. LETC Engine
+One middleware chain, one error format, one event bus. Every change becomes an event that reaches the other members of the workspace over WebSocket, with replay after a reconnection.
 
-The rendering layer. UI is defined as JSON trees, not server-generated HTML. This decouples interface definition from data delivery and enables a clean, conflict-free widget system.
+→ [Request Pipeline](./04-request-pipeline.md)
 
-→ [LETC Engine](04-letc-engine.md)
+### 4. Data and its protection
 
-### 4\. Unified SDK
+A document database is the source of truth, object storage holds content, and a cache holds what can be rebuilt. Tenants are separated in every query. Secrets are hashed or encrypted; end-to-end encryption is on the way.
 
-The developer layer. A single SDK that covers frontend widget development, backend service creation, filesystem API access, and database integration. One language, one paradigm, full system access.
+→ [Data Storage & Encryption](./05-data-storage-encryption.md) · [Directory Schema](./06-directory-schema.md)
 
-→ [SDK Reference](../api-reference/backend-sdk/index.md)
+## Key architectural properties
 
-## Key Architectural Properties
+### One binary
 
-### Permissions Are Structural, Not Configurational
+The platform is a **modular monolith**: a single program that runs as an API server, as a background worker, or as a migration job. Each domain — files, chat, tasks, … — is a self-contained module with the same internal layering (handler, service, repository) and explicit boundaries, but they are built, tested and deployed together. There is no fleet of services to version against each other.
 
-In most systems, permissions are checked in application code — and can be bypassed by application-level bugs. In Drumee, permissions are enforced at the microservice level. The application layer never receives unauthorized data to accidentally expose.
+### Stateless servers
 
-### Everything Is a Plugin
+No server keeps files on its disk or sessions in its memory. Durable state is in the database and in object storage; shared short-lived state is in the cache. Servers and workers can be added, removed or replaced freely, and several of each run side by side.
 
-The core system is minimal and stable. All capabilities beyond the base filesystem (document editing, chat, workflow tools) are plugins that inherit the core's security model automatically. A new plugin cannot introduce a permission vulnerability.
+### The server decides
 
-### Unified Data Model
+Permissions and plan limits are enforced on the server for every request. The interface shows or hides controls according to what the server reports; it is never the thing that protects data.
 
-Every object in Drumee — file, folder, workspace, user, role — is part of the same data model. There is no separate "files database" and "users database" with custom sync logic. The system is coherent by design.
+### Tenant isolation by construction
 
-### Open Source
+Every document that belongs to an organization carries its tenant ID, every data-access function must filter by it, and a check in the build rejects code that does not. The tenant is derived from the resource being accessed, not supplied by the client.
 
-Drumee's core is open-source (AGPL). You can inspect every security decision, every permission check, and every data flow. Sovereignty requires auditability.
+### Nothing is deleted by accident
 
-## The Hub — Multi-Tenancy Unit
+Deleting a file, a workspace or an account is a soft delete with a 30-day window. Every failed action reports an error and restores the previous state.
 
-A **Hub** is the fundamental unit of multi-tenancy in Drumee. Each hub is an independent collaborative workspace with:
+### A contract-first API
 
-- Its own **subdomain** (or custom domain)
-- Its own **MariaDB schema** — data is strictly isolated at the database level
-- Its own **MFS storage root** on disk
-- Its own **set of users, roles, and permissions**
-- Its own **theme, logo, wallpaper, and metadata**
+The REST API is described by an OpenAPI contract, and the web application's client types are generated from it. The web app uses exactly the API that integrations will use.
 
-A single Drumee installation hosts many hubs. When a request arrives, the session layer identifies which hub it belongs to via the `Host` header, then loads that hub's configuration. All subsequent database calls, file operations, and permission checks are scoped to that hub.
+## The tenant — the unit of ownership
 
-```
-Drumee Instance
-  ├── Hub A  (team.example.com)  → schema_a,  /mfs/a/
-  ├── Hub B  (org.example.com)   → schema_b,  /mfs/b/
-  └── Hub C  (project.example.com) → schema_c, /mfs/c/
-```
-
-Each hub (and each user) is a separate MariaDB database, pre-provisioned by an offline factory so creating one is instantaneous. See [Database Sharding & the Entity Pool](./07-database-sharding.md).
-
-## Full Infrastructure Stack
-
-`server-core` runs inside the following infrastructure. Understanding where each component sits explains many of Drumee's design choices.
+A **tenant** owns data. Every person has a personal tenant; an organization is a tenant shared by its members. A tenant contains **workspaces**, and a workspace is the unit of collaboration:
 
 ```
-┌────────────────────────────────────────┐
-│  Nginx                                 │
-│  ├─ TLS termination                    │
-│  ├─ Serve static UI bundles            │
-│  └─ X-Accel-Redirect for media files   │
-└──────────────────┬─────────────────────┘
-                   │ proxy_pass
-┌──────────────────▼─────────────────────┐
-│  Node.js  (@drumee/server-core)        │
-│  ├─ HTTP request pipeline              │
-│  ├─ Session / ACL                      │
-│  ├─ Service execution                  │
-│  └─ Media conversion (child procs)     │
-└──────┬────────────────────┬────────────┘
-       │                    │
-┌──────▼──────┐    ┌────────▼───────┐
-│  MariaDB    │    │  Redis         │
-│  Per-hub    │    │  Session cache │
-│  schemas    │    │  WebSocket     │
-│  MFS nodes  │    │  pub/sub       │
-│  ACL data   │    │                │
-└─────────────┘    └────────────────┘
+Tenant (personal or organization)
+  ├── Workspace A   → file tree · conversation and topics · task board · calendar · members with roles
+  ├── Workspace B
+  └── Workspace C
 ```
 
-**Why Nginx matters:** `FileIo` never streams large files through Node.js. It sets an `X-Accel-Redirect` response header pointing to the physical file path, and Nginx handles the actual byte transfer. Node.js stays free for request processing.
+| Workspace kind | Who can be a member |
+| :---- | :---- |
+| Personal | Its owner |
+| Internal | Members of the organization |
+| External | Members of the organization and invited people from outside |
 
-→ [Checkout request life cycle](06-request-pipeline.md)
+Storage quota, seats and features are counted per tenant. People from outside an organization can hold a role in one of its external workspaces without belonging to it.
 
-## Technology Stack
+## Technology stack
 
 | Layer | Technology |
 | :---- | :---- |
-| Runtime | Node.js (v22+) |
-| Reverse Proxy | Nginx (TLS, static files, X-Accel-Redirect) |
-| Database | MariaDB (per-hub schemas) |
-| Cache / Pub-Sub | Redis |
-| Containerization | Docker (v28+) |
-| Filesystem | Linux, POSIX-style MFS |
-| UI Rendering | LETC Engine (JSON-based) |
-| SDK Language | Pure JavaScript (no transpilation) |
-| License | AGPL (open source) |
-| Deployment | Self-hosted (Debian), Docker or SaaS |
+| Application | Go — one binary: `server`, `worker`, `migrate` |
+| Web application | React and TypeScript, built with Vite |
+| API | REST (`/api/v1`) with an OpenAPI contract; WebSocket for realtime |
+| Database | MongoDB (replica set) |
+| Object storage | Any S3-compatible store |
+| Cache, events, job queues | Redis |
+| Audio and video | LiveKit (WebRTC) |
+| Office documents | Drumee's own office engine, running in the browser, with realtime co-editing |
+| Media processing | Background workers; ffmpeg for video |
+| Edge | A reverse proxy terminating TLS |
+| Languages of the interface | English, French, German, Vietnamese |
 
+## What is not here yet
+
+| Topic | Status |
+| :---- | :---- |
+| [SDK Reference](/api-reference) | Coming soon |
+| [Self-Hosting](/self-hosting) | Coming soon |
+| End-to-end encryption | In development — see [Data Storage & Encryption](./05-data-storage-encryption.md#end-to-end-encryption) |
