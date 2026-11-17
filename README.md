@@ -26,6 +26,24 @@ Other useful scripts (from `package.json`):
 | `npm run typecheck` | Run `tsc` over the TypeScript config/components. |
 | `npm run clear` | Clear the Docusaurus cache. |
 
+## Docker
+
+The site can also be built and served as a container (Node 20 builds it, nginx serves it):
+
+```bash
+docker compose up --build        # http://localhost:8080
+# or
+docker build -t drumee-docs .
+docker run --rm -p 8080:80 drumee-docs
+```
+
+| File | Purpose |
+|---|---|
+| `Dockerfile` | Two stages: `npm ci` + `npm run build` on Node 20, then the static `build/` served by nginx. |
+| `docker/nginx.conf` | Serves `/path` from `/path/index.html`, the site's 404 page, gzip, security headers, one-year cache for hashed `/assets/`. |
+| `docker-compose.yml` | Local preview of the production build on port 8080. |
+| `.dockerignore` | Keeps `node_modules`, `build` and `.git` out of the build context. |
+
 ## Deployment
 
 Deployment is automated — **do not** use the template's `yarn deploy` flow.

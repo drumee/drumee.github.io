@@ -1,0 +1,8 @@
+# Local preview of the production build:  docker compose up --build  → http://localhost:8080
+services:
+  docs:
+    build: .
+    image: drumee-docs
+    ports:
+      - "8080:80"
+    restart: unless-stopped

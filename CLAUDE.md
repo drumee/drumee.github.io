@@ -70,6 +70,10 @@ Mermaid is enabled (`@docusaurus/theme-mermaid`). Use fenced code blocks with `m
 
 Prism is configured with `additionalLanguages: ['bash', 'json', 'http']` in `docusaurus.config.ts`. Code fences in any other language (e.g. `js`, `yaml`, `typescript`) will render without highlighting until that language is added to the array.
 
+### Docker
+
+`Dockerfile` builds the site on Node 20 and serves `build/` with nginx (`docker/nginx.conf`); `docker compose up --build` previews it on http://localhost:8080. Base images are pinned to exact versions; keep the Node major in step with `.github/workflows/deploy.yml` and `package.json` "engines".
+
 ### Static assets
 
 Static files live in `static/` (served at the root) — `static/img/` holds logos, favicon, and images referenced as `img/...`. `static/CNAME` sets the custom domain and `static/.nojekyll` keeps GitHub Pages from stripping files. The root-level `README.md` is **not** part of the Docusaurus site.
