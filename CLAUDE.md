@@ -25,9 +25,9 @@ All documentation lives under `docs/` and is wired into the sidebar via `sidebar
 | Folder | Purpose |
 |--------|---------|
 | `docs/introduction/` | What Drumee is, positioning, history, the stack, roadmap |
-| `docs/product-tutorial/` | Drumee Onboarding Guide (listed under Introduction) |
+| `docs/product-tutorial/` | Drumee Onboarding Guide (its own sidebar section) |
 | `docs/technology/` | Overview, RBAC system, file storage, request pipeline, data storage & encryption, directory schema; `07-sdk-reference.md` is a Coming Soon placeholder |
-| `docs/getting-started/`, `docs/product-guides/`, `docs/self-hosting/`, `docs/package-building/` | Coming Soon placeholders (one `index.md` each) |
+| `docs/getting-started/`, `docs/product-guides/`, `docs/self-hosting/`, `docs/package-building/` | Coming Soon placeholders (one `index.md` each), grouped in the sidebar as "Self-Hosting Toolkit" |
 | `docs/resources/` | Glossary, FAQ |
 
 Technology pages must describe what the platform's code does. Do not state a capability (for example end-to-end encryption) as available before it has shipped; mark it Coming Soon instead.

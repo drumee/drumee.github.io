@@ -25,21 +25,21 @@ const sidebars: SidebarsConfig = {
         "introduction/07-why-drumee",
         "introduction/08-the-stack",
         "introduction/09-roadmap",
-        {
-          type: "category",
-          label: "Drumee Onboarding Guide",
-          link: {
-            type: "generated-index",
-            title: "Drumee Onboarding Guide",
-            description:
-              "A visual guide to Drumee's core components and getting started.",
-            slug: "/introduction/tutorial",
-          },
-          items: [
-            "product-tutorial/01-component-definition",
-            "product-tutorial/02-getting-started-introduction",
-          ],
-        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Drumee Onboarding Guide",
+      link: {
+        type: "generated-index",
+        title: "Drumee Onboarding Guide",
+        description:
+          "A visual guide to Drumee's core components and getting started.",
+        slug: "/introduction/tutorial",
+      },
+      items: [
+        "product-tutorial/01-component-definition",
+        "product-tutorial/02-getting-started-introduction",
       ],
     },
     {
@@ -68,28 +68,41 @@ const sidebars: SidebarsConfig = {
       ],
     },
     {
-      type: "doc",
-      id: "getting-started/getting-started",
-      label: "Getting Started",
-      className: comingSoon,
-    },
-    {
-      type: "doc",
-      id: "product-guides/product-guides",
-      label: "Product Guide",
-      className: comingSoon,
-    },
-    {
-      type: "doc",
-      id: "self-hosting/self-hosting",
-      label: "Self-Hosting",
-      className: comingSoon,
-    },
-    {
-      type: "doc",
-      id: "package-building/package-building",
-      label: "Package Guidelines",
-      className: comingSoon,
+      type: "category",
+      label: "Self-Hosting Toolkit",
+      link: {
+        type: "generated-index",
+        title: "Self-Hosting Toolkit",
+        description:
+          "Everything for running Drumee on your own infrastructure: getting started, the self-hosting guide, the product guide and package guidelines.",
+        slug: "/self-hosting-toolkit",
+      },
+      items: [
+        {
+          type: "doc",
+          id: "getting-started/getting-started",
+          label: "Getting Started",
+          className: comingSoon,
+        },
+        {
+          type: "doc",
+          id: "self-hosting/self-hosting",
+          label: "Self-Hosting Guide",
+          className: comingSoon,
+        },
+        {
+          type: "doc",
+          id: "product-guides/product-guides",
+          label: "Product Guide",
+          className: comingSoon,
+        },
+        {
+          type: "doc",
+          id: "package-building/package-building",
+          label: "Package Guidelines",
+          className: comingSoon,
+        },
+      ],
     },
     {
       type: "category",

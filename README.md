@@ -62,7 +62,7 @@ disables Jekyll.
 ```
 docs/                 All documentation content (Markdown / MDX)
   introduction/       What Drumee is, problem/solution, the stack, roadmap
-  product-tutorial/   Drumee Onboarding Guide (shown under Introduction)
+  product-tutorial/   Drumee Onboarding Guide (its own sidebar section)
   technology/         Overview, RBAC, file storage, request pipeline, data storage & encryption,
                       directory schema, SDK reference (coming soon)
   getting-started/    Coming soon (one placeholder page)
