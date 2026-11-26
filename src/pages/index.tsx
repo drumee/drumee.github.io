@@ -34,7 +34,7 @@ export default function Home(): ReactNode {
   return (
     <Layout
       title={`Hello from ${siteConfig.title}`}
-      description="Drumee is a self-hosted, OS-like platform that turns a file system into a collaborative workspace - with full data sovereignty built in at the infrastructure level.">
+      description="Drumee is the unified workspace that connects seamless collaboration, sovereignty, and security in one platform. Your data. Your workflow. One system.">
       <HomepageHeader />
       <main>
         <HomepageFeatures />

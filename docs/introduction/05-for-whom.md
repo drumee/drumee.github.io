@@ -28,4 +28,5 @@ But over time, we saw the same frustration repeat itself — across very differe
 | SME tech teams | Replace SaaS sprawl (Notion + Drive + Slack) | One unified platform instead of several subscriptions |
 | Web3 / DAO organizations | Governance integrity, censorship resistance | Fully sovereign, no platform risk — with the self-hosted edition (coming soon) |
 | Developers building products | Extensible infrastructure to build on | API-first architecture; an app marketplace today, an SDK coming soon |
+| Incubators & accelerators | Run many startups in one program, keep each one's data separate | One workspace per startup, shared resources for the whole cohort, granular access per role |
 

@@ -11,12 +11,12 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Drumee is a sovereign data infrastructure',
+    title: "Drumee is the world's first unified workspace",
     imageSrc: require('@site/static/img/logo.png').default,
     description: (
       <>
-        <p>It is not a cloud storage tool. It is not a SaaS collaboration app. It is an OS-like system that transforms a file system into a collaborative, extensible workspace - one that you fully own and control.</p>
-        <p><b>One sentence:</b> Drumee is a self-hosted, OS-like platform that turns a file system into a collaborative workspace - with full data sovereignty built in at the infrastructure level.</p>
+        <p>It connects seamless collaboration, sovereignty, and security in one platform. We don't just store your data - we activate it. Files, chat, and tasks become one living system, under your control, extensible to your needs.</p>
+        <p><b>Your data. Your workflow. One system.</b></p>
       </>
     ),
   },
